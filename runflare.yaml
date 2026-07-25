@@ -1,0 +1,15 @@
+service:
+  name: farazmgps
+  type: docker
+  build:
+    dockerfile: Dockerfile
+    args:
+      NEXT_PUBLIC_API_URL: https://farzam.runflare.run
+      NEXT_PUBLIC_SITE_URL: https://farazmgps.runflare.run
+      INTERNAL_API_URL: https://farzam.runflare.run
+  ports:
+    - 3000
+  env:
+    - NEXT_PUBLIC_API_URL=https://farzam.runflare.run
+    - NEXT_PUBLIC_SITE_URL=https://farazmgps.runflare.run
+    - INTERNAL_API_URL=https://farzam.runflare.run

@@ -1,0 +1,169 @@
+{
+  "tool": "impeccable audit (manual)",
+  "version": "3.9.1",
+  "target": ".",
+  "designDoc": "DESIGN.md",
+  "timestamp": "2026-07-09T00:00:00Z",
+  "summary": {
+    "totalViolations": 6,
+    "fixed": 6,
+    "remaining": 0,
+    "categories": {
+      "token-drift": 3,
+      "hardcoded-value": 1,
+      "typography": 1,
+      "i18n-formatting": 1
+    }
+  },
+  "violations": [
+    {
+      "id": "DRIFT-001",
+      "category": "token-drift",
+      "severity": "high",
+      "rule": "--red-badge split into --error / --discount",
+      "description": "Old --red-badge token (#E0455A) was used for sale/discount badges. DESIGN.md splits it: --error for errors, --discount (#D9457A) for sale badges.",
+      "status": "fixed",
+      "locations": [
+        {
+          "file": "src/styles/tokens.css",
+          "line": 11,
+          "before": "--red-badge: #E0455A;",
+          "after": "--discount: #D9457A;"
+        },
+        {
+          "file": "tailwind.config.ts",
+          "line": 13,
+          "before": "'red-badge':'#E0455A'",
+          "after": "'discount':'#D9457A'"
+        },
+        {
+          "file": "src/components/home/FeaturedProducts.tsx",
+          "line": 89,
+          "before": "bg-red-badge",
+          "after": "bg-discount"
+        }
+      ]
+    },
+    {
+      "id": "DRIFT-002",
+      "category": "token-drift",
+      "severity": "medium",
+      "rule": "--z-login-modal must be 730 (above --z-cart-drawer 700)",
+      "description": "Login modal z-index was 700, same as cart drawer. DESIGN.md requires 730 so login sits above an open cart.",
+      "status": "fixed",
+      "locations": [
+        {
+          "file": "src/styles/tokens.css",
+          "line": 84,
+          "before": "--z-login-modal: 700;",
+          "after": "--z-login-modal: 730;"
+        }
+      ]
+    },
+    {
+      "id": "DRIFT-003",
+      "category": "token-drift",
+      "severity": "medium",
+      "rule": "--light-tint changed from #E8EEF5 to #EEF3F9",
+      "description": "Token value updated in DESIGN.md but hardcoded hex references still used old color.",
+      "status": "fixed",
+      "locations": [
+        {
+          "file": "src/styles/tokens.css",
+          "line": 7,
+          "before": "--light-tint: #E8EEF5;",
+          "after": "--light-tint: #EEF3F9;"
+        },
+        {
+          "file": "tailwind.config.ts",
+          "line": 10,
+          "before": "light: '#E8EEF5'",
+          "after": "light: '#EEF3F9'"
+        },
+        {
+          "file": "src/styles/globals.css",
+          "line": 145,
+          "before": "linear-gradient(90deg, #E8EEF5 25%, #f0f4f9 50%, #E8EEF5 75%)",
+          "after": "linear-gradient(90deg, #EEF3F9 25%, #f4f7fb 50%, #EEF3F9 75%)"
+        }
+      ],
+      "notes": "SVG components (PartnerLogo, PaperPlaneIllustration, ProductPlaceholder) already use var(--light-tint) and auto-update. --bg-muted stays #E8EEF5 per DESIGN.md (different token, different purpose)."
+    },
+    {
+      "id": "DRIFT-004",
+      "category": "hardcoded-value",
+      "severity": "low",
+      "rule": "No hardcoded hex where token exists",
+      "description": "Shimmer animation in globals.css used hardcoded #E8EEF5 instead of tracking --light-tint.",
+      "status": "fixed",
+      "locations": [
+        {
+          "file": "src/styles/globals.css",
+          "line": 145,
+          "before": "#E8EEF5",
+          "after": "#EEF3F9"
+        }
+      ]
+    },
+    {
+      "id": "DRIFT-005",
+      "category": "typography",
+      "severity": "high",
+      "rule": "No negative letter-spacing on Persian headings",
+      "description": "CardTitle (h3) had tracking-tight which applies -0.025em. This component renders Persian headings where negative tracking breaks Vazirmatn connected letterforms.",
+      "status": "fixed",
+      "locations": [
+        {
+          "file": "src/components/ui/card.tsx",
+          "line": 20,
+          "before": "text-lg font-semibold leading-none tracking-tight",
+          "after": "text-lg font-semibold leading-none"
+        }
+      ],
+      "notes": "tracking-tight on ۴۰۴ numerals in not-found.tsx is acceptable — numerals have no connected letterforms. tracking-wide on Latin orderId in PaymentReceipt.tsx is also fine."
+    },
+    {
+      "id": "DRIFT-006",
+      "category": "i18n-formatting",
+      "severity": "medium",
+      "rule": "Prices display in Toman via Intl.NumberFormat('fa-IR')",
+      "description": "formatPrice() already returns 'X تومان' but ShippingStep appended a second ' تومان', producing 'X تومان تومان'.",
+      "status": "fixed",
+      "locations": [
+        {
+          "file": "src/components/checkout/ShippingStep.tsx",
+          "line": 199,
+          "before": "{formatPrice(opt.cost)} تومان",
+          "after": "{formatPrice(opt.cost)}"
+        }
+      ]
+    }
+  ],
+  "cleanChecks": [
+    {
+      "rule": "No hardcoded 700 z-index outside token file",
+      "result": "pass",
+      "detail": "All components reference var(--z-login-modal) or var(--z-cart-drawer)"
+    },
+    {
+      "rule": "No negative tracking-[] Tailwind utilities on Persian text",
+      "result": "pass",
+      "detail": "Only tracking-tight on ۴۰۴ numerals (acceptable) and tracking-wide on Latin text"
+    },
+    {
+      "rule": "No Rial/IRR price display",
+      "result": "pass",
+      "detail": "All pricing uses formatPrice() → Toman. priceCurrency:'IRR' in JSON-LD is correct ISO 4217."
+    },
+    {
+      "rule": "formatPrice uses Intl.NumberFormat",
+      "result": "pass",
+      "detail": "toFa() calls Number(n).toLocaleString('fa-IR') — compliant"
+    },
+    {
+      "rule": "No Toman/Rial mixing across pages",
+      "result": "pass",
+      "detail": "Single formatPrice() utility used everywhere"
+    }
+  ]
+}

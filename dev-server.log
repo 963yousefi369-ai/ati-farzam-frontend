@@ -1,0 +1,651 @@
+   ▲ Next.js 15.5.19
+   - Local:        http://localhost:3000
+   - Network:      http://172.26.176.1:3000
+   - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 12.5s
+ ○ Compiling / ...
+
+[1m[33mwarn[39m[22m - The class `ease-[cubic-bezier(0.16,1,0.3,1)]` is ambiguous and matches multiple utilities.
+[1m[33mwarn[39m[22m - If this is content and not a class, replace it with `ease-&lsqb;cubic-bezier(0.16,1,0.3,1)&rsqb;` to silence this warning.
+ ⨯ ./src/components/product/ProductCard.tsx
+Error:   [31mx[0m Expected '</', got 'jsx text (
+  [31m|[0m       )'
+     ,-[[36;1;4mC:\Users\PC-01\Downloads\New folder (16)\my front\src\components\product\ProductCard.tsx[0m:220:1]
+ [2m217[0m |                 {isOutOfStock ? 'ناموجود' : 'افزودن به سبد'}
+ [2m218[0m |               </button>
+ [2m219[0m |               )}
+ [2m220[0m | [35;1m,[0m[35;1m-[0m[35;1m>[0m         </CardContent>
+ [2m221[0m | [35;1m`[0m[35;1m-[0m[35;1m>[0m       </Card>
+ [2m222[0m |         </Link>
+ [2m223[0m |       )
+ [2m224[0m |     }
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/components/product/ProductCard.tsx
+./src/components/cms/SectionRenderer.tsx
+./src/app/(main)/page.tsx
+ ⨯ ./src/components/product/ProductCard.tsx
+Error:   [31mx[0m Expected '</', got 'jsx text (
+  [31m|[0m       )'
+     ,-[[36;1;4mC:\Users\PC-01\Downloads\New folder (16)\my front\src\components\product\ProductCard.tsx[0m:220:1]
+ [2m217[0m |                 {isOutOfStock ? 'ناموجود' : 'افزودن به سبد'}
+ [2m218[0m |               </button>
+ [2m219[0m |               )}
+ [2m220[0m | [35;1m,[0m[35;1m-[0m[35;1m>[0m         </CardContent>
+ [2m221[0m | [35;1m`[0m[35;1m-[0m[35;1m>[0m       </Card>
+ [2m222[0m |         </Link>
+ [2m223[0m |       )
+ [2m224[0m |     }
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/components/product/ProductCard.tsx
+./src/components/cms/SectionRenderer.tsx
+./src/app/(main)/page.tsx
+ ⨯ ./src/components/product/ProductCard.tsx
+Error:   [31mx[0m Expected '</', got 'jsx text (
+  [31m|[0m       )'
+     ,-[[36;1;4mC:\Users\PC-01\Downloads\New folder (16)\my front\src\components\product\ProductCard.tsx[0m:220:1]
+ [2m217[0m |                 {isOutOfStock ? 'ناموجود' : 'افزودن به سبد'}
+ [2m218[0m |               </button>
+ [2m219[0m |               )}
+ [2m220[0m | [35;1m,[0m[35;1m-[0m[35;1m>[0m         </CardContent>
+ [2m221[0m | [35;1m`[0m[35;1m-[0m[35;1m>[0m       </Card>
+ [2m222[0m |         </Link>
+ [2m223[0m |       )
+ [2m224[0m |     }
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/components/product/ProductCard.tsx
+./src/components/cms/SectionRenderer.tsx
+./src/app/(main)/page.tsx
+ GET / 500 in 8925ms
+ ✓ Compiled /_error in 1045ms (2501 modules)
+ GET / 200 in 819ms
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+ GET / 200 in 146ms
+ ○ Compiling /products ...
+ ✓ Compiled /products in 1013ms (2521 modules)
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+Products fetch error: TypeError: fetch failed
+    at async request (src\lib\api\django.ts:38:15)
+    at async ProductsPage (src\app\(main)\products\page.tsx:60:44)
+  36 |
+  37 | async function request<T>(path: string, init?: RequestInit): Promise<T> {
+> 38 |   const res = await fetch(`${API_ORIGIN}${path}`, {
+     |               ^
+  39 |     ...init,
+  40 |     headers: { 'Content-Type': 'application/json', ...(init?.headers ?? {}) },
+  41 |   }) {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+ GET /products 200 in 1427ms
+ ○ Compiling /contact ...
+ ✓ Compiled /contact in 1608ms (2568 modules)
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+ GET /contact 200 in 1951ms
+ ○ Compiling /about ...
+ ✓ Compiled /about in 672ms (2600 modules)
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+ GET /about 200 in 1099ms
+ ○ Compiling /software ...
+ ✓ Compiled /software in 776ms (2628 modules)
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+ GET /software 200 in 1445ms
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+ GET / 200 in 208ms
+ ⚠ The requested resource "/images/categories/personal.webp" is an animated image so it will not be optimized. Consider adding the "unoptimized" property to the <Image>.
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+ ○ Compiling /api/chatbot/status ...
+ ✓ Compiled /api/chatbot/status in 1285ms (2447 modules)
+ GET /api/chatbot/status 200 in 1654ms
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+ GET /api/chatbot/status 200 in 106ms
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 541ms (2543 modules)
+ GET /_next/image?url=http%3A%2F%2Flocalhost%3A8000%2Fmedia%2Fbanners%2Fimages_sE7DYvk.webp&w=828&q=75 500 in 1220ms
+ GET /_next/image?url=http%3A%2F%2Flocalhost%3A8000%2Fmedia%2Fbanners%2Fimages_sE7DYvk.webp&w=828&q=75 500 in 1190ms
+ GET /_next/image?url=http%3A%2F%2Flocalhost%3A8000%2Fmedia%2Fbanners%2Fmobile%2Fimages.webp&w=828&q=75 500 in 1216ms
+ GET /_next/image?url=http%3A%2F%2Flocalhost%3A8000%2Fmedia%2Fbanners%2Fmobile%2Fimages.webp&w=828&q=75 500 in 1179ms
+ GET /_next/image?url=http%3A%2F%2Flocalhost%3A8000%2Fmedia%2Fsections%2FChatGPT_Image_Jul_12_2026_12_19_51_PM.webp&w=828&q=75 500 in 880ms
+ GET /_next/image?url=http%3A%2F%2Flocalhost%3A8000%2Fmedia%2Fsections%2FChatGPT_Image_Jul_12_2026_12_19_51_PM.webp&w=828&q=75 500 in 862ms
+ GET /_next/image?url=http%3A%2F%2Flocalhost%3A8000%2Fmedia%2Fsections%2F2dce3867-fb58-4d29-887b-7472544d2e7b_cYuLDS4.webp&w=750&q=75 500 in 647ms
+ GET /_next/image?url=http%3A%2F%2Flocalhost%3A8000%2Fmedia%2Fsections%2F2dce3867-fb58-4d29-887b-7472544d2e7b_cYuLDS4.webp&w=750&q=75 500 in 629ms
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+ GET / 200 in 470ms
+ ○ Compiling /icon ...
+ ✓ Compiled /icon in 883ms (2546 modules)
+ GET /api/chatbot/status 200 in 462ms
+ GET /icon 200 in 1152ms
+ GET /api/chatbot/status 200 in 28ms
+ GET / 200 in 434ms
+ GET /icon 200 in 38ms
+ GET /api/chatbot/status 200 in 20ms
+ GET /api/chatbot/status 200 in 21ms
+ GET / 200 in 152ms
+ GET /icon 200 in 28ms
+ GET /api/chatbot/status 200 in 27ms
+ GET /api/chatbot/status 200 in 24ms
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+ GET / 200 in 90ms
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+ GET / 200 in 130ms
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+ GET / 200 in 129ms
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+ GET / 200 in 112ms
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+ GET / 200 in 99ms
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+ GET / 200 in 116ms
+ ✓ Compiled in 784ms (1183 modules)
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+ ✓ Compiled in 403ms (1183 modules)
+ GET / 200 in 431ms
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+ GET / 200 in 94ms
+ GET / 200 in 130ms
+ GET /icon 200 in 77ms
+ GET /api/chatbot/status 200 in 36ms
+ GET /api/chatbot/status 200 in 31ms
+ ✓ Compiled in 435ms (1183 modules)
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+ GET / 200 in 73ms
+ ✓ Compiled in 631ms (1183 modules)
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+ GET / 200 in 165ms
+ GET /icon 200 in 38ms
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+ GET /api/chatbot/status 200 in 23ms
+ GET /api/chatbot/status 200 in 19ms
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 754ms (2546 modules)
+ GET /_next/image?url=http%3A%2F%2Flocalhost%3A8000%2Fmedia%2Fsections%2FChatGPT_Image_Jul_12_2026_12_19_51_PM.webp&w=828&q=75 500 in 1079ms
+ GET /_next/image?url=http%3A%2F%2Flocalhost%3A8000%2Fmedia%2Fsections%2FChatGPT_Image_Jul_12_2026_12_19_51_PM.webp&w=828&q=75 500 in 1064ms
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+ GET /_next/image?url=http%3A%2F%2Flocalhost%3A8000%2Fmedia%2Fsections%2F2dce3867-fb58-4d29-887b-7472544d2e7b_cYuLDS4.webp&w=1200&q=75 500 in 252ms
+ GET /_next/image?url=http%3A%2F%2Flocalhost%3A8000%2Fmedia%2Fsections%2F2dce3867-fb58-4d29-887b-7472544d2e7b_cYuLDS4.webp&w=1200&q=75 500 in 234ms
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+ GET / 200 in 711ms
+ ✓ Compiled in 358ms (1184 modules)
+ GET /icon 200 in 49ms
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+ ✓ Compiled in 578ms (1184 modules)
+ GET /api/chatbot/status 200 in 81ms
+ GET /api/chatbot/status 200 in 33ms
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+ GET / 200 in 185ms
+ GET /icon 200 in 35ms
+ GET /icon 200 in 29ms
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+ ✓ Compiled in 1430ms (2561 modules)
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+ GET / 200 in 214ms
+ GET /icon 200 in 51ms
+ GET /icon 200 in 27ms
+ GET / 200 in 329ms
+ GET /icon 200 in 27ms
+ GET /api/chatbot/status 200 in 58ms
+ GET /api/chatbot/status 200 in 37ms
+ GET / 200 in 138ms
+ GET /icon 200 in 42ms
+ GET /api/chatbot/status 200 in 23ms
+ GET /api/chatbot/status 200 in 20ms
+ GET / 200 in 146ms
+ GET /icon 200 in 41ms
+ GET /api/chatbot/status 200 in 27ms
+ GET /api/chatbot/status 200 in 26ms
+ ✓ Compiled in 1314ms (2443 modules)
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+ GET / 200 in 326ms
+ ✓ Compiled in 801ms (2443 modules)
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+ ✓ Compiled /icon in 254ms (1280 modules)
+ ✓ Compiled /api/chatbot/status in 1ms (1280 modules)
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+ GET /icon 200 in 1112ms
+ GET / 200 in 1467ms
+ ✓ Compiled in 1ms (1282 modules)
+ GET /icon 200 in 35ms
+ GET /api/chatbot/status 200 in 33ms
+ GET /api/chatbot/status 200 in 27ms
+ ✓ Compiled in 496ms (1183 modules)
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+ GET / 200 in 214ms
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+ GET / 200 in 276ms
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+ GET / 200 in 74ms
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+ GET / 200 in 83ms
+ GET / 200 in 159ms
+ GET /icon 200 in 45ms
+ GET /api/chatbot/status 200 in 62ms
+ GET /api/chatbot/status 200 in 25ms
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+ GET / 200 in 124ms
+ GET / 200 in 168ms
+ GET /icon 200 in 36ms
+ GET /api/chatbot/status 200 in 53ms
+ GET /api/chatbot/status 200 in 21ms
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+ GET / 200 in 152ms
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+ GET / 200 in 179ms
+ GET /icon 200 in 30ms
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 1083ms (2544 modules)
+ GET /_next/image?url=http%3A%2F%2Flocalhost%3A8000%2Fmedia%2Fbanners%2Fimages_sE7DYvk.webp&w=1200&q=75 500 in 1526ms
+ GET /_next/image?url=http%3A%2F%2Flocalhost%3A8000%2Fmedia%2Fbanners%2Fimages_sE7DYvk.webp&w=1200&q=75 500 in 1489ms
+ GET /_next/image?url=http%3A%2F%2Flocalhost%3A8000%2Fmedia%2Fbanners%2Fmobile%2Fimages.webp&w=1200&q=75 500 in 1521ms
+ GET /_next/image?url=http%3A%2F%2Flocalhost%3A8000%2Fmedia%2Fbanners%2Fmobile%2Fimages.webp&w=1200&q=75 500 in 1473ms
+ GET /_next/image?url=http%3A%2F%2Flocalhost%3A8000%2Fmedia%2Fbanners%2Fforeground%2Fmobile%2Fa9f61114-85f2-4625-9c26-de05d60f7e29.webp&w=828&q=75 500 in 1194ms
+ GET /_next/image?url=http%3A%2F%2Flocalhost%3A8000%2Fmedia%2Fbanners%2Fforeground%2Fmobile%2Fa9f61114-85f2-4625-9c26-de05d60f7e29.webp&w=828&q=75 500 in 1164ms
+ ✓ Compiled /api/chatbot/status in 290ms (1377 modules)
+ GET /api/chatbot/status 200 in 366ms
+ GET /api/chatbot/status 200 in 22ms
+ ⨯ [Error: ENOENT: no such file or directory, open 'C:\Users\PC-01\Downloads\New folder (16)\my front\.next\server\app-paths-manifest.json'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\PC-01\\Downloads\\New folder (16)\\my front\\.next\\server\\app-paths-manifest.json',
+  page: '/'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open 'C:\Users\PC-01\Downloads\New folder (16)\my front\.next\server\pages-manifest.json'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\PC-01\\Downloads\\New folder (16)\\my front\\.next\\server\\pages-manifest.json'
+}
+[Error: ENOENT: no such file or directory, open 'C:\Users\PC-01\Downloads\New folder (16)\my front\.next\server\app-paths-manifest.json'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\PC-01\\Downloads\\New folder (16)\\my front\\.next\\server\\app-paths-manifest.json',
+  page: '/'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open 'C:\Users\PC-01\Downloads\New folder (16)\my front\.next\server\pages-manifest.json'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\PC-01\\Downloads\\New folder (16)\\my front\\.next\\server\\pages-manifest.json'
+}
+[Error: ENOENT: no such file or directory, open 'C:\Users\PC-01\Downloads\New folder (16)\my front\.next\routes-manifest.json'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\PC-01\\Downloads\\New folder (16)\\my front\\.next\\routes-manifest.json'
+}
+ GET / 500 in 390ms
+ GET / 500 in 43ms
+ ⨯ [Error: ENOENT: no such file or directory, open 'C:\Users\PC-01\Downloads\New folder (16)\my front\.next\server\app-paths-manifest.json'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\PC-01\\Downloads\\New folder (16)\\my front\\.next\\server\\app-paths-manifest.json',
+  page: '/'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open 'C:\Users\PC-01\Downloads\New folder (16)\my front\.next\server\pages-manifest.json'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\PC-01\\Downloads\\New folder (16)\\my front\\.next\\server\\pages-manifest.json'
+}
+[Error: ENOENT: no such file or directory, open 'C:\Users\PC-01\Downloads\New folder (16)\my front\.next\server\app-paths-manifest.json'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\PC-01\\Downloads\\New folder (16)\\my front\\.next\\server\\app-paths-manifest.json',
+  page: '/'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open 'C:\Users\PC-01\Downloads\New folder (16)\my front\.next\server\pages-manifest.json'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\PC-01\\Downloads\\New folder (16)\\my front\\.next\\server\\pages-manifest.json'
+}
+[Error: ENOENT: no such file or directory, open 'C:\Users\PC-01\Downloads\New folder (16)\my front\.next\routes-manifest.json'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\PC-01\\Downloads\\New folder (16)\\my front\\.next\\routes-manifest.json'
+}
+ GET / 500 in 362ms
+ GET / 500 in 39ms
+ ⨯ [Error: ENOENT: no such file or directory, open 'C:\Users\PC-01\Downloads\New folder (16)\my front\.next\server\app-paths-manifest.json'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\PC-01\\Downloads\\New folder (16)\\my front\\.next\\server\\app-paths-manifest.json',
+  page: '/'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open 'C:\Users\PC-01\Downloads\New folder (16)\my front\.next\server\pages-manifest.json'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\PC-01\\Downloads\\New folder (16)\\my front\\.next\\server\\pages-manifest.json'
+}
+[Error: ENOENT: no such file or directory, open 'C:\Users\PC-01\Downloads\New folder (16)\my front\.next\server\app-paths-manifest.json'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\PC-01\\Downloads\\New folder (16)\\my front\\.next\\server\\app-paths-manifest.json',
+  page: '/'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open 'C:\Users\PC-01\Downloads\New folder (16)\my front\.next\server\pages-manifest.json'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\PC-01\\Downloads\\New folder (16)\\my front\\.next\\server\\pages-manifest.json'
+}
+[Error: ENOENT: no such file or directory, open 'C:\Users\PC-01\Downloads\New folder (16)\my front\.next\routes-manifest.json'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\PC-01\\Downloads\\New folder (16)\\my front\\.next\\routes-manifest.json'
+}
+ GET / 500 in 332ms
+ GET / 500 in 29ms

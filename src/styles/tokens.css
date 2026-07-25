@@ -1,0 +1,148 @@
+:root {
+  /* ── Brand Colors (Ati Farzam redesign) ── */
+  --primary:        #3B5A80;
+  --primary-dark:   #2d4766;
+  --dark:           #0f172a;
+  --dark-deeper:   #0a1019;
+  --light-tint:     #EEF3F9;
+  --light-tint-2:   #F0F4F9;
+  --accent:         #14B8A6;
+  --accent-dark:    #0d9488;
+  --discount:       #D9457A;
+
+  /* ── Backgrounds ── */
+  --bg-base:        #ffffff;
+  --bg-soft:        #f8fafc;
+  --bg-muted:       #E8EEF5;
+  --bg-dark:        #0f172a;
+  --bg-dark-deep:   #0a1019;
+
+  /* ── Text ── */
+  --text-heading:   #0f172a;
+  --text-body:      #374151;
+  --text-muted:     #6B7280;
+  --text-on-dark:   #ffffff;
+  --text-on-dark-muted: rgba(255,255,255,0.6);
+
+  /* ── Borders ── */
+  --border-soft:    rgba(14,116,144,0.12);
+  --border-base:    rgba(14,116,144,0.18);
+  --border-strong:  rgba(14,116,144,0.3);
+  --border-hairline: rgba(14,116,144,0.15);
+
+  /* ── Shadows ── */
+  --shadow-card:    0 2px 8px rgba(59,90,128,0.06), 0 4px 16px rgba(59,90,128,0.04);
+  --shadow-hover:   0 8px 30px rgba(59,90,128,0.12);
+  --shadow-elevated: 0 8px 30px rgba(10,15,30,0.18);
+  --shadow-soft:    0 1px 3px rgba(30,58,95,0.06);
+
+  /* ── Hover Lift ── */
+  --hover-lift:     -2px;
+
+  /* ── Radius ── */
+  --radius-xs:      6px;
+  --radius-sm:      8px;
+  --radius-md:      12px;
+  --radius-lg:      16px;
+  --radius-xl:      20px;
+  --radius-2xl:     24px;
+  --radius-3xl:     32px;
+  --radius-full:    9999px;
+
+  /* ── Motion / Easing ── */
+  --ease-settle:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-standard:  cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-exit:      cubic-bezier(0.4, 0, 1, 1);
+
+  /* ── Motion / Durations ── */
+  --duration-instant:  80ms;
+  --duration-fast:     120ms;
+  --duration-base:     160ms;
+  --duration-moderate: 200ms;
+  --duration-ceiling:  600ms;
+
+  /* ── Typography ── */
+  --font-sans:    'IRANSansX', 'Vazirmatn', system-ui, sans-serif;
+
+  /* ── Accessibility ── */
+  --focus-ring-color: var(--accent);
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
+  --touch-target-min: 44px;
+
+  /* ── Layout ── */
+  --navbar-height: 76px;
+
+  /* ── Z-Index Scale ── */
+  --z-navbar: 300;
+  --z-mobile-menu-overlay: 400;
+  --z-mobile-menu-drawer: 500;
+  --z-dropdown: 550;
+  --z-cart-drawer-overlay: 600;
+  --z-cart-drawer: 700;
+  --z-login-modal-overlay: 600;
+  --z-login-modal: 730;
+  --z-dialog-overlay: 650;
+  --z-dialog-content: 660;
+  --z-select-content: 670;
+  --z-cmd-search-overlay: 800;
+  --z-cmd-search-content: 810;
+
+  /* ── shadcn overrides ── */
+  --background: 0 0% 100%;
+  --foreground: 213 31% 22%;
+  --primary-hsl: 213 27% 36%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 213 28% 88%;
+  --secondary-foreground: 213 31% 22%;
+  --muted: 213 28% 88%;
+  --muted-foreground: 220 9% 46%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 98%;
+  --card: 0 0% 100%;
+  --card-foreground: 213 31% 22%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 213 31% 22%;
+  --accent-hsl: 213 28% 88%;
+  --accent-foreground: 213 31% 22%;
+  --input: 213 28% 88%;
+  --border: 213 15% 88%;
+  --ring: 213 27% 36%;
+  --radius: 0.75rem;
+
+  /* ── Semantic Colors ── */
+  --success:          #14B8A6;
+  --success-light:    #ccfbf1;
+  --warning:          #F59E0B;
+  --warning-dark:     #D97706;
+  --warning-light:    #FEF3C7;
+  --error:            #E0455A;
+  --error-text:       #DC2626;
+  --error-light:      #FEE2E2;
+  --info:             #1e3a5f;
+  --info-light:       #E8EEF5;
+
+  /* ── Backward-compatible aliases ── */
+  --navy:             #3B5A80;
+  --navy-dark:        #2d4766;
+  --navy-deep:        #0f172a;
+  --teal:             #14B8A6;
+  --teal-dark:        #0d9488;
+  --teal-light:       #ccfbf1;
+  --bg-primary:       var(--bg-base);
+  --bg-secondary:     var(--bg-muted);
+  --bg-tertiary:      var(--border-soft);
+  --text-primary:     var(--text-heading);
+  --text-secondary:   var(--text-body);
+  --text-tertiary:    var(--text-muted);
+  --border-default:   var(--border-soft);
+  --border-emphasis:  var(--border-base);
+  --shadow-card-hover: var(--shadow-hover);
+  --shadow-sm:        0 1px 2px rgba(14,116,144,.05);
+  --shadow-md:        var(--shadow-card);
+  --shadow-lg:        var(--shadow-hover);
+  --ease-smooth:      300ms var(--ease-settle);
+  --transition-fast:  180ms var(--ease-standard);
+  --transition-base:  250ms ease;
+  --transition-smooth: 300ms var(--ease-settle);
+}
