@@ -1,56 +1,32 @@
-# Ati Farzam — Impeccable visual fix patch
+# ATI Farzam — UI/UX Pro Max redesign pass
 
-این بسته شش فایل جایگزین برای یکپارچه‌سازی و ساده‌سازی رابط کاربری دارد:
+این بسته، پاس دوم بازطراحی بر پایه UI/UX Pro Max v2.11.0 است و روی سه بخش باقی‌مانده با بیشترین اثر تمرکز دارد:
 
-- `src/components/home/HeroSlider.tsx`
-- `src/components/layout/Navbar.tsx`
-- `src/components/product/ProductCard.tsx`
-- `src/styles/tokens.css`
-- `src/styles/globals.css`
-- `tailwind.config.ts`
+- `Navbar.tsx`: ناوبری کلیک‌پذیر و keyboard-friendly، CTA مرتب تماس با ما، رفع وابستگی به hover و اتصال صحیح جستجوی موبایل.
+- `MobileMenu.tsx`: حذف رنگ‌های hard-coded، blur و motion اضافه؛ یکپارچه‌سازی semantic tokens، focus trap و حداقل target برابر 44px.
+- `PlatformShowcase.tsx`: حذف glow، pattern و animation تزئینی؛ تبدیل به یک پنل محصول خوانا و trust-first.
 
-## اصلاحات اصلی
+## جهت طراحی
 
-- حذف autoplay، typewriter، parallax، glow، orb و افکت‌های تزئینی Hero
-- تبدیل Hero به یک مسیر تصمیم روشن با یک CTA اصلی
-- کاهش Navbar سه‌لایه به یک نوار ۷۲ پیکسلی
-- ساده‌سازی Product Card و رفع ساختار نامعتبر button داخل link
-- حذف confetti از خرید سریع و کاهش motion غیرضروری
-- یکپارچه‌سازی رنگ‌ها، سایه‌ها، radius، z-index و transitionها
-- خنثی‌کردن gradient text، animated borders، mesh و glowهای قدیمی
-- حفظ RTL، focus-visible، حداقل touch target و reduced motion
-- ساده‌سازی استایل مقاله و حفظ خوانایی فارسی
+- Product: فروشگاه تخصصی ردیاب GPS و نرم‌افزار مدیریت ناوگان
+- Style: Trust-first Tech Commerce / Editorial Minimal
+- Variance: 4/10
+- Motion: 2/10
+- Density: 5/10
+- Primary: `#3B5A80`
+- Accent: `#14B8A6`
+- Font: IRANSansX/Vazirmatn
+- Grid: 4/8px spacing rhythm
+- Breakpoints: 375 / 768 / 1024 / 1440
 
-## اعمال بسته
+## اعمال
 
-از ریشه پروژه:
+فایل‌های داخل `src` را روی مسیرهای متناظر پروژه کپی و سپس اجرا کنید:
 
 ```bash
-unzip ati-farzam-impeccable-patch.zip -d /tmp/ati-farzam-impeccable-patch
-cp -R /tmp/ati-farzam-impeccable-patch/src ./
-cp /tmp/ati-farzam-impeccable-patch/tailwind.config.ts ./tailwind.config.ts
-npm install
 npm run build
 ```
 
-پیشنهاد می‌شود تغییرات روی یک branch جدا اعمال شوند:
+QA پیشنهادی: عرض‌های 375، 768، 1024 و 1440؛ Tab/Shift+Tab؛ Escape؛ reduced-motion؛ بازشدن منوی محصولات با کلیک؛ جستجوی موبایل و سبد خرید.
 
-```bash
-git switch -c impeccable/full-visual-fix
-git add src/components/home/HeroSlider.tsx \
-  src/components/layout/Navbar.tsx \
-  src/components/product/ProductCard.tsx \
-  src/styles/tokens.css src/styles/globals.css tailwind.config.ts
-git commit -m "Refine visual system with Impeccable"
-```
-
-## QA لازم پس از اعمال
-
-- `/` در عرض‌های 390، 768، 1024 و 1440 پیکسل
-- `/products` با محصول موجود، ناموجود، تخفیف‌دار و بدون تصویر
-- باز و بسته شدن search و mobile menu با Escape
-- tab order و focus ring در Navbar و Product Card
-- `prefers-reduced-motion: reduce`
-- اجرای `npm run build`
-
-> اتصال GitHub این جلسه مجوز نوشتن نداشت؛ ایجاد branch با خطای 403 متوقف شد. به همین دلیل فایل‌ها به‌صورت بسته آماده تحویل شده‌اند و هیچ تغییری روی `main` اعمال نشده است.
+> اتصال GitHub در این جلسه مجوز write نداشت، بنابراین هیچ commit یا تغییری مستقیم روی main انجام نشده است.

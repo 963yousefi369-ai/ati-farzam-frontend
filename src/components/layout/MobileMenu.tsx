@@ -1,14 +1,14 @@
 'use client'
+
+import { useCallback, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { X, Search, User, LogOut, ShoppingCart, ChevronLeft, ChevronDown, Truck, Car, MapPin, Bike } from 'lucide-react'
+import { Bike, Car, ChevronDown, ChevronLeft, Headphones, LogOut, MapPin, Search, ShoppingCart, Truck, User, X } from 'lucide-react'
 import { useAuthStore } from '@/lib/store/auth'
 import { useCartStore } from '@/lib/store/cart'
 import { useLoginModal } from '@/lib/store/login-modal'
 import { useCartDrawer } from '@/lib/store/cart-drawer'
 import { cn } from '@/lib/utils'
-import { useEffect, useRef, useCallback, useState } from 'react'
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 
 const NAV_LINKS = [
   { href: '/', label: 'خانه' },
@@ -18,269 +18,68 @@ const NAV_LINKS = [
   { href: '/contact', label: 'تماس با ما' },
 ]
 
-const PRODUCT_CATEGORIES = [
+const CATEGORIES = [
   { href: '/products?cat=vehicle', label: 'ردیاب خودرو', icon: Car },
   { href: '/products?cat=fleet', label: 'ردیاب ناوگان', icon: Truck },
   { href: '/products?cat=personal', label: 'ردیاب شخصی', icon: MapPin },
   { href: '/products?cat=motorcycle', label: 'ردیاب موتور', icon: Bike },
 ]
 
-interface MobileMenuProps {
-  open: boolean
-  onClose: () => void
-  onSearchClick: () => void
-}
+interface MobileMenuProps { open: boolean; onClose: () => void; onSearchClick: () => void }
 
 export default function MobileMenu({ open, onClose, onSearchClick }: MobileMenuProps) {
   const pathname = usePathname()
   const { user, token, logout } = useAuthStore()
-  const totalCount = useCartStore((s) => s.totalCount())
-  const openLogin = useLoginModal((s) => s.openLogin)
-  const openCartDrawer = useCartDrawer((s) => s.openDrawer)
+  const totalCount = useCartStore((state) => state.totalCount())
+  const openLogin = useLoginModal((state) => state.openLogin)
+  const openCart = useCartDrawer((state) => state.openDrawer)
   const drawerRef = useRef<HTMLDivElement>(null)
-  const closeButtonRef = useRef<HTMLButtonElement>(null)
+  const closeRef = useRef<HTMLButtonElement>(null)
   const [productsExpanded, setProductsExpanded] = useState(false)
-  const reduceMotion = useReducedMotion()
 
-  useEffect(() => {
-    onClose()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname])
-
-  // Focus trap
-  const handleTrapFocus = useCallback((e: KeyboardEvent) => {
-    if (!drawerRef.current) return
-    const focusable = drawerRef.current.querySelectorAll<HTMLElement>(
-      'a[href], button:not([disabled]), input, textarea, select, [tabindex]:not([tabindex="-1"])'
-    )
-    if (focusable.length === 0) return
-    const first = focusable[0]
-    const last = focusable[focusable.length - 1]
-    if (e.key === 'Tab') {
-      if (e.shiftKey && document.activeElement === first) {
-        e.preventDefault()
-        last.focus()
-      } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault()
-        first.focus()
-      }
-    }
+  const trapFocus = useCallback((event: KeyboardEvent) => {
+    if (!drawerRef.current || event.key !== 'Tab') return
+    const items = drawerRef.current.querySelectorAll<HTMLElement>('a[href],button:not([disabled]),[tabindex]:not([tabindex="-1"])')
+    if (!items.length) return
+    const first = items[0]
+    const last = items[items.length - 1]
+    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus() }
+    if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus() }
   }, [])
 
   useEffect(() => {
     if (!open) return
-    const escHandler = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose()
-      handleTrapFocus(e)
-    }
-    document.addEventListener('keydown', escHandler)
-    closeButtonRef.current?.focus()
-    return () => document.removeEventListener('keydown', escHandler)
-  }, [open, onClose, handleTrapFocus])
+    const handleKey = (event: KeyboardEvent) => { if (event.key === 'Escape') onClose(); trapFocus(event) }
+    document.addEventListener('keydown', handleKey)
+    document.body.classList.add('menu-open')
+    closeRef.current?.focus()
+    return () => { document.removeEventListener('keydown', handleKey); document.body.classList.remove('menu-open') }
+  }, [open, onClose, trapFocus])
 
-  useEffect(() => {
-    document.body.classList.toggle('menu-open', open)
-    return () => { document.body.classList.remove('menu-open') }
-  }, [open])
-
-  const handleCartClick = () => {
-    onClose()
-    setTimeout(openCartDrawer, 200)
-  }
-
-  const handleLoginClick = () => {
-    onClose()
-    setTimeout(() => openLogin(), 200)
-  }
+  useEffect(() => { onClose() }, [pathname, onClose])
 
   return (
     <>
-      {/* Overlay */}
-      <div
-        className={cn(
-          'fixed inset-0 bg-black/40 transition-all duration-base lg:hidden',
-          open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-        )}
-        style={{ zIndex: 'var(--z-mobile-menu-overlay)', backdropFilter: 'blur(4px)' }}
-        onClick={onClose}
-      />
-
-      {/* Drawer */}
-      <div
-        ref={drawerRef}
-        className={cn(
-          'fixed top-0 right-0 bottom-0 w-[300px] bg-white transition-transform duration-ceiling lg:hidden flex flex-col',
-          open ? 'translate-x-0' : 'translate-x-full'
-        )}
-        style={{ zIndex: 'var(--z-mobile-menu-drawer)', boxShadow: open ? '0 8px 30px rgba(0,0,0,0.12)' : 'none' }}
-        role="dialog"
-        aria-modal="true"
-        aria-label="منوی اصلی"
-      >
-        {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-100">
-          <h2 className="font-bold text-dark text-base">منو</h2>
-          <button
-            ref={closeButtonRef}
-            onClick={onClose}
-            className="min-w-[40px] min-h-[40px] flex items-center justify-center rounded-xl hover:bg-gray-50 transition-colors text-text-muted"
-            aria-label="بستن"
-          >
-            <X className="w-5 h-5" />
-          </button>
+      <button type="button" aria-label="بستن منو" tabIndex={open ? 0 : -1} onClick={onClose} className={cn('fixed inset-0 z-[var(--z-mobile-menu-overlay)] bg-dark/50 transition-opacity duration-200 xl:hidden', open ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0')} />
+      <div ref={drawerRef} role="dialog" aria-modal="true" aria-label="منوی اصلی" className={cn('fixed inset-y-0 right-0 z-[var(--z-mobile-menu-drawer)] flex w-[min(88vw,340px)] flex-col bg-white shadow-elevated transition-transform duration-200 xl:hidden', open ? 'translate-x-0' : 'translate-x-full')}>
+        <div className="flex min-h-[72px] items-center justify-between border-b border-border-soft px-4">
+          <div><p className="font-semibold text-dark">منوی اصلی</p><p className="mt-0.5 text-xs text-text-muted">آتی فرزام ایرانیان</p></div>
+          <button ref={closeRef} type="button" onClick={onClose} aria-label="بستن منو" className="flex h-11 w-11 items-center justify-center rounded-xl text-text-secondary hover:bg-bg-soft"><X className="h-5 w-5" /></button>
         </div>
 
-        {/* Nav links */}
-        <nav className="flex-1 overflow-y-auto p-4 space-y-1">
+        <nav className="flex-1 space-y-1 overflow-y-auto p-4" aria-label="منوی موبایل">
           {NAV_LINKS.map((link) => {
-            const isActive = pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href))
-            const isProducts = link.hasDropdown
-
-            if (isProducts) {
-              return (
-                <div key={link.href}>
-                  <button
-                    onClick={() => setProductsExpanded((o) => !o)}
-                    className={cn(
-                      'w-full flex items-center justify-between gap-3 px-3 min-h-[44px] rounded-xl text-sm font-semibold transition-all duration-200',
-                      isActive
-                        ? 'text-[#2CC9B8] bg-[#2CC9B8]/[0.06]'
-                        : 'text-text-secondary hover:bg-gray-50 hover:text-dark active:scale-[0.98]'
-                    )}
-                  >
-                    <span>{link.label}</span>
-                    <ChevronDown className={cn(
-                      'w-4 h-4 text-text-muted transition-transform duration-200',
-                      productsExpanded && 'rotate-180'
-                    )} />
-                  </button>
-                  {/* Expandable sub-categories */}
-                  <AnimatePresence>
-                    {productsExpanded && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={reduceMotion ? { duration: 0 } : { duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                        className="overflow-hidden"
-                      >
-                        <div className="mr-2 mt-1 mb-2 bg-white rounded-xl border border-gray-100 p-2" style={{ boxShadow: '0 4px 16px rgba(0,0,0,0.04)' }}>
-                          {PRODUCT_CATEGORIES.map((cat) => (
-                            <Link
-                              key={cat.href}
-                              href={cat.href}
-                              className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium text-text-secondary hover:text-dark"
-                            >
-                              <div className="w-7 h-7 rounded-lg bg-gray-50 flex items-center justify-center shrink-0">
-                                <cat.icon className="w-4 h-4 text-text-muted" />
-                              </div>
-                              {cat.label}
-                            </Link>
-                          ))}
-                          <Link
-                            href="/products"
-                            className="flex items-center gap-2 px-3 py-2 mt-1 rounded-lg bg-gray-50 text-xs font-semibold text-[#2CC9B8] hover:bg-[#2CC9B8]/10 transition-colors"
-                          >
-                            مشاهده همه محصولات
-                            <ChevronLeft className="w-3 h-3" />
-                          </Link>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              )
-            }
-
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={cn(
-                  'flex items-center justify-between gap-3 px-3 min-h-[44px] rounded-xl text-sm font-semibold transition-all duration-200',
-                  isActive
-                    ? 'text-[#2CC9B8] bg-[#2CC9B8]/[0.06]'
-                    : 'text-text-secondary hover:bg-gray-50 hover:text-dark active:scale-[0.98]'
-                )}
-              >
-                <span>{link.label}</span>
-                <ChevronLeft className={cn('w-4 h-4', isActive ? 'text-[#2CC9B8]' : 'text-text-tertiary/40')} />
-              </Link>
-            )
+            const active = pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href))
+            if (link.hasDropdown) return <div key={link.href}><button type="button" onClick={() => setProductsExpanded((value) => !value)} aria-expanded={productsExpanded} className={cn('flex min-h-12 w-full items-center justify-between rounded-xl px-3.5 text-sm font-medium', active ? 'bg-light-tint text-primary' : 'text-text-secondary hover:bg-bg-soft')}><span>{link.label}</span><ChevronDown className={cn('h-4 w-4 transition-transform', productsExpanded && 'rotate-180')} /></button>{productsExpanded && <div className="my-2 mr-3 space-y-1 border-r border-border-soft pr-3">{CATEGORIES.map((category) => <Link key={category.href} href={category.href} className="flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm text-text-secondary hover:bg-bg-soft"><category.icon className="h-4 w-4 text-primary" />{category.label}</Link>)}<Link href="/products" className="flex min-h-11 items-center gap-2 rounded-xl px-3 text-sm font-semibold text-primary hover:bg-light-tint">مشاهده همه محصولات<ChevronLeft className="h-4 w-4" /></Link></div>}</div>
+            const contact = link.href === '/contact'
+            return <Link key={link.href} href={link.href} aria-current={active ? 'page' : undefined} className={cn('flex min-h-12 items-center justify-between rounded-xl px-3.5 text-sm font-medium', contact ? 'mt-3 border border-primary/20 bg-primary/5 text-primary' : active ? 'bg-light-tint text-primary' : 'text-text-secondary hover:bg-bg-soft')}><span className="flex items-center gap-2">{contact && <Headphones className="h-4 w-4" />}{link.label}</span><ChevronLeft className="h-4 w-4 opacity-50" /></Link>
           })}
         </nav>
 
-        {/* Divider */}
-        <div className="mx-4 border-t border-gray-100" />
-
-        {/* Search bar at bottom */}
-        <div className="p-4 pb-2">
-          <button
-            onClick={onSearchClick}
-            className="w-full flex items-center gap-3 h-11 px-4 rounded-xl bg-gray-50 border border-gray-100 text-text-muted text-sm hover:border-primary/20 transition-colors"
-          >
-            <Search className="w-4 h-4 shrink-0" />
-            <span>جستجوی محصول...</span>
-          </button>
-        </div>
-
-        {/* Order tracking */}
-        <div className="px-4 pb-2">
-          <Link
-            href="/profile/orders"
-            className="flex items-center gap-2.5 px-3 min-h-[44px] rounded-xl bg-gray-50/60 hover:bg-gray-50 transition-colors text-sm font-medium text-text-secondary"
-          >
-            <Truck className="w-4 h-4" />
-            پیگیری سفارش
-          </Link>
-        </div>
-
-        {/* Footer actions */}
-        <div className="p-4 border-t border-gray-100 space-y-2">
-          <button
-            onClick={handleCartClick}
-            className="w-full flex items-center justify-between gap-3 px-4 min-h-[44px] rounded-xl bg-gray-50/60 hover:bg-gray-50 transition-colors text-dark text-sm font-medium active:scale-[0.98]"
-          >
-            <div className="flex items-center gap-2.5">
-              <ShoppingCart className="w-4 h-4 text-text-secondary" />
-              سبد خرید
-            </div>
-            {totalCount > 0 && (
-              <span className="min-w-[22px] h-5 bg-[#14B8A6] text-white text-[11px] font-bold rounded-full flex items-center justify-center px-1.5">
-                {totalCount.toLocaleString('fa-IR')}
-              </span>
-            )}
-          </button>
-
-          {token && user ? (
-            <>
-              <Link
-                href="/profile"
-                className="flex items-center gap-2.5 px-4 min-h-[44px] rounded-xl bg-gray-50/60 hover:bg-gray-50 transition-colors text-dark text-sm font-medium active:scale-[0.98]"
-              >
-                <div className="w-7 h-7 rounded-lg bg-[#3B5A80]/10 flex items-center justify-center">
-                  <User className="w-3.5 h-3.5 text-[#3B5A80]" />
-                </div>
-                {user.full_name || user.phone_number || 'پروفایل'}
-              </Link>
-              <button
-                onClick={() => { logout(); onClose() }}
-                className="w-full flex items-center gap-2.5 px-4 min-h-[44px] rounded-xl text-error hover:bg-error-light/50 transition-colors text-sm font-medium active:scale-[0.98]"
-              >
-                <LogOut className="w-4 h-4" />
-                خروج
-              </button>
-            </>
-          ) : (
-            <button
-              onClick={handleLoginClick}
-              className="w-full flex items-center justify-center gap-2.5 px-4 min-h-[44px] rounded-xl text-white text-sm font-bold hover:-translate-y-0.5 hover:shadow-lg transition-[transform,box-shadow,background-color,color,border-color] duration-base active:scale-[0.98]"
-              style={{ background: 'linear-gradient(135deg, #3B5A80, #2d4766)' }}
-            >
-              <User className="w-4 h-4" />
-              ورود به حساب
-            </button>
-          )}
+        <div className="space-y-2 border-t border-border-soft p-4 safe-area-bottom">
+          <button type="button" onClick={onSearchClick} className="flex min-h-12 w-full items-center gap-3 rounded-xl border border-border-soft bg-bg-soft px-4 text-sm text-text-muted"><Search className="h-4 w-4" />جستجوی محصول...</button>
+          <button type="button" onClick={() => { onClose(); setTimeout(openCart, 200) }} className="flex min-h-12 w-full items-center justify-between rounded-xl px-4 text-sm font-medium text-dark hover:bg-bg-soft"><span className="flex items-center gap-2.5"><ShoppingCart className="h-4 w-4" />سبد خرید</span>{totalCount > 0 && <span className="rounded-full bg-accent px-2 py-0.5 text-xs text-white">{totalCount.toLocaleString('fa-IR')}</span>}</button>
+          {token && user ? <><Link href="/profile" className="flex min-h-12 items-center gap-2.5 rounded-xl px-4 text-sm font-medium text-dark hover:bg-bg-soft"><User className="h-4 w-4" />{user.full_name || user.phone_number || 'پروفایل'}</Link><button type="button" onClick={() => { logout(); onClose() }} className="flex min-h-12 w-full items-center gap-2.5 rounded-xl px-4 text-sm font-medium text-error hover:bg-error-light"><LogOut className="h-4 w-4" />خروج</button></> : <button type="button" onClick={() => { onClose(); setTimeout(openLogin, 200) }} className="flex min-h-12 w-full items-center justify-center gap-2.5 rounded-xl bg-primary px-4 text-sm font-semibold text-white hover:bg-primary-dark"><User className="h-4 w-4" />ورود به حساب</button>}
         </div>
       </div>
     </>
