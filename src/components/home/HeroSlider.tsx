@@ -17,6 +17,10 @@ interface Banner {
   mobileImageUrl?: string;
   foregroundImageUrl?: string;
   foregroundImageUrlMobile?: string;
+  image_url?: string;
+  mobile_image_url?: string;
+  foreground_image_url?: string;
+  foreground_image_url_mobile?: string;
   cta_text?: string;
   cta_link?: string;
   cta2_text?: string;
@@ -46,19 +50,32 @@ const BENEFITS = [
 
 export default function HeroSlider({ banners }: HeroSliderProps) {
   const banner = banners?.find((item) => item.title?.trim()) ?? FALLBACK_BANNER;
-  const desktopBackground = banner.imageUrl;
-  const mobileBackground = banner.mobileImageUrl || banner.imageUrl;
-  const desktopForeground = banner.foregroundImageUrl;
+  const declaredDesktopBackground = banner.imageUrl || banner.image_url;
+  const declaredMobileBackground =
+    banner.mobileImageUrl || banner.mobile_image_url;
+  const desktopForeground =
+    banner.foregroundImageUrl || banner.foreground_image_url;
   const mobileForeground =
-    banner.foregroundImageUrlMobile || banner.foregroundImageUrl;
+    banner.foregroundImageUrlMobile ||
+    banner.foreground_image_url_mobile ||
+    desktopForeground;
+  const desktopBackground = declaredDesktopBackground || desktopForeground;
+  const mobileBackground =
+    declaredMobileBackground ||
+    declaredDesktopBackground ||
+    mobileForeground ||
+    desktopForeground;
+  const showDesktopForeground = Boolean(
+    desktopForeground && declaredDesktopBackground,
+  );
 
   return (
     <section
-      className="relative isolate min-h-[540px] overflow-hidden bg-dark sm:min-h-[620px]"
+      className="relative isolate min-h-[560px] overflow-hidden bg-dark sm:min-h-[620px]"
       aria-labelledby="hero-title"
     >
       {desktopBackground && (
-        <div className="absolute inset-0 -z-20" aria-hidden="true">
+        <div className="absolute inset-0 z-0" aria-hidden="true">
           <Image
             src={desktopBackground}
             alt=""
@@ -73,66 +90,66 @@ export default function HeroSlider({ banners }: HeroSliderProps) {
             fill
             priority
             sizes="100vw"
-            className="object-cover object-center md:hidden"
+            className="object-cover object-[58%_center] md:hidden"
           />
         </div>
       )}
 
       <div
-        className="absolute inset-0 -z-10 bg-dark/70 md:bg-gradient-to-l md:from-dark/95 md:via-dark/75 md:to-dark/25"
+        className="absolute inset-0 z-10 bg-gradient-to-t from-dark via-dark/75 to-dark/20 md:bg-gradient-to-l md:from-dark/95 md:via-dark/75 md:to-dark/25"
         aria-hidden="true"
       />
       <div
-        className="absolute inset-x-0 bottom-0 -z-10 h-40 bg-gradient-to-t from-dark/50 to-transparent"
+        className="absolute inset-x-0 bottom-0 z-10 h-72 bg-gradient-to-t from-dark to-transparent md:h-40 md:from-dark/50"
         aria-hidden="true"
       />
 
-      <div className="mx-auto grid min-h-[540px] max-w-7xl grid-cols-1 items-center gap-8 px-4 py-10 sm:min-h-[620px] sm:px-6 sm:py-14 lg:grid-cols-[minmax(0,1fr)_minmax(360px,.8fr)] lg:gap-14 lg:px-8 lg:py-20">
-        <div className="min-w-0 max-w-2xl">
-          <div className="mb-5 inline-flex min-h-9 items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 text-sm font-medium text-white/90">
+      <div className="relative z-20 mx-auto grid min-h-[560px] max-w-7xl grid-cols-1 items-end px-4 pb-7 pt-24 sm:min-h-[620px] sm:px-6 sm:py-14 md:items-center lg:grid-cols-[minmax(0,1fr)_minmax(360px,.8fr)] lg:gap-14 lg:px-8 lg:py-20">
+        <div className="min-w-0 max-w-xl md:max-w-2xl">
+          <div className="mb-3 inline-flex min-h-8 items-center gap-2 rounded-full border border-white/20 bg-dark/35 px-3 text-xs font-medium text-white/90 backdrop-blur-sm sm:mb-5 sm:min-h-9 sm:px-3.5 sm:text-sm">
             <Signal className="h-4 w-4 text-accent" aria-hidden="true" />
             ردیابی لحظه‌ای با پوشش سراسری
           </div>
 
           <h1
             id="hero-title"
-            className="max-w-full break-words text-[clamp(2rem,10vw,4.75rem)] font-bold leading-[1.18] text-white sm:max-w-[13ch] sm:text-[clamp(2.4rem,5.5vw,4.75rem)]"
+            className="max-w-[15ch] break-words text-[clamp(1.9rem,8vw,2.75rem)] font-bold leading-[1.2] text-white sm:max-w-[13ch] sm:text-[clamp(2.4rem,5.5vw,4.75rem)]"
           >
             {banner.title}
           </h1>
 
           {banner.subtitle && (
-            <p className="mt-6 max-w-[60ch] text-base leading-8 text-white/100 sm:text-lg sm:leading-9">
+            <p className="mt-3 line-clamp-3 max-w-[55ch] text-sm leading-6 text-white/85 sm:mt-6 sm:text-lg sm:leading-9">
               {banner.subtitle}
             </p>
           )}
 
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <div className="mt-5 grid grid-cols-1 gap-2.5 min-[390px]:grid-cols-2 sm:mt-8 sm:flex sm:items-center sm:gap-3">
             <Link
               href={banner.cta_link || "/products"}
-              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-accent px-7 text-base font-semibold text-dark transition-colors hover:bg-accent-light"
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-accent px-4 text-sm font-semibold text-dark transition-colors hover:bg-accent-light sm:min-h-12 sm:px-7 sm:text-base"
             >
               {banner.cta_text || "انتخاب ردیاب مناسب"}
               <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             </Link>
             <Link
               href={banner.cta2_link || "/contact"}
-              className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/25 bg-white/10 px-6 text-base font-medium text-white transition-colors hover:border-white/40 hover:bg-white/20"
+              className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/25 bg-dark/30 px-4 text-sm font-medium text-white backdrop-blur-sm transition-colors hover:border-white/40 hover:bg-white/15 sm:min-h-12 sm:px-6 sm:text-base"
             >
               {banner.cta2_text || "مشاوره رایگان خرید"}
             </Link>
           </div>
 
           <ul
-            className="mt-7 grid grid-cols-3 gap-2 border-t border-white/20 pt-5"
+            className="mt-4 grid grid-cols-3 gap-1.5 border-t border-white/15 pt-3 sm:mt-7 sm:gap-2 sm:pt-5"
             aria-label="مزایای خرید از آتی فرزام"
           >
             {BENEFITS.map(({ icon: Icon, label }) => (
               <li
                 key={label}
-                className="flex min-h-10 flex-col items-center gap-2 text-center text-[11px] font-medium leading-5 text-white/100 sm:flex-row sm:text-right sm:text-sm"
+                className="flex min-h-9 items-center justify-center gap-1.5 text-center text-[10px] font-medium leading-4 text-white/85 sm:min-h-10 sm:justify-start sm:gap-2 sm:text-right sm:text-sm"
               >
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/10 text-accent">
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-white/10 text-accent sm:h-8 sm:w-8">
                   <Icon className="h-4 w-4" aria-hidden="true" />
                 </span>
                 {label}
@@ -141,11 +158,11 @@ export default function HeroSlider({ banners }: HeroSliderProps) {
           </ul>
         </div>
 
-        <div className="flex items-center justify-center lg:justify-end">
-          {desktopForeground ? (
+        <div className="hidden items-center justify-center md:flex lg:justify-end">
+          {showDesktopForeground ? (
             <div className="relative w-full max-w-[520px]">
               <Image
-                src={desktopForeground}
+                src={desktopForeground!}
                 alt={banner.title}
                 width={760}
                 height={620}
