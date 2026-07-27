@@ -122,7 +122,7 @@ export default function NewsletterForm() {
                       error ? "newsletter-error" : "newsletter-helper"
                     }
                     placeholder="name@example.com"
-                    className="min-h-12 w-full rounded-xl border border-white/15 bg-white py-3 pl-4 pr-10 text-left text-base text-dark placeholder:text-text-muted"
+                    className="min-h-12 w-full rounded-xl border border-white/20 bg-white py-3 pl-4 pr-10 text-left text-base text-dark placeholder:text-text-muted"
                   />
                 </div>
                 {error && (

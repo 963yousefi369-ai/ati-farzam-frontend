@@ -89,7 +89,7 @@ export default function HeroSlider({ banners }: HeroSliderProps) {
 
       <div className="mx-auto grid min-h-[540px] max-w-7xl grid-cols-1 items-center gap-8 px-4 py-10 sm:min-h-[620px] sm:px-6 sm:py-14 lg:grid-cols-[minmax(0,1fr)_minmax(360px,.8fr)] lg:gap-14 lg:px-8 lg:py-20">
         <div className="min-w-0 max-w-2xl">
-          <div className="mb-5 inline-flex min-h-9 items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3.5 text-sm font-medium text-white/90">
+          <div className="mb-5 inline-flex min-h-9 items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 text-sm font-medium text-white/90">
             <Signal className="h-4 w-4 text-accent" aria-hidden="true" />
             ردیابی لحظه‌ای با پوشش سراسری
           </div>
@@ -102,7 +102,7 @@ export default function HeroSlider({ banners }: HeroSliderProps) {
           </h1>
 
           {banner.subtitle && (
-            <p className="mt-6 max-w-[60ch] text-base leading-8 text-white/80 sm:text-lg sm:leading-9">
+            <p className="mt-6 max-w-[60ch] text-base leading-8 text-white/100 sm:text-lg sm:leading-9">
               {banner.subtitle}
             </p>
           )}
@@ -117,20 +117,20 @@ export default function HeroSlider({ banners }: HeroSliderProps) {
             </Link>
             <Link
               href={banner.cta2_link || "/contact"}
-              className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/25 bg-white/10 px-6 text-base font-medium text-white transition-colors hover:border-white/40 hover:bg-white/15"
+              className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/25 bg-white/10 px-6 text-base font-medium text-white transition-colors hover:border-white/40 hover:bg-white/20"
             >
               {banner.cta2_text || "مشاوره رایگان خرید"}
             </Link>
           </div>
 
           <ul
-            className="mt-7 grid grid-cols-3 gap-2 border-t border-white/15 pt-5"
+            className="mt-7 grid grid-cols-3 gap-2 border-t border-white/20 pt-5"
             aria-label="مزایای خرید از آتی فرزام"
           >
             {BENEFITS.map(({ icon: Icon, label }) => (
               <li
                 key={label}
-                className="flex min-h-10 flex-col items-center gap-2 text-center text-[11px] font-medium leading-5 text-white/80 sm:flex-row sm:text-right sm:text-sm"
+                className="flex min-h-10 flex-col items-center gap-2 text-center text-[11px] font-medium leading-5 text-white/100 sm:flex-row sm:text-right sm:text-sm"
               >
                 <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/10 text-accent">
                   <Icon className="h-4 w-4" aria-hidden="true" />
@@ -164,7 +164,7 @@ export default function HeroSlider({ banners }: HeroSliderProps) {
               />
             </div>
           ) : (
-            <div className="w-full max-w-sm rounded-2xl border border-white/15 bg-dark/55 p-5 shadow-elevated">
+            <div className="w-full max-w-sm rounded-2xl border border-white/20 bg-dark/55 p-5 shadow-elevated">
               <div className="flex items-center justify-between border-b border-white/10 pb-4">
                 <div>
                   <p className="text-xs text-white/55">وضعیت ردیاب</p>
@@ -172,7 +172,7 @@ export default function HeroSlider({ banners }: HeroSliderProps) {
                     خودرو آنلاین است
                   </p>
                 </div>
-                <span className="flex items-center gap-2 rounded-full bg-accent/15 px-3 py-1.5 text-xs font-medium text-accent">
+                <span className="flex items-center gap-2 rounded-full bg-accent/20 px-3 py-1.5 text-xs font-medium text-accent">
                   <span className="h-2 w-2 rounded-full bg-accent" />
                   متصل
                 </span>

@@ -43,7 +43,7 @@ export default function PlatformShowcase() {
               return (
                 <li
                   key={label}
-                  className="flex min-h-12 items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 text-sm text-white/85"
+                  className="flex min-h-12 items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 text-sm text-white/105"
                 >
                   <Icon
                     className="h-4 w-4 shrink-0 text-accent"

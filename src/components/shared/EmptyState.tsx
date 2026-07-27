@@ -1,18 +1,13 @@
-import Link from 'next/link'
+import Link from "next/link";
+import { PackageSearch } from "lucide-react";
 
 interface EmptyStateProps {
-  title: string
-  description?: string
-  actionLabel?: string
-  actionHref?: string
+  title: string;
+  description?: string;
+  actionLabel?: string;
+  actionHref?: string;
 }
 
-/**
- * Only ever use this INSIDE a real page (search results, cart, order history).
- *
- * Never render an empty state on the marketing homepage — if a homepage section
- * has no data, hide the whole section instead (see `normalizeSections`).
- */
 export default function EmptyState({
   title,
   description,
@@ -20,17 +15,24 @@ export default function EmptyState({
   actionHref,
 }: EmptyStateProps) {
   return (
-    <div className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-hairline bg-white px-6 py-14 text-center">
-      <p className="text-base font-semibold text-dark">{title}</p>
-      {description && <p className="max-w-sm text-sm leading-7 text-text-muted">{description}</p>}
+    <div className="flex min-h-64 flex-col items-center justify-center rounded-2xl border border-dashed border-border-default bg-bg-secondary/50 px-5 py-10 text-center sm:px-8">
+      <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+        <PackageSearch className="h-6 w-6" aria-hidden="true" />
+      </div>
+      <p className="text-base font-bold text-text-primary">{title}</p>
+      {description && (
+        <p className="mt-2 max-w-sm text-sm leading-7 text-text-muted">
+          {description}
+        </p>
+      )}
       {actionLabel && actionHref && (
         <Link
           href={actionHref}
-          className="mt-2 inline-flex min-h-[44px] items-center rounded-full bg-primary px-6 text-sm font-semibold text-white transition-colors hover:bg-primary-dark"
+          className="mt-5 inline-flex min-h-11 items-center justify-center rounded-xl bg-primary px-5 text-sm font-semibold text-white hover:bg-primary-dark"
         >
           {actionLabel}
         </Link>
       )}
     </div>
-  )
+  );
 }

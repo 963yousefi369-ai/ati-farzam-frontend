@@ -86,7 +86,7 @@ export default function SoftwareCTA({
                 return (
                   <li
                     key={label}
-                    className="flex min-h-12 items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 text-sm font-medium text-white/85"
+                    className="flex min-h-12 items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 text-sm font-medium text-white/105"
                   >
                     <Icon
                       className="h-4 w-4 shrink-0 text-accent"
@@ -135,7 +135,7 @@ export default function SoftwareCTA({
           ) : (
             <div className="absolute inset-5 overflow-hidden rounded-xl border border-white/10 bg-white/5">
               <div className="flex h-11 items-center justify-between border-b border-white/10 px-4">
-                <span className="text-xs font-semibold text-white/80">
+                <span className="text-xs font-semibold text-white/100">
                   داشبورد مدیریت ناوگان
                 </span>
                 <span className="flex items-center gap-1.5 text-xs text-accent">
