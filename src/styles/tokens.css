@@ -1,148 +1,126 @@
 :root {
-  /* ── Brand Colors (Ati Farzam redesign) ── */
-  --primary:        #3B5A80;
-  --primary-dark:   #2d4766;
-  --dark:           #0f172a;
-  --dark-deeper:   #0a1019;
-  --light-tint:     #EEF3F9;
-  --light-tint-2:   #F0F4F9;
-  --accent:         #14B8A6;
-  --accent-dark:    #0d9488;
-  --discount:       #D9457A;
+  --primary: #3b5a80;
+  --primary-dark: #2d4766;
+  --dark: #0f172a;
+  --dark-deeper: #0a1019;
+  --accent: #14b8a6;
+  --accent-dark: #0f766e;
+  --discount: #d9457a;
 
-  /* ── Backgrounds ── */
-  --bg-base:        #ffffff;
-  --bg-soft:        #f8fafc;
-  --bg-muted:       #E8EEF5;
-  --bg-dark:        #0f172a;
-  --bg-dark-deep:   #0a1019;
+  --bg-base: #ffffff;
+  --bg-soft: #f8fafc;
+  --bg-muted: #e8eef5;
+  --bg-dark: #0f172a;
+  --bg-dark-deep: #0a1019;
+  --light-tint: #eef3f9;
+  --light-tint-2: #f0f4f9;
 
-  /* ── Text ── */
-  --text-heading:   #0f172a;
-  --text-body:      #374151;
-  --text-muted:     #6B7280;
-  --text-on-dark:   #ffffff;
-  --text-on-dark-muted: rgba(255,255,255,0.6);
+  --text-heading: #0f172a;
+  --text-body: #374151;
+  --text-muted: #6b7280;
+  --text-on-dark: #ffffff;
+  --text-on-dark-muted: rgba(255, 255, 255, 0.72);
 
-  /* ── Borders ── */
-  --border-soft:    rgba(14,116,144,0.12);
-  --border-base:    rgba(14,116,144,0.18);
-  --border-strong:  rgba(14,116,144,0.3);
-  --border-hairline: rgba(14,116,144,0.15);
+  --border-soft: rgba(59, 90, 128, 0.12);
+  --border-base: rgba(59, 90, 128, 0.2);
+  --border-strong: rgba(59, 90, 128, 0.34);
+  --border-hairline: rgba(59, 90, 128, 0.14);
 
-  /* ── Shadows (soft, modern) ── */
-  --shadow-card:    0 1px 4px rgba(59,90,128,0.04), 0 2px 10px rgba(59,90,128,0.03);
-  --shadow-hover:   0 4px 16px rgba(59,90,128,0.07);
-  --shadow-elevated: 0 4px 20px rgba(59,90,128,0.08);
-  --shadow-soft:    0 1px 3px rgba(59,90,128,0.04);
+  --shadow-card: 0 1px 2px rgba(15, 23, 42, 0.04), 0 4px 12px rgba(15, 23, 42, 0.04);
+  --shadow-hover: 0 8px 24px rgba(15, 23, 42, 0.08);
+  --shadow-elevated: 0 16px 40px rgba(15, 23, 42, 0.13);
+  --shadow-soft: 0 1px 3px rgba(15, 23, 42, 0.06);
 
-  /* ── Hover Lift ── */
-  --hover-lift:     -2px;
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-2xl: 24px;
+  --radius-3xl: 28px;
+  --radius-full: 9999px;
 
-  /* ── Radius ── */
-  --radius-xs:      6px;
-  --radius-sm:      8px;
-  --radius-md:      12px;
-  --radius-lg:      16px;
-  --radius-xl:      20px;
-  --radius-2xl:     24px;
-  --radius-3xl:     32px;
-  --radius-full:    9999px;
-
-  /* ── Motion / Easing ── */
-  --ease-settle:    cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-standard:  cubic-bezier(0.4, 0, 0.2, 1);
-  --ease-exit:      cubic-bezier(0.4, 0, 1, 1);
-
-  /* ── Motion / Durations ── */
-  --duration-instant:  80ms;
-  --duration-fast:     120ms;
-  --duration-base:     160ms;
+  --ease-settle: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --duration-instant: 80ms;
+  --duration-fast: 120ms;
+  --duration-base: 160ms;
   --duration-moderate: 200ms;
-  --duration-ceiling:  600ms;
+  --duration-ceiling: 600ms;
 
-  /* ── Typography ── */
-  --font-sans:    'IRANSansX', 'Vazirmatn', system-ui, sans-serif;
-
-  /* ── Accessibility ── */
+  --font-sans: 'IRANSansX', 'Vazirmatn', system-ui, sans-serif;
   --focus-ring-color: var(--accent);
   --focus-ring-width: 2px;
   --focus-ring-offset: 2px;
   --touch-target-min: 44px;
+  --navbar-height: 72px;
 
-  /* ── Layout ── */
-  --navbar-height: 76px;
-
-  /* ── Z-Index Scale ── */
   --z-navbar: 300;
   --z-mobile-menu-overlay: 400;
   --z-mobile-menu-drawer: 500;
   --z-dropdown: 550;
   --z-cart-drawer-overlay: 600;
-  --z-cart-drawer: 700;
-  --z-login-modal-overlay: 600;
-  --z-login-modal: 730;
   --z-dialog-overlay: 650;
   --z-dialog-content: 660;
   --z-select-content: 670;
+  --z-cart-drawer: 700;
+  --z-login-modal: 730;
   --z-cmd-search-overlay: 800;
   --z-cmd-search-content: 810;
 
-  /* ── shadcn overrides ── */
+  --success: #14b8a6;
+  --success-light: #ccfbf1;
+  --warning: #b45309;
+  --warning-dark: #92400e;
+  --warning-light: #fef3c7;
+  --error: #e0455a;
+  --error-text: #dc2626;
+  --error-light: #fee2e2;
+  --info: #3b5a80;
+  --info-light: #eef3f9;
+
   --background: 0 0% 100%;
-  --foreground: 213 31% 22%;
-  --primary-hsl: 213 27% 36%;
+  --foreground: 222 47% 11%;
+  --primary-hsl: 213 37% 37%;
   --primary-foreground: 0 0% 100%;
-  --secondary: 213 28% 88%;
-  --secondary-foreground: 213 31% 22%;
-  --muted: 213 28% 88%;
+  --secondary: 214 32% 91%;
+  --secondary-foreground: 222 47% 11%;
+  --muted: 214 32% 91%;
   --muted-foreground: 220 9% 46%;
-  --destructive: 0 84% 60%;
+  --destructive: 0 72% 51%;
   --destructive-foreground: 0 0% 98%;
   --card: 0 0% 100%;
-  --card-foreground: 213 31% 22%;
+  --card-foreground: 222 47% 11%;
   --popover: 0 0% 100%;
-  --popover-foreground: 213 31% 22%;
-  --accent-hsl: 213 28% 88%;
-  --accent-foreground: 213 31% 22%;
-  --input: 213 28% 88%;
-  --border: 213 15% 88%;
-  --ring: 213 27% 36%;
+  --popover-foreground: 222 47% 11%;
+  --accent-hsl: 214 32% 91%;
+  --accent-foreground: 222 47% 11%;
+  --input: 214 32% 91%;
+  --border: 214 20% 88%;
+  --ring: 174 83% 40%;
   --radius: 0.75rem;
 
-  /* ── Semantic Colors ── */
-  --success:          #14B8A6;
-  --success-light:    #ccfbf1;
-  --warning:          #F59E0B;
-  --warning-dark:     #D97706;
-  --warning-light:    #FEF3C7;
-  --error:            #E0455A;
-  --error-text:       #DC2626;
-  --error-light:      #FEE2E2;
-  --info:             #1e3a5f;
-  --info-light:       #E8EEF5;
-
-  /* ── Backward-compatible aliases ── */
-  --navy:             #3B5A80;
-  --navy-dark:        #2d4766;
-  --navy-deep:        #0f172a;
-  --teal:             #14B8A6;
-  --teal-dark:        #0d9488;
-  --teal-light:       #ccfbf1;
-  --bg-primary:       var(--bg-base);
-  --bg-secondary:     var(--bg-muted);
-  --bg-tertiary:      var(--border-soft);
-  --text-primary:     var(--text-heading);
-  --text-secondary:   var(--text-body);
-  --text-tertiary:    var(--text-muted);
-  --border-default:   var(--border-soft);
-  --border-emphasis:  var(--border-base);
+  /* Compatibility aliases: keep legacy components visually coherent. */
+  --navy: var(--primary);
+  --navy-dark: var(--primary-dark);
+  --navy-deep: var(--dark);
+  --teal: var(--accent);
+  --teal-dark: var(--accent-dark);
+  --teal-light: var(--success-light);
+  --bg-primary: var(--bg-base);
+  --bg-secondary: var(--bg-muted);
+  --bg-tertiary: var(--border-soft);
+  --text-primary: var(--text-heading);
+  --text-secondary: var(--text-body);
+  --text-tertiary: var(--text-muted);
+  --border-default: var(--border-soft);
+  --border-emphasis: var(--border-base);
   --shadow-card-hover: var(--shadow-hover);
-  --shadow-sm:        0 1px 2px rgba(14,116,144,.05);
-  --shadow-md:        var(--shadow-card);
-  --shadow-lg:        var(--shadow-hover);
-  --ease-smooth:      300ms var(--ease-settle);
-  --transition-fast:  180ms var(--ease-standard);
-  --transition-base:  250ms ease;
-  --transition-smooth: 300ms var(--ease-settle);
+  --shadow-sm: var(--shadow-soft);
+  --shadow-md: var(--shadow-card);
+  --shadow-lg: var(--shadow-hover);
+  --transition-fast: var(--duration-fast) var(--ease-standard);
+  --transition-base: var(--duration-base) var(--ease-standard);
+  --transition-smooth: var(--duration-moderate) var(--ease-settle);
 }
