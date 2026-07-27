@@ -1,3 +1,5 @@
+'use client'
+
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowLeft, BarChart3, MapPin, Route, ShieldCheck } from 'lucide-react'

@@ -1,7 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowLeft, Headset, Radio, ShieldCheck, Trophy, Users } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { ArrowLeft, Headphones, MapPin, ShieldCheck, Signal, Wrench } from 'lucide-react'
 
 interface Banner {
   id: string
@@ -24,123 +23,121 @@ interface HeroSliderProps {
 const FALLBACK_BANNER: Banner = {
   id: 'default',
   title: 'کنترل خودرو، هر لحظه و هرجا',
-  subtitle: 'ردیاب‌های GPS آتی فرزام برای امنیت خودرو و مدیریت دقیق ناوگان، با نصب تخصصی و پشتیبانی پاسخ‌گو.',
+  subtitle: 'ردیاب‌های GPS آتی فرزام برای امنیت خودرو و مدیریت دقیق ناوگان؛ همراه با نصب تخصصی و پشتیبانی پاسخ‌گو.',
   cta_text: 'انتخاب ردیاب مناسب',
   cta_link: '/products',
-  cta2_text: 'مشاوره خرید',
+  cta2_text: 'مشاوره رایگان خرید',
   cta2_link: '/contact',
 }
 
-const TRUST_ITEMS = [
-  { icon: Users, value: '۵,۰۰۰+', label: 'مشتری فعال' },
-  { icon: Radio, value: '۲۵,۰۰۰+', label: 'دستگاه نصب‌شده' },
-  { icon: Trophy, value: '۱۲ سال', label: 'تجربه تخصصی' },
+const BENEFITS = [
+  { icon: ShieldCheck, label: 'گارانتی معتبر' },
+  { icon: Wrench, label: 'نصب تخصصی' },
+  { icon: Headphones, label: 'پشتیبانی پاسخ‌گو' },
 ]
 
 export default function HeroSlider({ banners }: HeroSliderProps) {
-  const slide = banners?.find((banner) => banner.title) ?? FALLBACK_BANNER
-  const backgroundImage = slide.imageUrl
-  const foregroundImage = slide.foregroundImageUrl
+  const banner = banners?.find((item) => item.title?.trim()) ?? FALLBACK_BANNER
+  const desktopBackground = banner.imageUrl
+  const mobileBackground = banner.mobileImageUrl || banner.imageUrl
+  const desktopForeground = banner.foregroundImageUrl
+  const mobileForeground = banner.foregroundImageUrlMobile || banner.foregroundImageUrl
 
   return (
-    <section className="relative isolate overflow-hidden border-b border-border-soft bg-bg-soft">
-      {backgroundImage && (
-        <div className="absolute inset-0 -z-20">
+    <section className="relative isolate min-h-[620px] overflow-hidden bg-dark" aria-labelledby="hero-title">
+      {desktopBackground && (
+        <div className="absolute inset-0 -z-20" aria-hidden="true">
           <Image
-            src={backgroundImage}
+            src={desktopBackground}
             alt=""
             fill
             priority
             sizes="100vw"
-            className="hidden object-cover md:block"
+            className="hidden object-cover object-center md:block"
           />
           <Image
-            src={slide.mobileImageUrl || backgroundImage}
+            src={mobileBackground || desktopBackground}
             alt=""
             fill
             priority
             sizes="100vw"
-            className="object-cover md:hidden"
+            className="object-cover object-center md:hidden"
           />
         </div>
       )}
 
-      {backgroundImage && (
-        <div className="absolute inset-0 -z-10 bg-gradient-to-l from-white/95 via-white/88 to-white/45" />
-      )}
+      <div className="absolute inset-0 -z-10 bg-dark/70 md:bg-gradient-to-l md:from-dark/95 md:via-dark/75 md:to-dark/25" aria-hidden="true" />
+      <div className="absolute inset-x-0 bottom-0 -z-10 h-40 bg-gradient-to-t from-dark/50 to-transparent" aria-hidden="true" />
 
-      <div className="mx-auto grid min-h-[620px] max-w-[1280px] items-center gap-10 px-5 py-14 sm:px-6 md:grid-cols-[minmax(0,1.05fr)_minmax(320px,.95fr)] md:px-8 md:py-20 lg:gap-16 lg:px-10">
+      <div className="mx-auto grid min-h-[620px] max-w-7xl items-center gap-10 px-4 py-14 sm:px-6 sm:py-16 lg:grid-cols-[minmax(0,1fr)_minmax(360px,.8fr)] lg:gap-14 lg:px-8 lg:py-20">
         <div className="max-w-2xl">
-          <p className="mb-4 inline-flex items-center gap-2 text-sm font-medium text-accent-dark">
-            <span className="h-2 w-2 rounded-full bg-accent" aria-hidden="true" />
-            پوشش سراسری و پشتیبانی تخصصی
-          </p>
+          <div className="mb-5 inline-flex min-h-9 items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3.5 text-sm font-medium text-white/90">
+            <Signal className="h-4 w-4 text-accent" aria-hidden="true" />
+            ردیابی لحظه‌ای با پوشش سراسری
+          </div>
 
-          <h1 className="max-w-[12ch] text-[clamp(2.35rem,6vw,4.75rem)] font-bold leading-[1.12] text-dark">
-            {slide.title}
+          <h1 id="hero-title" className="max-w-[13ch] text-[clamp(2.4rem,5.5vw,4.75rem)] font-bold leading-[1.13] text-white">
+            {banner.title}
           </h1>
 
-          {slide.subtitle && (
-            <p className="mt-6 max-w-[58ch] text-base leading-8 text-text-secondary sm:text-lg">
-              {slide.subtitle}
+          {banner.subtitle && (
+            <p className="mt-6 max-w-[60ch] text-base leading-8 text-white/80 sm:text-lg sm:leading-9">
+              {banner.subtitle}
             </p>
           )}
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-            <Button asChild size="lg" className="min-h-12 rounded-xl bg-primary px-7 text-base font-semibold text-white hover:bg-primary-dark">
-              <Link href={slide.cta_link || '/products'}>
-                {slide.cta_text || 'انتخاب ردیاب مناسب'}
-                <ArrowLeft className="mr-2 h-4 w-4" />
-              </Link>
-            </Button>
-
-            <Button asChild size="lg" variant="outline" className="min-h-12 rounded-xl border-border-base bg-white/80 px-6 text-base font-medium text-primary hover:bg-white">
-              <Link href={slide.cta2_link || '/contact'}>{slide.cta2_text || 'مشاوره خرید'}</Link>
-            </Button>
+            <Link href={banner.cta_link || '/products'} className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-accent px-7 text-base font-semibold text-dark transition-colors hover:bg-accent-light">
+              {banner.cta_text || 'انتخاب ردیاب مناسب'}
+              <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+            </Link>
+            <Link href={banner.cta2_link || '/contact'} className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/25 bg-white/10 px-6 text-base font-medium text-white transition-colors hover:border-white/40 hover:bg-white/15">
+              {banner.cta2_text || 'مشاوره رایگان خرید'}
+            </Link>
           </div>
 
-          <div className="mt-9 flex flex-wrap gap-x-7 gap-y-4 border-t border-border-soft pt-6">
-            {TRUST_ITEMS.map((item) => (
-              <div key={item.label} className="flex min-w-[132px] items-center gap-3">
-                <item.icon className="h-5 w-5 shrink-0 text-accent-dark" aria-hidden="true" />
-                <div>
-                  <p className="text-sm font-semibold text-dark">{item.value}</p>
-                  <p className="mt-0.5 text-xs text-text-muted">{item.label}</p>
-                </div>
-              </div>
+          <ul className="mt-8 grid gap-3 border-t border-white/15 pt-6 sm:grid-cols-3" aria-label="مزایای خرید از آتی فرزام">
+            {BENEFITS.map(({ icon: Icon, label }) => (
+              <li key={label} className="flex min-h-10 items-center gap-2.5 text-sm font-medium text-white/80">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/10 text-accent">
+                  <Icon className="h-4 w-4" aria-hidden="true" />
+                </span>
+                {label}
+              </li>
             ))}
-          </div>
-
-          <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm text-text-muted">
-            <span className="flex items-center gap-1.5"><ShieldCheck className="h-4 w-4 text-accent-dark" /> گارانتی معتبر</span>
-            <span className="flex items-center gap-1.5"><Headset className="h-4 w-4 text-accent-dark" /> پشتیبانی پس از خرید</span>
-          </div>
+          </ul>
         </div>
 
-        <div className="relative mx-auto w-full max-w-[520px]">
-          {foregroundImage ? (
-            <Image
-              src={slide.foregroundImageUrlMobile || foregroundImage}
-              alt={slide.title}
-              width={760}
-              height={760}
-              priority
-              className="h-auto max-h-[440px] w-full object-contain md:max-h-[560px]"
-              sizes="(max-width: 768px) 90vw, 44vw"
-            />
+        <div className="flex items-center justify-center lg:justify-end">
+          {desktopForeground ? (
+            <div className="relative w-full max-w-[520px]">
+              <Image
+                src={desktopForeground}
+                alt={banner.title}
+                width={760}
+                height={620}
+                priority
+                sizes="(max-width: 1024px) 90vw, 42vw"
+                className="hidden h-auto max-h-[520px] w-full object-contain drop-shadow-2xl md:block"
+              />
+              <Image
+                src={mobileForeground || desktopForeground}
+                alt={banner.title}
+                width={760}
+                height={620}
+                priority
+                sizes="90vw"
+                className="h-auto max-h-[360px] w-full object-contain drop-shadow-2xl md:hidden"
+              />
+            </div>
           ) : (
-            <div className="relative aspect-square overflow-hidden rounded-[28px] border border-border-soft bg-white shadow-card">
-              <div className="absolute inset-[14%] rounded-full border border-accent/20" />
-              <div className="absolute inset-[27%] rounded-full border border-accent/20" />
-              <div className="absolute inset-[40%] rounded-full border border-accent/25" />
-              <div className="absolute left-[29%] top-[34%] h-3 w-3 rounded-full bg-accent" />
-              <div className="absolute bottom-[30%] right-[35%] h-2.5 w-2.5 rounded-full bg-primary" />
-              <div className="absolute inset-x-8 bottom-8 rounded-2xl border border-border-soft bg-white p-4">
-                <p className="text-xs text-text-muted">وضعیت ردیاب</p>
-                <div className="mt-2 flex items-center justify-between">
-                  <span className="font-semibold text-dark">خودرو آنلاین است</span>
-                  <span className="rounded-full bg-success-light px-2.5 py-1 text-xs font-medium text-accent-dark">متصل</span>
-                </div>
+            <div className="w-full max-w-sm rounded-2xl border border-white/15 bg-dark/55 p-5 shadow-elevated">
+              <div className="flex items-center justify-between border-b border-white/10 pb-4">
+                <div><p className="text-xs text-white/55">وضعیت ردیاب</p><p className="mt-1 text-sm font-semibold text-white">خودرو آنلاین است</p></div>
+                <span className="flex items-center gap-2 rounded-full bg-accent/15 px-3 py-1.5 text-xs font-medium text-accent"><span className="h-2 w-2 rounded-full bg-accent" />متصل</span>
+              </div>
+              <div className="mt-5 flex min-h-40 items-center justify-center rounded-xl border border-white/10 bg-white/5">
+                <div className="text-center"><span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-accent text-dark"><MapPin className="h-6 w-6" /></span><p className="mt-3 text-sm font-semibold text-white">موقعیت لحظه‌ای خودرو</p><p className="mt-1 text-xs text-white/55">به‌روزرسانی چند ثانیه پیش</p></div>
               </div>
             </div>
           )}
