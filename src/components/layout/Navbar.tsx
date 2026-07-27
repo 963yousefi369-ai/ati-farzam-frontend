@@ -69,18 +69,20 @@ export default function Navbar() {
 
               if (!link.hasDropdown) {
                 return (
-                  <Link key={link.href} href={link.href} aria-current={active ? 'page' : undefined} className={cn('flex min-h-11 items-center gap-2 whitespace-nowrap rounded-xl px-3.5 text-sm font-medium transition-colors', contact ? (active ? 'bg-primary text-white' : 'border border-primary/20 bg-primary/5 text-primary hover:bg-primary/10') : (active ? 'bg-light-tint text-primary' : 'text-text-secondary hover:bg-bg-soft hover:text-primary'))}>
+                  <Link key={link.href} href={link.href} aria-current={active ? 'page' : undefined} className={cn('relative flex min-h-11 items-center gap-2 whitespace-nowrap rounded-xl border px-3.5 text-sm font-medium transition-[color,background-color,border-color,box-shadow]', active ? 'border-primary/30 bg-primary/5 text-primary shadow-[0_0_0_3px_rgba(59,90,128,0.06)]' : contact ? 'border-primary/20 bg-primary/5 text-primary hover:bg-primary/10' : 'border-transparent text-text-secondary hover:bg-bg-soft hover:text-primary')}>
                     {contact && <Headphones className="h-4 w-4" aria-hidden="true" />}
                     {link.label}
+                    {active && <span aria-hidden="true" className="absolute -bottom-[5px] left-1/2 h-2 w-2 -translate-x-1/2 rounded-full border-2 border-white bg-accent shadow-soft" />}
                   </Link>
                 )
               }
 
               return (
                 <div key={link.href} className="relative">
-                  <button type="button" aria-expanded={productsOpen} aria-controls="products-menu" onClick={() => setProductsOpen((value) => !value)} className={cn('flex min-h-11 items-center gap-1 rounded-xl px-3.5 text-sm font-medium transition-colors', active ? 'bg-light-tint text-primary' : 'text-text-secondary hover:bg-bg-soft hover:text-primary')}>
+                  <button type="button" aria-expanded={productsOpen} aria-controls="products-menu" aria-current={active ? 'page' : undefined} onClick={() => setProductsOpen((value) => !value)} className={cn('relative flex min-h-11 items-center gap-1 rounded-xl border px-3.5 text-sm font-medium transition-[color,background-color,border-color,box-shadow]', active ? 'border-primary/30 bg-primary/5 text-primary shadow-[0_0_0_3px_rgba(59,90,128,0.06)]' : 'border-transparent text-text-secondary hover:bg-bg-soft hover:text-primary')}>
                     {link.label}
                     <ChevronDown className={cn('h-3.5 w-3.5 transition-transform', productsOpen && 'rotate-180')} />
+                    {active && <span aria-hidden="true" className="absolute -bottom-[5px] left-1/2 h-2 w-2 -translate-x-1/2 rounded-full border-2 border-white bg-accent shadow-soft" />}
                   </button>
                   {productsOpen && (
                     <div id="products-menu" className="absolute right-0 top-full z-[var(--z-dropdown)] w-[520px] pt-3">
