@@ -4,13 +4,12 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { ChevronDown, Menu, Phone, Search, ShoppingCart, X } from 'lucide-react'
+import { ChevronDown, Headphones, Menu, Search, ShoppingCart, X } from 'lucide-react'
 import AccountMenu from '@/components/layout/AccountMenu'
 import MobileMenu from '@/components/layout/MobileMenu'
 import ProductSearch from '@/components/search/ProductSearch'
 import { landingData } from '@/data/landing'
 import { useCartStore } from '@/lib/store/cart'
-import { useShopStatus } from '@/lib/store/shop-status'
 import { useSiteSettings } from '@/lib/store/site-settings'
 import { cn } from '@/lib/utils'
 
@@ -25,7 +24,6 @@ const PRODUCT_CATEGORIES = [
 export default function Navbar() {
   const pathname = usePathname()
   const { logo, siteName } = useSiteSettings()
-  const { contactPhone } = useShopStatus()
   const itemCount = useCartStore((state) => state.items.reduce((sum, item) => sum + item.quantity, 0))
 
   const [menuOpen, setMenuOpen] = useState(false)
@@ -69,12 +67,29 @@ export default function Navbar() {
             )}
           </Link>
 
-          <nav className="hidden items-center gap-0.5 xl:flex" aria-label="منوی اصلی">
+          <nav className="hidden items-center gap-1 xl:flex" aria-label="منوی اصلی">
             {NAV_LINKS.map((link) => {
               const active = pathname === link.href
+
               if (!link.hasDropdown) {
+                const isContact = link.href === '/contact'
                 return (
-                  <Link key={link.href} href={link.href} aria-current={active ? 'page' : undefined} className={cn('rounded-lg px-3 py-2 text-sm font-medium transition-colors', active ? 'bg-light-tint text-primary' : 'text-text-secondary hover:bg-bg-soft hover:text-primary')}>
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    aria-current={active ? 'page' : undefined}
+                    className={cn(
+                      'flex min-h-10 items-center gap-2 whitespace-nowrap rounded-xl px-3.5 text-sm font-medium transition-colors',
+                      isContact
+                        ? active
+                          ? 'bg-primary text-white'
+                          : 'border border-primary/20 bg-primary/5 text-primary hover:border-primary/30 hover:bg-primary/10'
+                        : active
+                          ? 'bg-light-tint text-primary'
+                          : 'text-text-secondary hover:bg-bg-soft hover:text-primary',
+                    )}
+                  >
+                    {isContact && <Headphones className="h-4 w-4 shrink-0" aria-hidden="true" />}
                     {link.label}
                   </Link>
                 )
@@ -82,7 +97,7 @@ export default function Navbar() {
 
               return (
                 <div key={link.href} className="relative" onMouseEnter={() => setMegaOpen(true)} onMouseLeave={() => setMegaOpen(false)} onFocus={() => setMegaOpen(true)}>
-                  <Link href={link.href} aria-current={active ? 'page' : undefined} aria-expanded={megaOpen} className={cn('flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium transition-colors', active ? 'bg-light-tint text-primary' : 'text-text-secondary hover:bg-bg-soft hover:text-primary')}>
+                  <Link href={link.href} aria-current={active ? 'page' : undefined} aria-expanded={megaOpen} className={cn('flex min-h-10 items-center gap-1 rounded-xl px-3.5 text-sm font-medium transition-colors', active ? 'bg-light-tint text-primary' : 'text-text-secondary hover:bg-bg-soft hover:text-primary')}>
                     {link.label}
                     <ChevronDown className="h-3.5 w-3.5" />
                   </Link>
@@ -108,11 +123,6 @@ export default function Navbar() {
           </div>
 
           <div className="mr-auto flex items-center gap-1.5">
-            <a href={`tel:${contactPhone || landingData.utilityBar.phoneRaw}`} className="hidden min-h-11 items-center gap-2 rounded-xl px-2.5 text-sm text-text-secondary transition-colors hover:bg-bg-soft 2xl:flex">
-              <Phone className="h-4 w-4 text-accent-dark" />
-              <span dir="ltr" className="font-semibold text-dark">{contactPhone || landingData.utilityBar.phone}</span>
-            </a>
-
             <button type="button" aria-label="جستجو" onClick={() => setSearchOpen(true)} className="flex h-11 w-11 items-center justify-center rounded-xl text-dark transition-colors hover:bg-bg-soft lg:hidden">
               <Search className="h-5 w-5" />
             </button>
