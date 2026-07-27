@@ -72,11 +72,11 @@ const config: Config = {
         sans: ['IRANSansX', 'Vazirmatn', 'system-ui', 'sans-serif'],
       },
       boxShadow: {
-        'navy': '0 4px 14px rgba(59,90,128,0.2)',
-        'teal': '0 4px 14px rgba(20,184,166,0.2)',
-        'card': '0 2px 8px rgba(59,90,128,0.06), 0 4px 16px rgba(59,90,128,0.04)',
-        'card-hover': '0 8px 30px rgba(59,90,128,0.12)',
-        'elevated': '0 8px 30px rgba(10,15,30,0.18)',
+        'navy': '0 4px 12px rgba(59,90,128,0.12)',
+        'teal': '0 4px 12px rgba(20,184,166,0.14)',
+        'card': '0 1px 4px rgba(59,90,128,0.04), 0 2px 10px rgba(59,90,128,0.03)',
+        'card-hover': '0 4px 16px rgba(59,90,128,0.07)',
+        'elevated': '0 4px 20px rgba(59,90,128,0.08)',
       },
       borderRadius: {
         xs:   '6px',

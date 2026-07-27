@@ -57,7 +57,7 @@ export default function SectionTitle({
           {subtitle && (
             <p className={cn(
               'text-base md:text-lg mt-3 leading-relaxed max-w-3xl',
-              dark ? 'text-slate-200' : 'text-[#6B7280]'
+              dark ? 'text-slate-200' : 'text-text-muted'
             )}>
               {subtitle}
             </p>

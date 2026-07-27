@@ -324,8 +324,8 @@ export default function HeroSlider({ banners }: HeroSliderProps) {
       <motion.button
         onClick={prev}
         {...m({ whileHover: { scale: 1.1 }, whileTap: { scale: 0.92 } })}
-        className="hidden sm:flex absolute left-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-2xl bg-white/90 backdrop-blur-xl border border-white/60 items-center justify-center text-slate-700 hover:text-primary hover:bg-white hover:border-primary/20 hover:shadow-[0_8px_30px_rgba(59,90,128,0.12)] transition-all duration-300 z-30"
-        style={{ boxShadow: '0 4px 16px rgba(0,0,0,0.12)' }}
+        className="hidden sm:flex absolute left-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-2xl bg-white/90 backdrop-blur-xl border border-white/60 items-center justify-center text-text-secondary hover:text-primary hover:bg-white hover:border-primary/20 transition-all duration-300 z-30"
+        style={{ boxShadow: '0 2px 10px rgba(59,90,128,0.06)' }}
         aria-label="اسلاید قبلی"
       >
         <ChevronLeft className="w-5 h-5" />
@@ -333,8 +333,8 @@ export default function HeroSlider({ banners }: HeroSliderProps) {
       <motion.button
         onClick={next}
         {...m({ whileHover: { scale: 1.1 }, whileTap: { scale: 0.92 } })}
-        className="hidden sm:flex absolute right-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-2xl bg-white/90 backdrop-blur-xl border border-white/60 items-center justify-center text-slate-700 hover:text-primary hover:bg-white hover:border-primary/20 hover:shadow-[0_8px_30px_rgba(59,90,128,0.12)] transition-all duration-300 z-20"
-        style={{ boxShadow: '0 4px 16px rgba(0,0,0,0.12)' }}
+        className="hidden sm:flex absolute right-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-2xl bg-white/90 backdrop-blur-xl border border-white/60 items-center justify-center text-text-secondary hover:text-primary hover:bg-white hover:border-primary/20 transition-all duration-300 z-20"
+        style={{ boxShadow: '0 2px 10px rgba(59,90,128,0.06)' }}
         aria-label="اسلاید بعدی"
       >
         <ChevronRight className="w-5 h-5" />
@@ -401,7 +401,7 @@ export default function HeroSlider({ banners }: HeroSliderProps) {
                     <motion.p
                       {...m({ initial: { opacity: 0, y: 22 }, animate: { opacity: 1, y: 0 } })}
                       transition={{ delay: 0.45, duration: 0.6, ease: EASE_SETTLE }}
-                      className="text-[#6B7280] text-sm md:text-lg lg:text-xl leading-[1.7] md:leading-[1.8] mb-5 md:mb-10 max-w-xl"
+                      className="text-text-muted text-sm md:text-lg lg:text-xl leading-[1.7] md:leading-[1.8] mb-5 md:mb-10 max-w-xl"
                     >
                       {slide.subtitle}
                     </motion.p>
@@ -417,7 +417,7 @@ export default function HeroSlider({ banners }: HeroSliderProps) {
                       <Link href={slide.cta_link} className="flex-1 sm:flex-none">
                         <Button
                           size="lg"
-                          className="group/btn relative bg-primary text-white font-semibold hover:bg-primary-dark w-full sm:w-auto px-6 md:px-10 py-3 md:py-4 rounded-xl text-sm md:text-base transition-all duration-300 shadow-[0_4px_20px_rgba(59,90,128,0.25)] hover:shadow-[0_8px_35px_rgba(59,90,128,0.35)]"
+                          className="group/btn relative bg-primary text-white font-semibold hover:bg-primary-dark w-full sm:w-auto px-6 md:px-10 py-3 md:py-4 rounded-xl text-sm md:text-base transition-all duration-300 shadow-[0_4px_14px_rgba(59,90,128,0.12)] hover:shadow-[0_6px_20px_rgba(59,90,128,0.18)]"
                         >
                           <span className="flex items-center gap-2">
                             {slide.cta_text ?? 'مشاهده'}
@@ -450,7 +450,8 @@ export default function HeroSlider({ banners }: HeroSliderProps) {
                         key={metric.label}
                         {...m({ initial: { opacity: 0, y: 10 }, animate: { opacity: 1, y: 0 } })}
                         transition={{ delay: 0.9 + i * 0.08, duration: 0.5, ease: EASE_SETTLE }}
-                        className="group flex items-center gap-2.5 md:gap-3 bg-white/90 backdrop-blur-sm rounded-xl px-3 py-2.5 md:px-4 md:py-3 border border-border-soft shadow-card hover:shadow-[0_6px_24px_rgba(59,90,128,0.1)] hover:border-primary/10 transition-all duration-300 cursor-default shrink-0"
+                        className="group flex items-center gap-2.5 md:gap-3 bg-white/90 backdrop-blur-sm rounded-xl px-3 py-2.5 md:px-4 md:py-3 border border-border-soft hover:border-primary/10 transition-all duration-300 cursor-default shrink-0"
+                        style={{ boxShadow: '0 1px 4px rgba(59,90,128,0.04), 0 2px 10px rgba(59,90,128,0.03)' }}
                       >
                         <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg md:rounded-xl bg-gradient-to-br from-accent/10 to-accent/5 flex items-center justify-center shrink-0">
                           <metric.icon className="w-3.5 h-3.5 md:w-4 md:h-4 text-accent" />
@@ -521,7 +522,7 @@ export default function HeroSlider({ banners }: HeroSliderProps) {
               className={`h-[5px] md:h-[6px] rounded-full overflow-hidden transition-all duration-500 ${
                 i === current
                   ? 'w-8 md:w-10 bg-primary/20'
-                  : 'w-[5px] md:w-[6px] bg-slate-300/50 group-hover:bg-slate-300/80'
+                  : 'w-[5px] md:w-[6px] bg-border-base/50 group-hover:bg-border-base'
               }`}
             >
               {i === current && !paused && inView && (

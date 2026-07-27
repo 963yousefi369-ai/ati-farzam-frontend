@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic'
 
 const SwiperCarousel = dynamic(() => import('@/components/shared/SwiperCarousel'), {
   ssr: false,
-  loading: () => <div className="h-64 animate-pulse bg-gray-100 rounded-xl" />,
+  loading: () => <div className="h-64 animate-pulse bg-bg-muted rounded-xl" />,
 })
 
 interface Testimonial {
@@ -81,7 +81,7 @@ export default function TestimonialsCarousel({ testimonials }: TestimonialsProps
             </div>
 
             {/* Text */}
-            <p className="text-[#6B7280] text-[15px] leading-[1.85] mb-6 flex-1">
+            <p className="text-text-muted text-[15px] leading-[1.85] mb-6 flex-1">
               «{item.text}»
             </p>
 

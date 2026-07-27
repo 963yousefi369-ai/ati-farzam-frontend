@@ -29,29 +29,31 @@ interface SectionRendererProps {
 }
 
 const sectionClassByType: Record<string, string> = {
-  trust_strip: 'py-8 lg:py-10 bg-[#F7F9FA]',
+  trust_strip: 'py-7 lg:py-9 bg-bg-soft',
   stats: 'py-section-mobile md:py-section-desktop bg-white',
-  partners: 'py-12 bg-white',
-  category_cards: 'py-8 lg:py-12 bg-[#F7F9FA]',
-  product_grid: 'py-section-mobile md:py-section-desktop bg-[#F7F9FA]',
+  partners: 'py-12 bg-bg-soft',
+  category_cards: 'py-10 lg:py-14 bg-bg-soft',
+  product_grid: 'py-section-mobile md:py-section-desktop bg-bg-soft',
   about: 'py-section-mobile md:py-section-desktop bg-white',
-  software_cta: 'py-section-mobile md:py-section-desktop bg-[#F7F9FA]',
+  software_cta: 'py-section-mobile md:py-section-desktop bg-bg-soft',
   testimonials: 'py-section-mobile md:py-section-desktop bg-white',
-  blog_grid: 'py-section-mobile md:py-section-desktop bg-[#F7F9FA]',
+  blog_grid: 'py-section-mobile md:py-section-desktop bg-bg-soft',
   newsletter: 'py-section-mobile md:py-section-desktop bg-white',
-  custom_html: 'py-section-mobile md:py-section-desktop bg-[#F7F9FA]',
+  custom_html: 'py-section-mobile md:py-section-desktop bg-bg-soft',
 }
 
 function SectionShell({ type, children }: { type: string; children: React.ReactNode }) {
   if (type === 'hero') return <>{children}</>
 
-  // Add mesh gradient bg to white sections for subtle visual interest
   const baseClass = sectionClassByType[type] ?? 'py-section-mobile md:py-section-desktop bg-white'
-  const isWhite = baseClass.includes('bg-white') && !baseClass.includes('bg-[#')
-  const enhancedClass = isWhite ? `${baseClass} bg-mesh` : baseClass
+  const isWhite = baseClass.includes('bg-white')
+  const isSoft = baseClass.includes('bg-soft')
+  // Mesh gradient only on white sections; hairline divider on soft sections
+  const surfaceClass = isWhite ? `${baseClass} bg-mesh` : baseClass
+  const dividerClass = isSoft ? 'border-y border-hairline/60' : ''
 
   return (
-    <section className={`${enhancedClass} section-divider`}>
+    <section className={`${surfaceClass} ${dividerClass} relative`}>
       <div className="max-w-[1440px] mx-auto px-6 lg:px-10">{children}</div>
     </section>
   )

@@ -1,0 +1,161 @@
+[     525ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:25630
+[     608ms] [LOG] %c[DEV MOCK] API interception active — all /api/* calls return mock data color: #f59e0b; font-weight: bold @ webpack-internal:///(app-pages-browser)/./src/lib/dev-mock.ts:158
+[     862ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/api/tracking/track:0
+[     863ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/api/tracking/track:0
+[  124525ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/hot-reloader-app.js:196
+[  125628ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/hot-reloader-app.js:196
+[  125694ms] [LOG] [Fast Refresh] done in 65ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/report-hmr-latency.js:13
+[  126174ms] [LOG] [Fast Refresh] done in 545ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/report-hmr-latency.js:13
+[  871580ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:25630
+[  871720ms] [LOG] %c[DEV MOCK] API interception active — all /api/* calls return mock data color: #f59e0b; font-weight: bold @ webpack-internal:///(app-pages-browser)/./src/lib/dev-mock.ts:158
+[  872319ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/api/tracking/track:0
+[  872325ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/api/tracking/track:0
+[ 1812902ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/hot-reloader-app.js:196
+[ 1814461ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/hot-reloader-app.js:196
+[ 1814661ms] [LOG] [Fast Refresh] done in 200ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/report-hmr-latency.js:13
+[ 1815320ms] [LOG] [Fast Refresh] done in 860ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/report-hmr-latency.js:13
+[ 1815632ms] TypeError: Cannot read properties of undefined (reading 'imageUrl')
+    at HeroSlider (webpack-internal:///(app-pages-browser)/./src/components/home/HeroSlider.tsx:241:30)
+    at Object.react_stack_bottom_frame (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:23584:20)
+    at renderWithHooks (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:6793:22)
+    at updateFunctionComponent (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:9247:19)
+    at beginWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:10858:18)
+    at runWithFiberInDEV (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:872:30)
+    at performUnitOfWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15727:22)
+    at workLoopSync (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15547:41)
+    at renderRootSync (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15527:11)
+    at performWorkOnRoot (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15034:44)
+    at performWorkOnRootViaSchedulerTask (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:16816:7)
+    at MessagePort.performWorkUntilDeadline (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/scheduler/cjs/scheduler.development.js:45:48)
+[ 1815964ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/hot-reloader-app.js:196
+[ 1817351ms] [WARNING] [Fast Refresh] performing full reload because your application had an unrecoverable error @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/hot-reloader-app.js:113
+[ 1817940ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:25630
+[ 1818204ms] [LOG] %c[DEV MOCK] API interception active — all /api/* calls return mock data color: #f59e0b; font-weight: bold @ webpack-internal:///(app-pages-browser)/./src/lib/dev-mock.ts:158
+[ 1818960ms] [WARNING] Image with src "http://localhost:8000/media/banners/mobile/images.webp" has "fill" prop and "sizes" prop of "100vw", but image is not rendered at full viewport width. Please adjust "sizes" to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[ 1819091ms] [WARNING] Image with src "http://localhost:8000/media/partners/images.png" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[ 1819143ms] [WARNING] Image with src "http://localhost:8000/media/partners/1777283807439-019dce5e-245d-7191-ab95-0e0a48d230ca.webp" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[ 1833974ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/hot-reloader-app.js:196
+[ 1834365ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/hot-reloader-app.js:196
+[ 1834423ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3001/_next/static/webpack/79cadf264de4d243.webpack.hot-update.json:0
+[ 1836293ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/hot-reloader-app.js:196
+[ 1836295ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3001/_next/static/webpack/3d45e1ec4eae07a9.webpack.hot-update.json:0
+[ 1837551ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3001/_next/static/webpack/da5f9b0b5694d21a.webpack.hot-update.json:0
+[ 1839293ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:25630
+[ 1839426ms] [LOG] %c[DEV MOCK] API interception active — all /api/* calls return mock data color: #f59e0b; font-weight: bold @ webpack-internal:///(app-pages-browser)/./src/lib/dev-mock.ts:158
+[ 1839876ms] [WARNING] Image with src "http://localhost:8000/media/partners/images.png" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[ 1839978ms] [WARNING] Image with src "http://localhost:8000/media/partners/1777283807439-019dce5e-245d-7191-ab95-0e0a48d230ca.webp" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[ 1840047ms] [WARNING] Image with src "http://localhost:8000/media/banners/mobile/images.webp" has "fill" prop and "sizes" prop of "100vw", but image is not rendered at full viewport width. Please adjust "sizes" to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[ 1842368ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3001/_next/static/webpack/634a6aaf5f55b4b9.webpack.hot-update.json:0
+[ 1843121ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:25630
+[ 1843194ms] [LOG] %c[DEV MOCK] API interception active — all /api/* calls return mock data color: #f59e0b; font-weight: bold @ webpack-internal:///(app-pages-browser)/./src/lib/dev-mock.ts:158
+[ 1843423ms] [WARNING] Image with src "http://localhost:8000/media/banners/mobile/images.webp" has "fill" prop and "sizes" prop of "100vw", but image is not rendered at full viewport width. Please adjust "sizes" to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[ 1843539ms] [WARNING] Image with src "http://localhost:8000/media/partners/images.png" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[ 1843561ms] [WARNING] Image with src "http://localhost:8000/media/partners/1777283807439-019dce5e-245d-7191-ab95-0e0a48d230ca.webp" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[ 1849049ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/hot-reloader-app.js:196
+[ 1849228ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3001/_next/static/webpack/634a6aaf5f55b4b9.webpack.hot-update.json:0
+[ 1850734ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:25630
+[ 1850805ms] [LOG] %c[DEV MOCK] API interception active — all /api/* calls return mock data color: #f59e0b; font-weight: bold @ webpack-internal:///(app-pages-browser)/./src/lib/dev-mock.ts:158
+[ 1851040ms] [WARNING] Image with src "http://localhost:8000/media/banners/mobile/images.webp" has "fill" prop and "sizes" prop of "100vw", but image is not rendered at full viewport width. Please adjust "sizes" to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[ 1851140ms] [WARNING] Image with src "http://localhost:8000/media/partners/images.png" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[ 1851171ms] [WARNING] Image with src "http://localhost:8000/media/partners/1777283807439-019dce5e-245d-7191-ab95-0e0a48d230ca.webp" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[ 1881016ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/api/tracking/track:0
+[ 1881017ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/api/tracking/track:0
+[ 3353742ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/hot-reloader-app.js:196
+[ 3359094ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/hot-reloader-app.js:196
+[ 3359299ms] [LOG] [Fast Refresh] done in 200ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/report-hmr-latency.js:13
+[ 3365719ms] [LOG] [Fast Refresh] done in 6625ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/report-hmr-latency.js:13
+[ 3371775ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/hot-reloader-app.js:196
+[ 3372867ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/hot-reloader-app.js:196
+[ 3372960ms] [LOG] [Fast Refresh] done in 93ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/report-hmr-latency.js:13
+[ 3375299ms] [LOG] [Fast Refresh] done in 2432ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/report-hmr-latency.js:13
+[ 3386444ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/hot-reloader-app.js:196
+[ 3386827ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/hot-reloader-app.js:196
+[ 3386886ms] [LOG] [Fast Refresh] done in 58ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/report-hmr-latency.js:13
+[ 3388019ms] [LOG] [Fast Refresh] done in 1192ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/report-hmr-latency.js:13
+[ 3409077ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/hot-reloader-app.js:196
+[ 3409810ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/hot-reloader-app.js:196
+[ 3409880ms] [LOG] [Fast Refresh] done in 71ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/report-hmr-latency.js:13
+[ 3411086ms] [LOG] [Fast Refresh] done in 1277ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/report-hmr-latency.js:13
+[ 3442595ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/hot-reloader-app.js:196
+[ 3442882ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/hot-reloader-app.js:196
+[ 3442901ms] [LOG] [Fast Refresh] done in 20ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/report-hmr-latency.js:13
+[ 3443925ms] [LOG] [Fast Refresh] done in 1044ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/report-hmr-latency.js:13
+[ 3468682ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/hot-reloader-app.js:196
+[ 3469068ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/hot-reloader-app.js:196
+[ 3469119ms] [LOG] [Fast Refresh] done in 52ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/report-hmr-latency.js:13
+[ 3469891ms] [LOG] [Fast Refresh] done in 824ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/report-hmr-latency.js:13
+[ 3490552ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/hot-reloader-app.js:196
+[ 3490971ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/hot-reloader-app.js:196
+[ 3490994ms] [LOG] [Fast Refresh] done in 23ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/report-hmr-latency.js:13
+[ 3491654ms] [LOG] [Fast Refresh] done in 683ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/report-hmr-latency.js:13
+[ 3531504ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/hot-reloader-app.js:196
+[ 3531768ms] [ERROR] ./src/components/home/HeroSlider.tsx
+Error:   x Unterminated string constant
+     ,-[C:\Users\PC-01\Downloads\ati-farzam-frontend\src\components\home\HeroSlider.tsx:375:1]
+ 372 |                     transition={{ delay: 0.1, duration: 0.6, ease: EASE_SETTLE }}
+ 373 |                     className="inline-flex items-center gap-2 px-3.5 py-1.5 md:px-4 md:py-2 rounded-full mb-4 md:mb-7"
+ 374 |                     style={{
+ 375 |                       background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.04)
+     :                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ 376 |                       border: '1px solid rgba(0, 0, 0, 0)',
+ 377 |                       boxShadow: '0 0 20px rgba(0, 0, 0, 0)',
+ 378 |                     }}
+     `----
+  x Expected '</', got 'border'
+     ,-[C:\Users\PC-01\Downloads\ati-farzam-frontend\src\components\home\HeroSlider.tsx:376:1]
+ 373 |                     className="inline-flex items-center gap-2 px-3.5 py-1.5 md:px-4 md:py-2 rounded-full mb-4 md:mb-7"
+ 374 |                     style={{
+ 375 |                       background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.04)
+ 376 |                       border: '1px solid rgba(0, 0, 0, 0)',
+     :                       ^^^^^^
+ 377 |                       boxShadow: '0 0 20px rgba(0, 0, 0, 0)',
+ 378 |                     }}
+ 379 |                   >
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/components/home/HeroSlider.tsx
+./src/components/cms/SectionRenderer.tsx
+./src/app/(main)/page.tsx @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/userspace/app/errors/intercept-console-error.js:56
+[ 3531813ms] [LOG] {file: Object} @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/next-devtools/index.js:1630
+[ 3532411ms] [LOG] [Fast Refresh] done in 907ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/report-hmr-latency.js:13
+[ 3532595ms] [LOG] [Fast Refresh] done in 1092ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/report-hmr-latency.js:13
+[ 3533509ms] [ERROR] ./src/components/home/HeroSlider.tsx
+Error:   x Unterminated string constant
+     ,-[C:\Users\PC-01\Downloads\ati-farzam-frontend\src\components\home\HeroSlider.tsx:375:1]
+ 372 |                     transition={{ delay: 0.1, duration: 0.6, ease: EASE_SETTLE }}
+ 373 |                     className="inline-flex items-center gap-2 px-3.5 py-1.5 md:px-4 md:py-2 rounded-full mb-4 md:mb-7"
+ 374 |                     style={{
+ 375 |                       background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.04)
+     :                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ 376 |                       border: '1px solid rgba(0, 0, 0, 0)',
+ 377 |                       boxShadow: '0 0 20px rgba(0, 0, 0, 0)',
+ 378 |                     }}
+     `----
+  x Expected '</', got 'border'
+     ,-[C:\Users\PC-01\Downloads\ati-farzam-frontend\src\components\home\HeroSlider.tsx:376:1]
+ 373 |                     className="inline-flex items-center gap-2 px-3.5 py-1.5 md:px-4 md:py-2 rounded-full mb-4 md:mb-7"
+ 374 |                     style={{
+ 375 |                       background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.04)
+ 376 |                       border: '1px solid rgba(0, 0, 0, 0)',
+     :                       ^^^^^^
+ 377 |                       boxShadow: '0 0 20px rgba(0, 0, 0, 0)',
+ 378 |                     }}
+ 379 |                   >
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/components/home/HeroSlider.tsx
+./src/components/cms/SectionRenderer.tsx
+./src/app/(main)/page.tsx @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/userspace/app/errors/intercept-console-error.js:56
+[ 3533511ms] [LOG] {file: Object} @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/next-devtools/index.js:1630
+[ 3533635ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/?_rsc=WOOazXEnzmWuK_Pj:0
+[ 3533774ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/?_rsc=WOOazXEnzmWuK_Pj:0
+[ 3534019ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3001/:0
+[ 3534091ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3001/favicon.ico:0

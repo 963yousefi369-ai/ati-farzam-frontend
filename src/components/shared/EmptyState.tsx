@@ -1,39 +1,35 @@
-'use client'
-import { cn } from '@/lib/utils'
-import { ReactNode } from 'react'
+import Link from 'next/link'
 
 interface EmptyStateProps {
-  icon?: ReactNode
   title: string
   description?: string
-  action?: ReactNode
-  className?: string
+  actionLabel?: string
+  actionHref?: string
 }
 
-export default function EmptyState({ icon, title, description, action, className }: EmptyStateProps) {
+/**
+ * Only ever use this INSIDE a real page (search results, cart, order history).
+ *
+ * Never render an empty state on the marketing homepage — if a homepage section
+ * has no data, hide the whole section instead (see `normalizeSections`).
+ */
+export default function EmptyState({
+  title,
+  description,
+  actionLabel,
+  actionHref,
+}: EmptyStateProps) {
   return (
-    <div
-      className={cn('flex flex-col items-center justify-center py-16 px-4 text-center animate-fade-in-up', className)}
-    >
-      {icon && (
-        <div className="w-16 h-16 rounded-2xl bg-bg-muted flex items-center justify-center mb-6 animate-scale-in">
-          <div className="animate-float">
-            {icon}
-          </div>
-        </div>
-      )}
-      <h3 className="text-lg font-semibold text-text-primary mb-2">
-        {title}
-      </h3>
-      {description && (
-        <p className="text-text-secondary text-sm max-w-sm mb-6 leading-relaxed">
-          {description}
-        </p>
-      )}
-      {action && (
-        <div>
-          {action}
-        </div>
+    <div className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-hairline bg-white px-6 py-14 text-center">
+      <p className="text-base font-semibold text-dark">{title}</p>
+      {description && <p className="max-w-sm text-sm leading-7 text-text-muted">{description}</p>}
+      {actionLabel && actionHref && (
+        <Link
+          href={actionHref}
+          className="mt-2 inline-flex min-h-[44px] items-center rounded-full bg-primary px-6 text-sm font-semibold text-white transition-colors hover:bg-primary-dark"
+        >
+          {actionLabel}
+        </Link>
       )}
     </div>
   )

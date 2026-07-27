@@ -30,11 +30,11 @@
   --border-strong:  rgba(14,116,144,0.3);
   --border-hairline: rgba(14,116,144,0.15);
 
-  /* ── Shadows ── */
-  --shadow-card:    0 2px 8px rgba(59,90,128,0.06), 0 4px 16px rgba(59,90,128,0.04);
-  --shadow-hover:   0 8px 30px rgba(59,90,128,0.12);
-  --shadow-elevated: 0 8px 30px rgba(10,15,30,0.18);
-  --shadow-soft:    0 1px 3px rgba(30,58,95,0.06);
+  /* ── Shadows (soft, modern) ── */
+  --shadow-card:    0 1px 4px rgba(59,90,128,0.04), 0 2px 10px rgba(59,90,128,0.03);
+  --shadow-hover:   0 4px 16px rgba(59,90,128,0.07);
+  --shadow-elevated: 0 4px 20px rgba(59,90,128,0.08);
+  --shadow-soft:    0 1px 3px rgba(59,90,128,0.04);
 
   /* ── Hover Lift ── */
   --hover-lift:     -2px;

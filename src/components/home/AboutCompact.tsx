@@ -34,7 +34,8 @@ export default function AboutCompact({ title, aboutText, aboutImage, ctaText, ct
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7, ease: EASE }}
-          className="relative aspect-[4/3] rounded-2xl overflow-hidden order-2 md:order-1 group shadow-card hover:shadow-hover hover-glow border border-accent/10"
+          className="relative aspect-[4/3] rounded-2xl overflow-hidden order-2 md:order-1 group hover-glow border border-accent/10"
+          style={{ boxShadow: '0 1px 4px rgba(59,90,128,0.04), 0 2px 10px rgba(59,90,128,0.03)' }}
         >
           <Image
             src={imageUrl}
@@ -71,7 +72,7 @@ export default function AboutCompact({ title, aboutText, aboutImage, ctaText, ct
           {title ?? 'آتی فرزام ایرانیان'}
         </h2>
 
-        <p className="text-sm text-[#6B7280] leading-[1.9] mb-8 max-w-lg">
+        <p className="text-sm text-text-muted leading-[1.9] mb-8 max-w-lg">
           {aboutText ?? 'شرکت آتی فرزام ایرانیان با بیش از یک دهه تجربه در حوزه ردیابی GPS، راهکارهای جامع مدیریت ناوگان و امنیت خودرو را به سازمان‌ها و افراد ارائه می‌دهد.'}
         </p>
 

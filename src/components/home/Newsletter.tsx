@@ -94,7 +94,7 @@ export default function Newsletter() {
             <h2 className="text-2xl lg:text-3xl font-semibold text-text-heading mb-3 leading-tight">
               {newsletter.heading}
             </h2>
-            <p className="text-[#6B7280] text-sm lg:text-base mb-8 leading-[1.8] max-w-lg md:mr-0 mx-auto">
+            <p className="text-text-muted text-sm lg:text-base mb-8 leading-[1.8] max-w-lg md:mr-0 mx-auto">
               {newsletter.subtitle}
             </p>
 

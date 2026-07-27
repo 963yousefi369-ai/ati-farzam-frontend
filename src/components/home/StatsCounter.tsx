@@ -65,8 +65,9 @@ export default function StatsCounter({ stats, darkMode = false }: StatsCounterPr
               <div
                 className={darkMode
                   ? "relative bg-white/[0.06] border border-white/[0.1] rounded-2xl p-6 md:p-8 text-center hover:border-accent/25 hover:bg-white/[0.1] transition-all duration-300 overflow-hidden"
-                  : "relative bg-white rounded-2xl p-6 md:p-8 text-center border border-border-soft hover:border-accent/20 hover:-translate-y-0.5 transition-all duration-300 overflow-hidden shadow-card hover:shadow-hover hover-glow"
+                  : "relative bg-white rounded-2xl p-6 md:p-8 text-center border border-border-soft hover:border-accent/20 hover:-translate-y-0.5 transition-all duration-300 overflow-hidden hover-glow"
                 }
+                style={!darkMode ? { boxShadow: '0 1px 4px rgba(59,90,128,0.04), 0 2px 10px rgba(59,90,128,0.03)' } : undefined}
               >
                 {/* Hover accent line */}
                 <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-l from-transparent via-accent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
