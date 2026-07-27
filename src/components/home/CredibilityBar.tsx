@@ -50,7 +50,7 @@ export default function CredibilityBar({
       <ul
         role="list"
         aria-label="دلایل اعتماد به آتی فرزام"
-        className="grid gap-px sm:grid-cols-2 lg:grid-cols-4"
+        className="grid grid-cols-2 gap-px lg:grid-cols-4"
       >
         {visibleItems.map((item) => {
           const Icon = ICONS[item.icon ?? "shield_check"] ?? ShieldCheck;
@@ -58,7 +58,7 @@ export default function CredibilityBar({
           return (
             <li
               key={`${item.label}-${item.desc}`}
-              className="group relative flex min-h-[132px] items-start gap-4 bg-white p-5 transition-colors duration-200 hover:bg-bg-soft lg:p-6"
+              className="group relative flex min-h-[124px] flex-col items-start gap-3 bg-white p-4 transition-colors duration-200 hover:bg-bg-soft sm:min-h-[132px] sm:flex-row sm:gap-4 sm:p-5 lg:p-6"
             >
               <span
                 className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-primary/10 bg-light-tint text-primary transition-colors duration-200 group-hover:border-accent/20 group-hover:bg-success-light group-hover:text-accent-dark"
@@ -71,7 +71,7 @@ export default function CredibilityBar({
                 <strong className="block text-sm font-semibold leading-6 text-dark">
                   {item.label || "اعتماد مشتریان"}
                 </strong>
-                <span className="mt-1.5 block text-xs leading-6 text-text-muted">
+                <span className="mt-1 block text-[11px] leading-5 text-text-muted sm:mt-1.5 sm:text-xs sm:leading-6">
                   {item.desc || "فروش، نصب و پشتیبانی تخصصی ردیاب GPS"}
                 </span>
               </span>

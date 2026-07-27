@@ -1,238 +1,277 @@
-import Link from 'next/link'
-import DOMPurify from 'isomorphic-dompurify'
-import { Button } from '@/components/ui/button'
-import type { CmsPageSection } from '@/lib/cms/types'
-import HeroSlider from '@/components/home/HeroSlider'
-import SectionTitle from '@/components/shared/SectionTitle'
-import ProductCard from '@/components/product/ProductCard'
-import BlogCard from '@/components/blog/BlogCard'
-import ScrollReveal from '@/components/shared/ScrollReveal'
-import StaggerGrid, { StaggerItem } from '@/components/shared/StaggerGrid'
-import CategoryCards from '@/components/home/CategoryCards'
-import CredibilityBar from '@/components/home/CredibilityBar'
-import AboutCompact from '@/components/home/AboutCompact'
-import SoftwareCTA from '@/components/home/SoftwareCTA'
-import Newsletter from '@/components/home/Newsletter'
-import PartnersMarquee from '@/components/home/PartnersMarquee'
-import StatsCounter from '@/components/home/StatsCounter'
-import TestimonialsCarousel from '@/components/home/TestimonialsCarousel'
+import Link from "next/link";
+import DOMPurify from "isomorphic-dompurify";
+import type { CmsPageSection } from "@/lib/cms/types";
+import HeroSlider from "@/components/home/HeroSlider";
+import SectionTitle from "@/components/shared/SectionTitle";
+import ProductCard from "@/components/product/ProductCard";
+import BlogCard from "@/components/blog/BlogCard";
+import CategoryCards from "@/components/home/CategoryCards";
+import CredibilityBar from "@/components/home/CredibilityBar";
+import AboutCompact from "@/components/home/AboutCompact";
+import SoftwareCTA from "@/components/home/SoftwareCTA";
+import Newsletter from "@/components/home/Newsletter";
+import PartnersMarquee from "@/components/home/PartnersMarquee";
+import StatsCounter from "@/components/home/StatsCounter";
+import TestimonialsCarousel from "@/components/home/TestimonialsCarousel";
 
 interface SectionRendererProps {
-  sections: CmsPageSection[]
+  sections: CmsPageSection[];
   fallbackData: {
-    banners: any[]
-    products: any[]
-    imageMap: Record<string, string>
-    blogs: any[]
-    settings: any
-  }
+    banners: any[];
+    products: any[];
+    imageMap: Record<string, string>;
+    blogs: any[];
+    settings: any;
+  };
 }
 
-const sectionClassByType: Record<string, string> = {
-  trust_strip: 'py-7 lg:py-9 bg-bg-soft',
-  stats: 'py-section-mobile md:py-section-desktop bg-white',
-  partners: 'py-12 bg-bg-soft',
-  category_cards: 'py-10 lg:py-14 bg-bg-soft',
-  product_grid: 'py-section-mobile md:py-section-desktop bg-bg-soft',
-  about: 'py-section-mobile md:py-section-desktop bg-white',
-  software_cta: 'py-section-mobile md:py-section-desktop bg-bg-soft',
-  testimonials: 'py-section-mobile md:py-section-desktop bg-white',
-  blog_grid: 'py-section-mobile md:py-section-desktop bg-bg-soft',
-  newsletter: 'py-section-mobile md:py-section-desktop bg-white',
-  custom_html: 'py-section-mobile md:py-section-desktop bg-bg-soft',
-}
+const SECTION_STYLES: Record<string, string> = {
+  trust_strip: "bg-bg-soft py-6 sm:py-8",
+  stats: "bg-white py-10 sm:py-14 lg:py-16",
+  partners: "bg-bg-soft py-10 sm:py-12",
+  category_cards: "bg-bg-soft py-10 sm:py-14 lg:py-16",
+  product_grid: "bg-white py-10 sm:py-14 lg:py-16",
+  about: "bg-white py-10 sm:py-14 lg:py-16",
+  software_cta: "bg-bg-soft py-10 sm:py-14 lg:py-16",
+  testimonials: "bg-white py-10 sm:py-14 lg:py-16",
+  blog_grid: "bg-bg-soft py-10 sm:py-14 lg:py-16",
+  newsletter: "bg-white py-10 sm:py-14 lg:py-16",
+  custom_html: "bg-white py-10 sm:py-14 lg:py-16",
+};
 
-function SectionShell({ type, children }: { type: string; children: React.ReactNode }) {
-  if (type === 'hero') return <>{children}</>
-
-  const baseClass = sectionClassByType[type] ?? 'py-section-mobile md:py-section-desktop bg-white'
-  const isWhite = baseClass.includes('bg-white')
-  const isSoft = baseClass.includes('bg-soft')
-  // Mesh gradient only on white sections; hairline divider on soft sections
-  const surfaceClass = isWhite ? `${baseClass} bg-mesh` : baseClass
-  const dividerClass = isSoft ? 'border-y border-hairline/60' : ''
-
+function SectionShell({
+  type,
+  children,
+}: {
+  type: string;
+  children: React.ReactNode;
+}) {
+  if (type === "hero") return <>{children}</>;
   return (
-    <section className={`${surfaceClass} ${dividerClass} relative`}>
-      <div className="max-w-[1440px] mx-auto px-6 lg:px-10">{children}</div>
+    <section
+      data-section={type}
+      className={`relative border-b border-border-soft ${SECTION_STYLES[type] || "bg-white py-10 sm:py-14"}`}
+    >
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">{children}</div>
     </section>
-  )
+  );
 }
 
-export default function SectionRenderer({ sections, fallbackData }: SectionRendererProps) {
+const ActionLink = ({
+  href,
+  children,
+}: {
+  href: string;
+  children: React.ReactNode;
+}) => (
+  <Link
+    href={href}
+    className="inline-flex min-h-11 w-full items-center justify-center rounded-xl border border-border-base bg-white px-5 text-sm font-semibold text-primary hover:bg-bg-soft sm:w-auto"
+  >
+    {children}
+  </Link>
+);
+
+export default function SectionRenderer({
+  sections,
+  fallbackData,
+}: SectionRendererProps) {
   const activeSections = sections
     .filter((section) => section.is_active !== false)
-    .sort((a, b) => a.order - b.order)
+    .sort((a, b) => a.order - b.order);
 
   return (
     <>
       {activeSections.map((section) => {
-        const content = section.content ?? {}
-        const key = `${section.section_type}-${section.order}`
+        const content = section.content ?? {};
+        const key = `${section.section_type}-${section.order}`;
 
         switch (section.section_type) {
-          case 'hero':
+          case "hero":
             return (
               <SectionShell key={key} type="hero">
-                <HeroSlider banners={(content as any).banners?.length ? (content as any).banners : fallbackData.banners} {...(content as any)} />
+                <HeroSlider
+                  banners={
+                    (content as any).banners?.length
+                      ? (content as any).banners
+                      : fallbackData.banners
+                  }
+                />
               </SectionShell>
-            )
-
-          case 'trust_strip':
+            );
+          case "trust_strip":
             return (
               <SectionShell key={key} type="trust_strip">
-                <ScrollReveal direction="up">
-                  <CredibilityBar items={(content as any).items} />
-                </ScrollReveal>
+                <CredibilityBar items={(content as any).items} />
               </SectionShell>
-            )
-
-          case 'stats':
+            );
+          case "stats":
             return (
               <SectionShell key={key} type="stats">
-                <StatsCounter stats={(content as any).stats} darkMode={(content as any).darkMode ?? false} />
+                <StatsCounter
+                  stats={(content as any).stats}
+                  darkMode={(content as any).darkMode ?? false}
+                />
               </SectionShell>
-            )
-
-          case 'partners':
+            );
+          case "partners":
             return (
               <SectionShell key={key} type="partners">
                 <PartnersMarquee apiPartners={(content as any).partners} />
               </SectionShell>
-            )
-
-          case 'category_cards':
+            );
+          case "category_cards":
             return (
               <SectionShell key={key} type="category_cards">
-                <ScrollReveal>
-                  <SectionTitle
-                    title={(content as any).title ?? 'دسته‌بندی محصولات'}
-                    subtitle={(content as any).subtitle ?? 'محصول مناسب خودتان را پیدا کنید'}
-                    className="mb-6"
-                  />
-                </ScrollReveal>
-                <ScrollReveal direction="up" delay={0.1}>
-                  <CategoryCards items={(content as any).items} />
-                </ScrollReveal>
+                <SectionTitle
+                  title={(content as any).title ?? "دسته‌بندی محصولات"}
+                  subtitle={
+                    (content as any).subtitle ??
+                    "محصول مناسب خودتان را پیدا کنید"
+                  }
+                  className="mb-6"
+                />
+                <CategoryCards items={(content as any).items} />
               </SectionShell>
-            )
-
-          case 'product_grid':
+            );
+          case "product_grid":
             return (
               <SectionShell key={key} type="product_grid">
-                <ScrollReveal direction="right">
-                  <SectionTitle
-                    title={(content as any).title ?? 'محصولات ویژه'}
-                    subtitle={(content as any).subtitle ?? 'بهترین ردیاب‌های GPS با ضمانت اصالت و پشتیبانی تخصصی'}
-                    className="mb-8"
-                    action={
-                      <Button asChild variant="outline" className="shrink-0 rounded-xl">
-                        <Link href={(content as any).cta_link ?? '/products'}>{(content as any).cta_text ?? 'مشاهده همه'}</Link>
-                      </Button>
-                    }
-                  />
-                </ScrollReveal>
-                {fallbackData.products.length > 0 ? (
-                  <StaggerGrid className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5" stagger={0.06}>
-                    {fallbackData.products.slice(0, Number((content as any).limit ?? 8)).map((product: any, idx: number) => (
-                      <StaggerItem key={product.id}>
-                        <ProductCard product={product} imageUrl={fallbackData.imageMap[String(product.id)]} priority={idx < 4} />
-                      </StaggerItem>
-                    ))}
-                  </StaggerGrid>
+                <SectionTitle
+                  title={(content as any).title ?? "محصولات ویژه"}
+                  subtitle={
+                    (content as any).subtitle ??
+                    "ردیاب‌های GPS با ضمانت اصالت و پشتیبانی تخصصی"
+                  }
+                  action={
+                    <ActionLink href={(content as any).cta_link ?? "/products"}>
+                      {(content as any).cta_text ?? "مشاهده همه"}
+                    </ActionLink>
+                  }
+                />
+                {fallbackData.products.length ? (
+                  <div className="scrollbar-none -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-3 sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-4">
+                    {fallbackData.products
+                      .slice(0, Number((content as any).limit ?? 8))
+                      .map((product: any, index: number) => (
+                        <div
+                          key={product.id}
+                          className="w-[84vw] max-w-[350px] shrink-0 snap-start sm:w-auto sm:max-w-none"
+                        >
+                          <ProductCard
+                            product={product}
+                            imageUrl={fallbackData.imageMap[String(product.id)]}
+                            priority={index < 2}
+                          />
+                        </div>
+                      ))}
+                  </div>
                 ) : (
-                  <div className="text-center py-16">
-                    <p className="text-text-muted text-lg mb-4">محصولی یافت نشد</p>
-                    <Button asChild variant="outline" className="rounded-xl"><Link href="/contact">تماس با ما</Link></Button>
+                  <div className="rounded-2xl border border-border-soft bg-bg-soft p-8 text-center">
+                    <p className="text-text-muted">محصولی یافت نشد</p>
+                    <div className="mt-4">
+                      <ActionLink href="/contact">تماس با ما</ActionLink>
+                    </div>
                   </div>
                 )}
               </SectionShell>
-            )
-
-          case 'about':
+            );
+          case "about":
             return (
               <SectionShell key={key} type="about">
-                <ScrollReveal direction="left">
-                  <AboutCompact
-                    title={(content as any).title}
-                    aboutText={(content as any).text ?? fallbackData.settings?.about_us}
-                    aboutImage={(content as any).image_url ?? fallbackData.settings?.about_image}
-                    ctaText={(content as any).cta_text}
-                    ctaLink={(content as any).cta_link}
-                  />
-                </ScrollReveal>
+                <AboutCompact
+                  title={(content as any).title}
+                  aboutText={
+                    (content as any).text ?? fallbackData.settings?.about_us
+                  }
+                  aboutImage={
+                    (content as any).image_url ??
+                    fallbackData.settings?.about_image
+                  }
+                  ctaText={(content as any).cta_text}
+                  ctaLink={(content as any).cta_link}
+                />
               </SectionShell>
-            )
-
-          case 'software_cta':
+            );
+          case "software_cta":
             return (
               <SectionShell key={key} type="software_cta">
-                <ScrollReveal>
-                  <SoftwareCTA {...(content as any)} softwareImage={(content as any).image_url ?? fallbackData.settings?.software_image} />
-                </ScrollReveal>
+                <SoftwareCTA
+                  {...(content as any)}
+                  softwareImage={
+                    (content as any).image_url ??
+                    fallbackData.settings?.software_image
+                  }
+                />
               </SectionShell>
-            )
-
-          case 'testimonials':
+            );
+          case "testimonials":
             return (
               <SectionShell key={key} type="testimonials">
-                <ScrollReveal>
-                  <SectionTitle
-                    title={(content as any).title ?? 'نظرات مشتریان'}
-                    subtitle={(content as any).subtitle ?? 'آنچه مشتریان ما درباره خدمات و محصولات آتی فرزام می‌گویند'}
-                    className="mb-8"
-                  />
-                </ScrollReveal>
-                <ScrollReveal direction="up" delay={0.1}>
-                  <TestimonialsCarousel testimonials={(content as any).testimonials} />
-                </ScrollReveal>
+                <SectionTitle
+                  title={(content as any).title ?? "نظرات مشتریان"}
+                  subtitle={
+                    (content as any).subtitle ?? "تجربه مشتریان آتی فرزام"
+                  }
+                />
+                <TestimonialsCarousel
+                  testimonials={(content as any).testimonials}
+                />
               </SectionShell>
-            )
-
-          case 'blog_grid':
-            if (fallbackData.blogs.length === 0) return null
+            );
+          case "blog_grid":
+            if (!fallbackData.blogs.length) return null;
             return (
               <SectionShell key={key} type="blog_grid">
-                <ScrollReveal direction="up">
-                  <SectionTitle
-                    title={(content as any).title ?? 'آخرین مقالات'}
-                    subtitle={(content as any).subtitle ?? 'آخرین اخبار و آموزش‌های دنیای ردیابی GPS'}
-                    className="mb-8"
-                    action={
-                      <Button asChild variant="outline" className="shrink-0 rounded-xl">
-                        <Link href={(content as any).cta_link ?? '/blog'}>{(content as any).cta_text ?? 'مشاهده همه'}</Link>
-                      </Button>
-                    }
-                  />
-                </ScrollReveal>
-                <StaggerGrid className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" stagger={0.1}>
-                  {fallbackData.blogs.slice(0, Number((content as any).limit ?? 3)).map((post: any) => (
-                    <StaggerItem key={post.id}><BlogCard post={post} /></StaggerItem>
-                  ))}
-                </StaggerGrid>
+                <SectionTitle
+                  title={(content as any).title ?? "آخرین مقالات"}
+                  subtitle={
+                    (content as any).subtitle ??
+                    "اخبار و آموزش‌های دنیای ردیابی GPS"
+                  }
+                  action={
+                    <ActionLink href={(content as any).cta_link ?? "/blog"}>
+                      {(content as any).cta_text ?? "مشاهده همه"}
+                    </ActionLink>
+                  }
+                />
+                <div className="scrollbar-none -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-3 sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-3">
+                  {fallbackData.blogs
+                    .slice(0, Number((content as any).limit ?? 3))
+                    .map((post: any) => (
+                      <div
+                        key={post.id}
+                        className="w-[84vw] max-w-[360px] shrink-0 snap-start sm:w-auto sm:max-w-none"
+                      >
+                        <BlogCard post={post} />
+                      </div>
+                    ))}
+                </div>
               </SectionShell>
-            )
-
-          case 'newsletter':
+            );
+          case "newsletter":
             return (
               <SectionShell key={key} type="newsletter">
-                <ScrollReveal direction="up" amount={0.3}>
-                  <Newsletter {...(content as any)} />
-                </ScrollReveal>
+                <Newsletter />
               </SectionShell>
-            )
-
-          case 'custom_html':
+            );
+          case "custom_html":
             return (
               <SectionShell key={key} type="custom_html">
-                <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(String((content as any).html ?? '')) }} />
+                <div
+                  className="overflow-x-auto"
+                  dangerouslySetInnerHTML={{
+                    __html: DOMPurify.sanitize(
+                      String((content as any).html ?? ""),
+                    ),
+                  }}
+                />
               </SectionShell>
-            )
-
+            );
           default:
-            return null
+            return null;
         }
       })}
     </>
-  )
+  );
 }

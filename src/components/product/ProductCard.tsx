@@ -221,7 +221,9 @@ export default function ProductCard({
 
           <div className="mt-4 flex flex-wrap items-baseline gap-2">
             <p className="text-lg font-semibold tabular-nums text-primary">
-              {formatPrice(product.price)}
+              {product.price > 0
+                ? formatPrice(product.price)
+                : "برای قیمت تماس بگیرید"}
             </p>
             {hasDiscount && (
               <p className="text-xs tabular-nums text-text-muted line-through">

@@ -57,7 +57,10 @@ export default function CategoryCards({ items }: { items?: CategoryItem[] }) {
   const categories = items?.length ? items : DEFAULT_CATEGORIES;
 
   return (
-    <ul role="list" className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+    <ul
+      role="list"
+      className="scrollbar-none -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-3 sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-4"
+    >
       {categories.map((category) => {
         const href = category.href || "/products";
         const label = category.label || "دسته‌بندی محصول";
@@ -68,11 +71,14 @@ export default function CategoryCards({ items }: { items?: CategoryItem[] }) {
           CATEGORY_IMAGES.car;
 
         return (
-          <li key={category.id || `${href}-${label}`} className="min-w-0">
+          <li
+            key={category.id || `${href}-${label}`}
+            className="w-[82vw] max-w-[340px] shrink-0 snap-start sm:w-auto sm:max-w-none"
+          >
             <Link
               href={href}
               aria-label={`مشاهده ${label}`}
-              className="group flex h-full min-h-[340px] flex-col overflow-hidden rounded-2xl border border-border-soft bg-white shadow-card transition-[border-color,box-shadow] duration-200 hover:border-primary/25 hover:shadow-card-hover"
+              className="group flex h-full min-h-[310px] flex-col overflow-hidden rounded-2xl border border-border-soft bg-white shadow-card transition-[border-color,box-shadow] duration-200 hover:border-primary/25 hover:shadow-card-hover sm:min-h-[340px]"
             >
               <span className="relative block aspect-[4/3] overflow-hidden border-b border-border-soft bg-bg-soft">
                 <Image

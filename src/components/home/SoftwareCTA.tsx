@@ -1,39 +1,48 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import Link from 'next/link'
-import Image from 'next/image'
-import { motion, useReducedMotion } from 'framer-motion'
-import { Button } from '@/components/ui/button'
-import { Monitor, Smartphone, Bell, BarChart3 } from 'lucide-react'
+import { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import {
+  ArrowLeft,
+  BarChart3,
+  Bell,
+  MapPin,
+  Monitor,
+  Smartphone,
+} from "lucide-react";
 
-const ICONS = { monitor: Monitor, smartphone: Smartphone, bell: Bell, chart: BarChart3 }
-type SoftwareIcon = keyof typeof ICONS
+const ICONS = {
+  monitor: Monitor,
+  smartphone: Smartphone,
+  bell: Bell,
+  chart: BarChart3,
+};
 
-const FEATURES = [
-  { icon: 'monitor', label: 'دشبورد وب' },
-  { icon: 'smartphone', label: 'اپلیکیشن موبایل' },
-  { icon: 'bell', label: 'هشدار لحظه‌ای' },
-  { icon: 'chart', label: 'گزارش‌گیری' },
-]
-
-const EASE = [0.16, 1, 0.3, 1] as const
+type SoftwareIcon = keyof typeof ICONS;
 
 interface SoftwareFeature {
-  icon?: SoftwareIcon
-  label?: string
+  icon?: SoftwareIcon;
+  label?: string;
 }
 
 interface SoftwareCTAProps {
-  title?: string
-  subtitle?: string
-  cta_primary_text?: string
-  cta_primary_link?: string
-  cta_secondary_text?: string
-  cta_secondary_link?: string
-  softwareImage?: string | null
-  features?: SoftwareFeature[]
+  title?: string;
+  subtitle?: string;
+  cta_primary_text?: string;
+  cta_primary_link?: string;
+  cta_secondary_text?: string;
+  cta_secondary_link?: string;
+  softwareImage?: string | null;
+  features?: SoftwareFeature[];
 }
+
+const DEFAULT_FEATURES: SoftwareFeature[] = [
+  { icon: "monitor", label: "داشبورد تحت وب" },
+  { icon: "smartphone", label: "اپلیکیشن موبایل" },
+  { icon: "bell", label: "هشدارهای لحظه‌ای" },
+  { icon: "chart", label: "گزارش‌گیری دقیق" },
+];
 
 export default function SoftwareCTA({
   title,
@@ -45,209 +54,139 @@ export default function SoftwareCTA({
   softwareImage,
   features,
 }: SoftwareCTAProps) {
-  const [imgFailed, setImgFailed] = useState(false)
-  const showImage = softwareImage && !imgFailed
-  const visibleFeatures: SoftwareFeature[] = features?.length ? features : FEATURES as SoftwareFeature[]
-  const prefersReducedMotion = useReducedMotion()
+  const [imageFailed, setImageFailed] = useState(false);
+  const visibleFeatures = features?.length ? features : DEFAULT_FEATURES;
+  const showImage = Boolean(softwareImage && !imageFailed);
 
   return (
-    <div className="relative rounded-3xl overflow-hidden animated-border">
-      {/* Animated gradient border glow */}
-      {!prefersReducedMotion && (
-        <div className="absolute -inset-[1px] rounded-3xl opacity-30 pointer-events-none" aria-hidden="true"
-          style={{
-            background: 'linear-gradient(135deg, var(--accent), var(--primary), var(--accent), var(--primary))',
-            backgroundSize: '300% 300%',
-            animation: 'gradient-shift 6s ease infinite',
-            filter: 'blur(1px)',
-          }}
-        />
-      )}
+    <div className="overflow-hidden rounded-3xl border border-white/10 bg-dark text-white shadow-elevated">
+      <div className="grid items-center gap-10 p-6 sm:p-8 lg:grid-cols-[minmax(0,.9fr)_minmax(420px,1.1fr)] lg:gap-14 lg:p-12">
+        <div>
+          <p className="mb-4 flex items-center gap-2 text-sm font-medium text-accent">
+            <span
+              className="h-2 w-2 rounded-full bg-accent"
+              aria-hidden="true"
+            />
+            نرم‌افزار اختصاصی آتی فرزام
+          </p>
 
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-navy via-navy-dark to-navy-deeper rounded-3xl" />
+          <h2 className="text-3xl font-bold leading-tight text-white sm:text-4xl">
+            {title || "پلتفرم ردیابی هوشمند"}
+          </h2>
 
-      {/* Dot grid pattern */}
-      <div
-        className="absolute inset-0 opacity-[0.06] pointer-events-none"
-        aria-hidden="true"
-        style={{
-          backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)',
-          backgroundSize: '24px 24px',
-        }}
-      />
+          <p className="mt-5 max-w-[58ch] text-base leading-8 text-white/75">
+            {subtitle ||
+              "مدیریت ناوگان از هر دستگاه؛ با داشبورد وب، اپلیکیشن موبایل، هشدارهای فوری و گزارش‌گیری لحظه‌ای."}
+          </p>
 
-      {/* Animated glows */}
-      {!prefersReducedMotion && (
-        <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
-          <motion.div
-            className="absolute top-1/2 right-1/4 w-[350px] h-[350px] -translate-y-1/2 rounded-full opacity-[0.07]"
-            style={{ background: 'radial-gradient(circle, var(--accent) 0%, transparent 70%)' }}
-            animate={{ scale: [1, 1.2, 1], x: [0, 20, 0] }}
-            transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
-          />
-          <motion.div
-            className="absolute bottom-0 left-1/4 w-[250px] h-[250px] rounded-full opacity-[0.05]"
-            style={{ background: 'radial-gradient(circle, var(--primary) 0%, transparent 70%)' }}
-            animate={{ scale: [1, 1.15, 1] }}
-            transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut', delay: 4 }}
-          />
-        </div>
-      )}
-
-      <div className="relative p-5 sm:p-8 lg:p-12 xl:p-16 text-white overflow-hidden">
-        <div className="flex flex-col xl:flex-row items-center gap-10 xl:gap-16">
-          <div className="flex-1 text-center xl:text-right">
-            {/* Badge */}
-            <motion.div
-              initial={prefersReducedMotion ? false : { opacity: 0, y: -12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, ease: EASE }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-7"
-              style={{
-                background: 'rgba(255,255,255,0.06)',
-                border: '1px solid rgba(255,255,255,0.08)',
-                boxShadow: '0 0 20px rgba(20,184,166,0.08)',
-              }}
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-              <span className="text-xs font-semibold text-white/70">نرم‌افزار اختصاصی</span>
-            </motion.div>
-
-            {/* Title */}
-            <motion.h2
-              initial={prefersReducedMotion ? false : { opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: 0.1, ease: EASE }}
-              className="text-3xl lg:text-4xl xl:text-5xl font-semibold mb-5 leading-tight text-accent"
-            >
-              {title ?? 'پلتفرم ردیابی هوشمند'}
-            </motion.h2>
-
-            {/* Subtitle */}
-            <motion.p
-              initial={prefersReducedMotion ? false : { opacity: 0, y: 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2, ease: EASE }}
-              className="text-base lg:text-lg text-white/65 leading-[1.8] mb-9 max-w-lg mx-auto xl:mx-0"
-            >
-              {subtitle ?? 'مدیریت ناوگان از هر دستگاهی — دشبورد وب، اپلیکیشن موبایل و گزارش‌گیری لحظه‌ای'}
-            </motion.p>
-
-            {/* CTAs */}
-            <motion.div
-              initial={prefersReducedMotion ? false : { opacity: 0, y: 14 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.3, ease: EASE }}
-              className="flex gap-4 flex-wrap justify-center xl:justify-start items-center mb-10"
-            >
-              <Button
-                asChild
-                size="lg"
-                className="bg-accent hover:bg-accent-dark text-white rounded-xl px-8 transition-all duration-300 cursor-pointer"
-                style={{ boxShadow: '0 4px 14px rgba(20,184,166,0.25)' }}
-              >
-                <Link href={cta_primary_link ?? '/software'}>{cta_primary_text ?? 'آشنایی با نرم‌افزار'}</Link>
-              </Button>
-              <Button
-                asChild
-                variant="ghost"
-                size="lg"
-                className="text-white/65 hover:text-white hover:bg-white/[0.08] rounded-xl px-6 transition-all duration-300 cursor-pointer border border-white/[0.08] hover:border-white/[0.15]"
-              >
-                <Link href={cta_secondary_link ?? '/contact'}>{cta_secondary_text ?? 'درخواست دمو'}</Link>
-              </Button>
-            </motion.div>
-
-            {/* Feature chips */}
-            <motion.div
-              initial={prefersReducedMotion ? false : { opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.4, ease: EASE }}
-              className="flex gap-3 flex-wrap justify-center xl:justify-start"
-            >
-              {visibleFeatures.map(({ icon = 'monitor', label = 'ویژگی نرم‌افزار' }, i) => {
-                const Icon = ICONS[icon as SoftwareIcon] ?? Monitor
+          <ul role="list" className="mt-7 grid gap-3 sm:grid-cols-2">
+            {visibleFeatures.map(
+              ({ icon = "monitor", label = "ویژگی نرم‌افزار" }) => {
+                const Icon = ICONS[icon] || Monitor;
                 return (
-                  <motion.div
+                  <li
                     key={label}
-                    initial={prefersReducedMotion ? false : { opacity: 0, y: 10 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: 0.5 + i * 0.08, ease: EASE }}
-                    className="group flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-white/[0.05] border border-white/[0.08] text-sm font-medium hover:bg-white/[0.1] hover:border-accent/25 transition-all duration-300 cursor-default"
+                    className="flex min-h-12 items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 text-sm font-medium text-white/85"
                   >
-                    <Icon className="w-4 h-4 text-accent/70 group-hover:text-accent transition-colors duration-300" />
+                    <Icon
+                      className="h-4 w-4 shrink-0 text-accent"
+                      aria-hidden="true"
+                    />
                     {label}
-                  </motion.div>
-                )
-              })}
-            </motion.div>
-          </div>
-
-          {/* Dashboard mockup */}
-          <motion.div
-            initial={prefersReducedMotion ? false : { opacity: 0, x: -30, scale: 0.95 }}
-            whileInView={{ opacity: 1, x: 0, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2, ease: EASE }}
-            className="relative w-full xl:w-[520px] shrink-0 flex justify-center"
-          >
-            {showImage ? (
-              <div className="relative w-full aspect-[4/3]">
-                <Image src={softwareImage} alt={title ?? 'پلتفرم ردیابی هوشمند'} fill className="object-contain drop-shadow-2xl" sizes="(max-width: 1280px) 80vw, 520px" onError={() => setImgFailed(true)} />
-              </div>
-            ) : (
-              <div className="relative flex items-end justify-center gap-4 p-4 sm:p-8">
-                {/* Desktop mockup */}
-                <div className="hidden sm:block w-72 lg:w-80">
-                  <div className="rounded-t-xl border-[3px] border-b-0 border-white/10 overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
-                    <div className="flex items-center gap-1.5 px-3 py-2 bg-white/[0.06]">
-                      <span className="w-2 h-2 rounded-full bg-red-400/50" />
-                      <span className="w-2 h-2 rounded-full bg-yellow-400/50" />
-                      <span className="w-2 h-2 rounded-full bg-green-400/50" />
-                    </div>
-                    <div className="bg-navy-dark p-6 h-44 flex flex-col justify-center gap-3">
-                      <div className="h-2.5 w-3/4 rounded-full bg-white/20" />
-                      <div className="h-2 w-1/2 rounded-full bg-white/10" />
-                      <div className="flex gap-2 mt-3">
-                        <div className="h-12 w-24 rounded-lg bg-accent/25 border border-accent/10" />
-                        <div className="h-12 w-24 rounded-lg bg-white/[0.06] border border-white/[0.06]" />
-                        <div className="h-12 w-24 rounded-lg bg-accent/15 border border-accent/10" />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="h-3 rounded-b-xl bg-white/[0.06] border-[3px] border-t-0 border-white/10" />
-                  <div className="mx-auto w-14 h-1 rounded-b bg-white/10" />
-                </div>
-
-                {/* Mobile mockup */}
-                <div className="hidden min-[400px]:block w-24 lg:w-28 -ml-4 sm:-ml-6">
-                  <div className="rounded-2xl border-[3px] border-white/10 overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
-                    <div className="h-5 bg-white/[0.06] flex items-center justify-center">
-                      <span className="w-6 h-1 rounded-full bg-white/10" />
-                    </div>
-                    <div className="bg-navy-dark p-3 h-44 flex flex-col gap-2">
-                      <div className="h-1.5 w-3/4 rounded-full bg-white/20" />
-                      <div className="h-1.5 w-1/2 rounded-full bg-white/10" />
-                      <div className="flex-1 rounded-lg bg-white/[0.04] mt-1 border border-white/[0.04]" />
-                      <div className="h-7 rounded-lg bg-accent/30 border border-accent/10" />
-                    </div>
-                    <div className="h-5 bg-white/[0.06] flex items-center justify-center">
-                      <span className="w-8 h-1 rounded-full bg-white/10" />
-                    </div>
-                  </div>
-                </div>
-              </div>
+                  </li>
+                );
+              },
             )}
-          </motion.div>
+          </ul>
+
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <Link
+              href={cta_primary_link || "/software"}
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-accent px-6 text-sm font-semibold text-dark transition-colors duration-200 hover:bg-accent-light"
+            >
+              {cta_primary_text || "آشنایی با نرم‌افزار"}
+              <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+            </Link>
+            <Link
+              href={cta_secondary_link || "/contact"}
+              className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/20 bg-white/5 px-6 text-sm font-medium text-white transition-colors duration-200 hover:bg-white/10"
+            >
+              {cta_secondary_text || "درخواست دمو"}
+            </Link>
+          </div>
+        </div>
+
+        <div
+          className={
+            showImage
+              ? "relative aspect-[4/3] bg-transparent"
+              : "relative aspect-[4/3] overflow-hidden rounded-2xl border border-white/10 bg-dark-deeper"
+          }
+        >
+          {showImage ? (
+            <Image
+              src={softwareImage!}
+              alt={title || "نمای پلتفرم ردیابی هوشمند"}
+              fill
+              sizes="(max-width: 1024px) 100vw, 55vw"
+              className="object-contain"
+              onError={() => setImageFailed(true)}
+            />
+          ) : (
+            <div className="absolute inset-5 overflow-hidden rounded-xl border border-white/10 bg-white/5">
+              <div className="flex h-11 items-center justify-between border-b border-white/10 px-4">
+                <span className="text-xs font-semibold text-white/80">
+                  داشبورد مدیریت ناوگان
+                </span>
+                <span className="flex items-center gap-1.5 text-xs text-accent">
+                  <span className="h-2 w-2 rounded-full bg-accent" />
+                  آنلاین
+                </span>
+              </div>
+              <div className="absolute inset-x-0 bottom-0 top-11 grid gap-3 p-4 sm:grid-cols-[1.3fr_.7fr]">
+                <div className="relative overflow-hidden rounded-xl border border-white/10 bg-dark">
+                  <svg
+                    viewBox="0 0 460 260"
+                    className="absolute inset-0 h-full w-full text-white/10"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M-20 220C65 140 125 230 200 145S345 90 490 25"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeDasharray="7 8"
+                    />
+                    <path
+                      d="M20 35C110 95 185 25 270 95S410 175 480 135"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                    />
+                  </svg>
+                  <span className="absolute left-[30%] top-[38%] flex h-10 w-10 items-center justify-center rounded-full border-4 border-dark bg-accent text-dark">
+                    <MapPin className="h-5 w-5" />
+                  </span>
+                </div>
+                <div className="grid gap-3">
+                  <div className="rounded-xl border border-white/10 bg-white/5 p-3">
+                    <p className="text-xs text-white/50">خودروهای فعال</p>
+                    <p className="mt-2 text-xl font-semibold tabular-nums text-white">
+                      ۲۴
+                    </p>
+                  </div>
+                  <div className="rounded-xl border border-white/10 bg-white/5 p-3">
+                    <p className="text-xs text-white/50">هشدارهای امروز</p>
+                    <p className="mt-2 text-xl font-semibold tabular-nums text-accent">
+                      ۳
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
-  )
+  );
 }

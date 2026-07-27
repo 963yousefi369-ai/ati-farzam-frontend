@@ -1,105 +1,104 @@
-'use client'
-import Link from 'next/link'
-import Image from 'next/image'
-import { motion, useReducedMotion } from 'framer-motion'
-import { Button } from '@/components/ui/button'
-import { publicImageUrl } from '@/lib/api/django'
-import { ArrowLeft, Shield, Clock, Users } from 'lucide-react'
+import Image from "next/image";
+import Link from "next/link";
+import { ArrowLeft, Clock3, ShieldCheck, Users } from "lucide-react";
+import { publicImageUrl } from "@/lib/api/django";
 
 interface AboutCompactProps {
-  title?: string
-  aboutText?: string
-  aboutImage?: string | null
-  ctaText?: string
-  ctaLink?: string
+  title?: string;
+  aboutText?: string;
+  aboutImage?: string | null;
+  ctaText?: string;
+  ctaLink?: string;
 }
 
-const EASE = [0.16, 1, 0.3, 1] as const
-
 const HIGHLIGHTS = [
-  { icon: Shield, label: 'ضمانت اصالت' },
-  { icon: Clock, label: '۱۲ سال تجربه' },
-  { icon: Users, label: '+۶۰۰۰ مشتری' },
-]
+  { icon: ShieldCheck, value: "ضمانت معتبر", label: "اصالت و سلامت دستگاه" },
+  { icon: Clock3, value: "۱۲ سال", label: "تجربه تخصصی" },
+  { icon: Users, value: "+۶۰۰۰", label: "مشتری فعال" },
+];
 
-export default function AboutCompact({ title, aboutText, aboutImage, ctaText, ctaLink }: AboutCompactProps) {
-  const imageUrl = aboutImage ? publicImageUrl(aboutImage) : null
-  const prefersReducedMotion = useReducedMotion()
+export default function AboutCompact({
+  title,
+  aboutText,
+  aboutImage,
+  ctaText,
+  ctaLink,
+}: AboutCompactProps) {
+  const imageUrl = aboutImage ? publicImageUrl(aboutImage) : null;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-      {imageUrl && (
-        <motion.div
-          initial={prefersReducedMotion ? false : { opacity: 0, x: -24 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, ease: EASE }}
-          className="relative aspect-[4/3] rounded-2xl overflow-hidden order-2 md:order-1 group hover-glow border border-accent/10"
-          style={{ boxShadow: '0 1px 4px rgba(59,90,128,0.04), 0 2px 10px rgba(59,90,128,0.03)' }}
-        >
-          <Image
-            src={imageUrl}
-            alt={title ?? 'درباره آتی فرزام ایرانیان'}
-            fill
-            className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
-            sizes="(max-width: 768px) 100vw, 50vw"
-            loading="lazy"
-          />
-          {/* Hover overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-primary/15 via-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-          {/* Corner accent */}
-          <div className="absolute bottom-4 right-4 w-10 h-10 rounded-xl bg-white/90 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-400 shadow-sm">
-            <ArrowLeft className="w-4 h-4 text-primary" />
-          </div>
-        </motion.div>
-      )}
-
-      <motion.div
-        initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6, delay: 0.1, ease: EASE }}
-        className={imageUrl ? 'order-1 md:order-2' : 'md:col-span-2'}
-      >
-        {/* Eyebrow badge */}
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/5 border border-primary/10 mb-5">
-          <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-          <span className="text-xs font-semibold text-primary">درباره ما</span>
-        </div>
-
-        <h2 className="text-2xl lg:text-3xl font-semibold text-text-heading mb-5 leading-tight">
-          {title ?? 'آتی فرزام ایرانیان'}
-        </h2>
-
-        <p className="text-sm text-text-muted leading-[1.9] mb-8 max-w-lg">
-          {aboutText ?? 'شرکت آتی فرزام ایرانیان با بیش از یک دهه تجربه در حوزه ردیابی GPS، راهکارهای جامع مدیریت ناوگان و امنیت خودرو را به سازمان‌ها و افراد ارائه می‌دهد.'}
+    <div
+      className={
+        imageUrl
+          ? "grid items-center gap-10 lg:grid-cols-2 lg:gap-16"
+          : "mx-auto max-w-3xl"
+      }
+    >
+      <div>
+        <p className="mb-4 flex items-center gap-2 text-sm font-medium text-primary">
+          <span className="h-2 w-2 rounded-full bg-accent" aria-hidden="true" />
+          درباره آتی فرزام
         </p>
 
-        {/* Highlights */}
-        <div className="flex flex-wrap gap-3 mb-8">
-          {HIGHLIGHTS.map(({ icon: Icon, label }) => (
-            <div
-              key={label}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-border-soft text-sm font-medium text-text-heading transition-all duration-300 hover:border-accent/20 hover:-translate-y-0.5"
-              style={{ boxShadow: '0 2px 8px rgba(59,90,128,0.04)' }}
-            >
-              <Icon className="w-4 h-4 text-accent" strokeWidth={1.75} />
-              {label}
-            </div>
-          ))}
-        </div>
+        <h2 className="text-2xl font-bold leading-tight text-dark sm:text-3xl lg:text-4xl">
+          {title || "تجربه‌ای مطمئن در ردیابی هوشمند"}
+        </h2>
 
-        <Button
-          asChild
-          className="bg-primary text-white hover:bg-primary-dark rounded-xl px-7 py-3 transition-all duration-300 cursor-pointer shadow-[0_4px_14px_rgba(59,90,128,0.2)] hover:shadow-[0_8px_30px_rgba(59,90,128,0.3)]"
+        <p className="mt-5 max-w-[65ch] text-base leading-8 text-text-secondary">
+          {aboutText ||
+            "شرکت آتی فرزام ایرانیان با بیش از یک دهه تجربه در حوزه ردیابی GPS، راهکارهای جامع مدیریت ناوگان و امنیت خودرو را به سازمان‌ها و افراد ارائه می‌دهد."}
+        </p>
+
+        <ul
+          role="list"
+          aria-label="دستاوردهای آتی فرزام"
+          className="mt-7 grid gap-px overflow-hidden rounded-2xl border border-border-soft bg-border-soft sm:grid-cols-3"
         >
-          <Link href={ctaLink ?? '/about'} className="flex items-center gap-2">
-            {ctaText ?? 'بیشتر بدانید'}
-            <ArrowLeft className="w-4 h-4" />
-          </Link>
-        </Button>
-      </motion.div>
+          {HIGHLIGHTS.map(({ icon: Icon, value, label }) => (
+            <li key={label} className="flex items-center gap-3 bg-white p-4">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-light-tint text-primary">
+                <Icon className="h-5 w-5" aria-hidden="true" />
+              </span>
+              <span>
+                <strong className="block text-sm font-semibold text-dark">
+                  {value}
+                </strong>
+                <span className="mt-0.5 block text-xs leading-5 text-text-muted">
+                  {label}
+                </span>
+              </span>
+            </li>
+          ))}
+        </ul>
+
+        <Link
+          href={ctaLink || "/about"}
+          className="mt-7 inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-primary px-6 text-sm font-semibold text-white transition-colors duration-200 hover:bg-primary-dark"
+        >
+          {ctaText || "آشنایی بیشتر با ما"}
+          <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+        </Link>
+      </div>
+
+      {imageUrl && (
+        <div className="relative order-first aspect-[4/3] overflow-hidden rounded-3xl border border-border-soft bg-bg-soft shadow-card lg:order-last">
+          <Image
+            src={imageUrl}
+            alt={title || "تیم آتی فرزام ایرانیان"}
+            fill
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            className="object-cover"
+          />
+          <div className="absolute inset-x-4 bottom-4 rounded-2xl border border-white/20 bg-dark/80 p-4 text-white">
+            <p className="text-sm font-semibold text-white">
+              راهکار کامل فروش، نصب و پشتیبانی
+            </p>
+            <p className="mt-1 text-xs leading-5 text-white/70">
+              از انتخاب دستگاه تا فعال‌سازی و آموزش پنل
+            </p>
+          </div>
+        </div>
+      )}
     </div>
-  )
+  );
 }

@@ -1,16 +1,15 @@
-'use client'
-import { cn } from '@/lib/utils'
+import { cn } from "@/lib/utils";
 
 interface SectionTitleProps {
-  eyebrow?: string
-  title: string
-  subtitle?: string
-  align?: 'center' | 'right' | 'left'
-  centered?: boolean
-  dark?: boolean
-  className?: string
-  action?: React.ReactNode
-  as?: 'h1' | 'h2' | 'h3' | 'h4'
+  eyebrow?: string;
+  title: string;
+  subtitle?: string;
+  align?: "center" | "right" | "left";
+  centered?: boolean;
+  dark?: boolean;
+  className?: string;
+  action?: React.ReactNode;
+  as?: "h1" | "h2" | "h3" | "h4";
 }
 
 export default function SectionTitle({
@@ -22,49 +21,58 @@ export default function SectionTitle({
   dark = false,
   className,
   action,
-  as: Tag = 'h2',
+  as: Tag = "h2",
 }: SectionTitleProps) {
-  const isCentered = centered ?? align === 'center'
+  const isCentered = centered ?? align === "center";
 
   return (
-    <div
-      className={cn('mb-6 animate-fade-in-up', isCentered && 'text-center', className)}
-    >
-      <div className={cn('flex items-end justify-between gap-4', isCentered && 'flex-col items-center')}>
-        <div>
+    <div className={cn("mb-6", isCentered && "text-center", className)}>
+      <div
+        className={cn(
+          "flex flex-col items-start gap-4 sm:flex-row sm:items-end sm:justify-between",
+          isCentered && "items-center sm:flex-col sm:items-center",
+        )}
+      >
+        <div className="min-w-0">
           {eyebrow && (
-            <div className={cn(
-              'inline-flex items-center gap-1.5 text-xs font-semibold tracking-widest mb-3',
-              dark ? 'text-accent-light' : 'text-accent'
-            )}>
-              <span className="w-1 h-1 rounded-full bg-primary" />
+            <p
+              className={cn(
+                "mb-2 flex items-center gap-2 text-xs font-semibold",
+                dark ? "text-accent" : "text-accent-dark",
+              )}
+            >
+              <span
+                className="h-1.5 w-1.5 rounded-full bg-accent"
+                aria-hidden="true"
+              />
               {eyebrow}
-            </div>
+            </p>
           )}
-          <Tag className={cn(
-            'text-3xl md:text-4xl font-semibold leading-tight',
-            dark ? 'text-white' : 'text-text-heading'
-          )}>
+          <Tag
+            className={cn(
+              "break-words text-2xl font-bold leading-tight sm:text-3xl lg:text-4xl",
+              dark ? "text-white" : "text-dark",
+            )}
+          >
             {title}
           </Tag>
-          {/* Gradient accent underline */}
-          <div className={cn(
-            'h-[3px] w-16 rounded-full mt-3',
-            dark
-              ? 'bg-gradient-to-l from-accent/60 to-transparent'
-              : 'bg-gradient-to-l from-accent via-primary/40 to-transparent'
-          )} />
+          <span
+            className="mt-3 block h-0.5 w-12 bg-accent"
+            aria-hidden="true"
+          />
           {subtitle && (
-            <p className={cn(
-              'text-base md:text-lg mt-3 leading-relaxed max-w-3xl',
-              dark ? 'text-slate-200' : 'text-text-muted'
-            )}>
+            <p
+              className={cn(
+                "mt-3 max-w-3xl text-sm leading-7 sm:text-base",
+                dark ? "text-white/70" : "text-text-muted",
+              )}
+            >
               {subtitle}
             </p>
           )}
         </div>
-        {action && <div className="shrink-0">{action}</div>}
+        {action && <div className="w-full shrink-0 sm:w-auto">{action}</div>}
       </div>
     </div>
-  )
+  );
 }
