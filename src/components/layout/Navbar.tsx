@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -66,15 +66,28 @@ export default function Navbar() {
     return () => window.removeEventListener("keydown", close);
   }, []);
 
-  const openMobileSearch = () => {
+  // Stable identities: MobileMenu keeps these in effect dependency arrays.
+  const closeMobileMenu = useCallback(() => setMenuOpen(false), []);
+
+  const openMobileSearch = useCallback(() => {
     setMenuOpen(false);
     setSearchOpen(true);
-  };
+  }, []);
 
   return (
     <>
       <header className="sticky top-0 z-[var(--z-navbar)] border-b border-border-soft bg-white">
-        <div className="mx-auto flex h-navbar max-w-7xl items-center gap-3 px-4 sm:px-6 lg:gap-5 lg:px-8">
+        <div className="mx-auto flex h-navbar max-w-7xl items-center gap-2 px-4 sm:gap-3 sm:px-6 lg:gap-5 lg:px-8">
+          <button
+            type="button"
+            aria-label="بازکردن منو"
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen(true)}
+            className="-mr-1 flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-xl text-dark transition-colors hover:bg-bg-soft xl:hidden"
+          >
+            <Menu className="h-5 w-5" aria-hidden="true" />
+          </button>
+
           <Link
             href="/"
             aria-label={siteName || "آتی فرزام ایرانیان"}
@@ -235,15 +248,6 @@ export default function Navbar() {
               )}
             </Link>
             <AccountMenu />
-            <button
-              type="button"
-              aria-label="بازکردن منو"
-              aria-expanded={menuOpen}
-              onClick={() => setMenuOpen(true)}
-              className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-xl text-dark transition-colors hover:bg-bg-soft xl:hidden"
-            >
-              <Menu className="h-5 w-5" />
-            </button>
           </div>
         </div>
       </header>
@@ -281,7 +285,7 @@ export default function Navbar() {
 
       <MobileMenu
         open={menuOpen}
-        onClose={() => setMenuOpen(false)}
+        onClose={closeMobileMenu}
         onSearchClick={openMobileSearch}
       />
     </>

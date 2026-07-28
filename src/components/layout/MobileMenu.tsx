@@ -91,7 +91,13 @@ export default function MobileMenu({
     };
   }, [open, onClose, trapFocus]);
 
+  // Close on real navigation only. Depending on `onClose` alone re-ran this
+  // effect on every parent render (the parent passes an inline arrow), which
+  // closed the drawer in the same tick it was opened.
+  const lastPathname = useRef(pathname);
   useEffect(() => {
+    if (lastPathname.current === pathname) return;
+    lastPathname.current = pathname;
     onClose();
   }, [pathname, onClose]);
 

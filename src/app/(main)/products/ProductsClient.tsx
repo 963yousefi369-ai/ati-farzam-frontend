@@ -1,61 +1,72 @@
-'use client'
+"use client";
 
-import { useState, useEffect, useRef } from 'react'
-import { useRouter } from 'next/navigation'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
-  Search, PackageX, SlidersHorizontal, X, ChevronDown,
-} from 'lucide-react'
-import ProductCard from '@/components/product/ProductCard'
-import { ProductSkeletonGrid } from '@/components/product/ProductSkeleton'
-import AfiPagination from '@/components/shared/Pagination'
-import { BreadcrumbTrail } from '@/components/trail'
-import EmptyState from '@/components/shared/EmptyState'
-import { SectionHeader } from '@/components/ui/SectionHeader'
-import { motion, AnimatePresence } from 'framer-motion'
-import { cn, toFa } from '@/lib/utils'
-import { MOCK_PRODUCT_LIST, MOCK_CATEGORIES, MOCK_IMAGE_MAP } from '@/__mocks__/products'
+  ChevronDown,
+  PackageX,
+  Search,
+  SlidersHorizontal,
+  X,
+} from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import ProductCard from "@/components/product/ProductCard";
+import { ProductSkeletonGrid } from "@/components/product/ProductSkeleton";
+import AfiPagination from "@/components/shared/Pagination";
+import EmptyState from "@/components/shared/EmptyState";
+import RouteArtwork from "@/components/shared/RouteArtwork";
+import { BreadcrumbTrail } from "@/components/trail";
+import { cn, toFa } from "@/lib/utils";
+import { MOCK_PRODUCT_LIST, MOCK_IMAGE_MAP } from "@/__mocks__/products";
 
 interface Category {
-  id: number | string
-  name: string
+  id: number | string;
+  name: string;
 }
 
 interface Product {
-  id: string | number
-  name: string
-  price: number
-  compare_price?: number
-  in_stock?: boolean
-  stock?: number
-  slug?: string
+  id: string | number;
+  name: string;
+  price: number;
+  compare_price?: number;
+  in_stock?: boolean;
+  stock?: number;
+  slug?: string;
+}
+
+interface ApiProduct extends Record<string, unknown> {
+  id: string | number;
+  name: string;
+  price: number;
+  effective_price?: number;
+  discount_price?: number;
+  is_on_sale?: boolean;
+  stock?: number;
+  image?: string;
 }
 
 interface ProductsClientProps {
-  initialProducts: Product[]
-  initialTotal: number
-  initialTotalPages: number
-  categories: Category[]
-  imageMap: Record<string, string>
-  initialPage: number
-  initialCategory: string
-  initialSearch: string
+  initialProducts: Product[];
+  initialTotal: number;
+  initialTotalPages: number;
+  categories: Category[];
+  imageMap: Record<string, string>;
+  initialPage: number;
+  initialCategory: string;
+  initialSearch: string;
 }
 
-const PAGE_SIZE = 12
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? ''
+const PAGE_SIZE = 12;
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "";
 
-function usePrefersReducedMotion() {
-  const [prefers, setPrefers] = useState(false)
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
-    setPrefers(mq.matches)
-    const handler = (e: MediaQueryListEvent) => setPrefers(e.matches)
-    mq.addEventListener('change', handler)
-    return () => mq.removeEventListener('change', handler)
-  }, [])
-  return prefers
+function normalize(raw: ApiProduct): Product {
+  return {
+    ...raw,
+    price: raw.effective_price ?? raw.discount_price ?? raw.price,
+    compare_price: raw.is_on_sale ? raw.price : undefined,
+    in_stock: (raw.stock ?? 0) > 0,
+  };
 }
 
 export default function ProductsClient({
@@ -68,219 +79,270 @@ export default function ProductsClient({
   initialCategory,
   initialSearch,
 }: ProductsClientProps) {
-  const router = useRouter()
-  const reducedMotion = usePrefersReducedMotion()
+  const router = useRouter();
 
-  const [products, setProducts] = useState<Product[]>(initialProducts)
-  const [totalPages, setTotalPages] = useState(initialTotalPages)
-  const [loading, setLoading] = useState(false)
-  const [imageMap, setImageMap] = useState<Record<string, string>>(initialImageMap)
-  const [resultCount, setResultCount] = useState(initialTotal)
+  const [products, setProducts] = useState<Product[]>(initialProducts);
+  const [totalPages, setTotalPages] = useState(initialTotalPages);
+  const [loading, setLoading] = useState(false);
+  const [imageMap, setImageMap] =
+    useState<Record<string, string>>(initialImageMap);
+  const [resultCount, setResultCount] = useState(initialTotal);
 
-  const [search, setSearch] = useState(initialSearch)
-  const [activeCategory, setActiveCategory] = useState(initialCategory)
-  const [page, setPage] = useState(initialPage)
-  const [priceMin, setPriceMin] = useState('')
-  const [priceMax, setPriceMax] = useState('')
-  const [filtersOpen, setFiltersOpen] = useState(false)
+  const [search, setSearch] = useState(initialSearch);
+  const [activeCategory, setActiveCategory] = useState(initialCategory);
+  const [page, setPage] = useState(initialPage);
+  const [priceMin, setPriceMin] = useState("");
+  const [priceMax, setPriceMax] = useState("");
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
-  const [debouncedSearch, setDebouncedSearch] = useState(initialSearch)
+  const [debouncedSearch, setDebouncedSearch] = useState(initialSearch);
+  const [debouncedPriceMin, setDebouncedPriceMin] = useState("");
+  const [debouncedPriceMax, setDebouncedPriceMax] = useState("");
+
   useEffect(() => {
-    const t = setTimeout(() => setDebouncedSearch(search), 500)
-    return () => clearTimeout(t)
-  }, [search])
+    const t = setTimeout(() => setDebouncedSearch(search), 400);
+    return () => clearTimeout(t);
+  }, [search]);
 
-  const [debouncedPriceMin, setDebouncedPriceMin] = useState('')
-  const [debouncedPriceMax, setDebouncedPriceMax] = useState('')
   useEffect(() => {
-    const t = setTimeout(() => setDebouncedPriceMin(priceMin), 500)
-    return () => clearTimeout(t)
-  }, [priceMin])
-  useEffect(() => {
-    const t = setTimeout(() => setDebouncedPriceMax(priceMax), 500)
-    return () => clearTimeout(t)
-  }, [priceMax])
+    const t = setTimeout(() => setDebouncedPriceMin(priceMin), 500);
+    return () => clearTimeout(t);
+  }, [priceMin]);
 
-  const isFirstRender = useRef(true)
+  useEffect(() => {
+    const t = setTimeout(() => setDebouncedPriceMax(priceMax), 500);
+    return () => clearTimeout(t);
+  }, [priceMax]);
+
+  // An inverted range is a user typo, not a query. Never send it to the API.
+  const invalidRange =
+    Boolean(priceMin) &&
+    Boolean(priceMax) &&
+    Number(priceMin) > Number(priceMax);
+
+  const isFirstRender = useRef(true);
 
   useEffect(() => {
     if (isFirstRender.current) {
-      isFirstRender.current = false
-      return
+      isFirstRender.current = false;
+      return;
     }
+    if (invalidRange) return;
 
-    const controller = new AbortController()
+    const controller = new AbortController();
 
     const fetchProducts = async () => {
-      setLoading(true)
+      setLoading(true);
       try {
-        const params = new URLSearchParams()
-        params.set('page', String(page))
-        params.set('page_size', String(PAGE_SIZE))
-        if (activeCategory) params.set('category_id', activeCategory)
-        if (debouncedSearch) params.set('search', debouncedSearch)
-        if (debouncedPriceMin) params.set('price_min', debouncedPriceMin)
-        if (debouncedPriceMax) params.set('price_max', debouncedPriceMax)
+        const params = new URLSearchParams();
+        params.set("page", String(page));
+        params.set("page_size", String(PAGE_SIZE));
+        if (activeCategory) params.set("category_id", activeCategory);
+        if (debouncedSearch) params.set("search", debouncedSearch);
+        if (debouncedPriceMin) params.set("price_min", debouncedPriceMin);
+        if (debouncedPriceMax) params.set("price_max", debouncedPriceMax);
 
         const res = await fetch(`${API_URL}/api/products?${params}`, {
           signal: controller.signal,
-          headers: { 'Content-Type': 'application/json' },
-        })
-        if (!res.ok) throw new Error(`HTTP ${res.status}`)
-        const data = await res.json()
-        const rawList: any[] = Array.isArray(data) ? data : (data.results ?? [])
-        const count: number = data.count ?? rawList.length
-        const list: Product[] = rawList.map((p: any) => ({
-          ...p,
-          price: p.effective_price ?? p.discount_price ?? p.price,
-          compare_price: p.is_on_sale ? p.price : undefined,
-          in_stock: p.stock > 0,
-        }))
+          headers: { "Content-Type": "application/json" },
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-        if (list.length === 0) {
-          setProducts(MOCK_PRODUCT_LIST)
-          setResultCount(MOCK_PRODUCT_LIST.length)
-          setTotalPages(1)
-        } else {
-          setProducts(list)
-          setResultCount(count)
-          setTotalPages(Math.max(1, Math.ceil(count / PAGE_SIZE)))
-        }
+        const data = await res.json();
+        const rawList: ApiProduct[] = Array.isArray(data)
+          ? data
+          : (data.results ?? []);
+        const count: number = data.count ?? rawList.length;
 
-        // Build imageMap from the products response (image field is included in each product)
-        const newImageMap: Record<string, string> = {}
+        // An empty result is a valid answer to a filter — show the empty
+        // state instead of falling back to placeholder products.
+        setProducts(rawList.map(normalize));
+        setResultCount(count);
+        setTotalPages(Math.max(1, Math.ceil(count / PAGE_SIZE)));
+
+        const nextImages: Record<string, string> = {};
         for (const p of rawList) {
-          if (p.image) newImageMap[String(p.id)] = p.image
+          if (p.image) nextImages[String(p.id)] = p.image;
         }
-        if (Object.keys(newImageMap).length > 0) {
-          setImageMap((prev) => ({ ...prev, ...newImageMap }))
+        if (Object.keys(nextImages).length > 0) {
+          setImageMap((prev) => ({ ...prev, ...nextImages }));
         }
-      } catch (err: any) {
-        if (err.name === 'AbortError') return
-        console.error('Products fetch error:', err)
-        setProducts(MOCK_PRODUCT_LIST)
-        setResultCount(MOCK_PRODUCT_LIST.length)
-        setTotalPages(1)
-        setImageMap(MOCK_IMAGE_MAP)
+      } catch (err) {
+        if (err instanceof DOMException && err.name === "AbortError") return;
+        console.error("Products fetch error:", err);
+        setProducts(MOCK_PRODUCT_LIST);
+        setResultCount(MOCK_PRODUCT_LIST.length);
+        setTotalPages(1);
+        setImageMap(MOCK_IMAGE_MAP);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchProducts()
-    return () => controller.abort()
-  }, [page, activeCategory, debouncedSearch, debouncedPriceMin, debouncedPriceMax])
+    fetchProducts();
+    return () => controller.abort();
+  }, [
+    page,
+    activeCategory,
+    debouncedSearch,
+    debouncedPriceMin,
+    debouncedPriceMax,
+    invalidRange,
+  ]);
 
   useEffect(() => {
-    const params = new URLSearchParams()
-    if (page > 1) params.set('page', String(page))
-    if (activeCategory) params.set('category', activeCategory)
-    if (debouncedSearch) params.set('search', debouncedSearch)
-    const qs = params.toString()
-    router.replace(`/products${qs ? '?' + qs : ''}`, { scroll: false })
-  }, [page, activeCategory, debouncedSearch, router])
+    const params = new URLSearchParams();
+    if (page > 1) params.set("page", String(page));
+    if (activeCategory) params.set("category", activeCategory);
+    if (debouncedSearch) params.set("search", debouncedSearch);
+    const qs = params.toString();
+    router.replace(`/products${qs ? "?" + qs : ""}`, { scroll: false });
+  }, [page, activeCategory, debouncedSearch, router]);
 
-  const handleCategory = (catId: string) => {
-    setActiveCategory(catId)
-    setPage(1)
-  }
+  const handleCategory = useCallback((catId: string) => {
+    setActiveCategory(catId);
+    setPage(1);
+  }, []);
 
-  const handlePageChange = (pg: number) => {
-    setPage(pg)
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
+  const handlePageChange = useCallback((pg: number) => {
+    setPage(pg);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
 
-  const clearFilters = () => {
-    setSearch('')
-    setActiveCategory('')
-    setPriceMin('')
-    setPriceMax('')
-    setPage(1)
-  }
+  const clearFilters = useCallback(() => {
+    setSearch("");
+    setActiveCategory("");
+    setPriceMin("");
+    setPriceMax("");
+    setPage(1);
+  }, []);
 
-  const hasActiveFilters = activeCategory || search || priceMin || priceMax
-  const activeCategoryName = categories.find((c) => String(c.id) === activeCategory)?.name
+  const activeCategoryName = useMemo(
+    () => categories.find((c) => String(c.id) === activeCategory)?.name,
+    [categories, activeCategory],
+  );
+
+  const activeFilterCount =
+    (activeCategory ? 1 : 0) +
+    (search ? 1 : 0) +
+    (priceMin ? 1 : 0) +
+    (priceMax ? 1 : 0);
+  const hasActiveFilters = activeFilterCount > 0;
+
+  const chipClass = (active: boolean) =>
+    cn(
+      "flex min-h-11 shrink-0 snap-start items-center rounded-full border px-4 text-sm font-medium transition-colors duration-200",
+      active
+        ? "border-primary bg-primary text-white"
+        : "border-border-soft bg-white text-text-secondary hover:border-primary/30 hover:text-primary",
+    );
 
   return (
-    <div className="max-w-[1440px] mx-auto px-6 lg:px-10 py-section-mobile lg:py-section-desktop">
-      {/* Breadcrumb */}
-      <div className="mb-5">
+    <div className="mx-auto max-w-[1440px] px-4 py-section-mobile sm:px-6 lg:px-10 lg:py-section-desktop">
+      <div className="mb-4">
         <BreadcrumbTrail dark={false} />
       </div>
 
       {/* Header */}
-      <SectionHeader
-        title="محصولات"
-        className="mb-6"
-        action={
-          <p className="text-sm text-text-muted hidden sm:block">
-            ردیاب GPS حرفه‌ای برای انواع کاربردها
+      <header className="relative mb-6 overflow-hidden rounded-3xl border border-border-soft bg-white px-5 py-7 sm:px-8 sm:py-9">
+        <RouteArtwork className="pointer-events-none absolute inset-y-0 left-0 hidden w-1/2 text-primary/25 lg:block" />
+        <div className="relative">
+          <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-accent">
+            GPS Product Catalog
           </p>
-        }
-      />
+          <h1 className="mt-2 text-2xl font-semibold leading-9 text-text-heading sm:text-3xl">
+            محصولات
+          </h1>
+          <p className="mt-2 max-w-md text-sm leading-7 text-text-muted">
+            ردیاب GPS حرفه‌ای برای خودرو، موتورسیکلت و ناوگان سازمانی
+          </p>
+        </div>
+      </header>
 
       {/* Filter bar */}
-      <div className="mb-6 space-y-3">
-        {/* Search + filter toggle */}
-        <div className="flex gap-3">
+      <div className="sticky top-0 z-20 -mx-4 mb-5 space-y-3 border-b border-border-soft/70 bg-white/95 px-4 py-3 backdrop-blur sm:-mx-6 sm:px-6 lg:static lg:mx-0 lg:border-0 lg:bg-transparent lg:px-0 lg:py-0 lg:backdrop-blur-none">
+        <div className="flex gap-2 sm:gap-3">
           <div className="relative flex-1">
-            <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none" />
+            <Search
+              className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted"
+              aria-hidden="true"
+            />
             <Input
               value={search}
-              onChange={(e) => { setSearch(e.target.value); setPage(1) }}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setPage(1);
+              }}
               placeholder="جستجوی محصول…"
               aria-label="جستجوی محصول"
               name="product-search"
               autoComplete="off"
               spellCheck={false}
-              className="pr-9 bg-white border-border-soft focus-visible:ring-teal rounded-xl h-11 text-sm"
+              className="h-11 rounded-xl border-border-soft bg-white pl-10 pr-9 text-sm focus-visible:ring-accent/40"
             />
+            {search && (
+              <button
+                type="button"
+                onClick={() => {
+                  setSearch("");
+                  setPage(1);
+                }}
+                aria-label="پاک کردن جستجو"
+                className="absolute left-1 top-1/2 flex h-9 w-9 -translate-y-1/2 cursor-pointer items-center justify-center rounded-lg text-text-muted transition-colors hover:bg-bg-muted hover:text-text-heading"
+              >
+                <X className="h-4 w-4" aria-hidden="true" />
+              </button>
+            )}
           </div>
+
           <button
-            onClick={() => setFiltersOpen(!filtersOpen)}
+            type="button"
+            onClick={() => setFiltersOpen((v) => !v)}
             aria-expanded={filtersOpen}
             aria-controls="price-filter-panel"
             className={cn(
-              'flex items-center gap-2 px-4 h-11 rounded-xl border text-sm font-medium transition-colors duration-200',
+              "flex min-h-11 shrink-0 cursor-pointer items-center gap-2 rounded-xl border px-4 text-sm font-medium transition-colors duration-200",
               filtersOpen
-                ? 'bg-primary text-white border-teal'
-                : 'bg-white text-text-secondary border-border-soft hover:border-accent/40'
+                ? "border-primary bg-primary text-white"
+                : "border-border-soft bg-white text-text-secondary hover:border-accent/40",
             )}
           >
-            <SlidersHorizontal className="w-4 h-4" />
-            <span className="hidden sm:inline">فیلترها</span>
-            <ChevronDown className={cn('w-3.5 h-3.5 transition-transform', filtersOpen && 'rotate-180')} />
+            <SlidersHorizontal className="h-4 w-4" aria-hidden="true" />
+            <span className="hidden sm:inline">قیمت</span>
+            <ChevronDown
+              className={cn(
+                "h-3.5 w-3.5 transition-transform duration-200",
+                filtersOpen && "rotate-180",
+              )}
+              aria-hidden="true"
+            />
           </button>
         </div>
 
-        {/* Category chips */}
+        {/* Category chips — horizontal rail on mobile, wrap on desktop */}
         {categories.length > 0 && (
-          <div className="flex flex-wrap gap-2" role="radiogroup" aria-label="دسته‌بندی محصولات">
+          <div
+            role="radiogroup"
+            aria-label="دسته‌بندی محصولات"
+            className="-mx-4 flex snap-x snap-mandatory gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:-mx-6 sm:px-6 lg:mx-0 lg:flex-wrap lg:overflow-visible lg:px-0"
+          >
             <button
-              onClick={() => handleCategory('')}
+              type="button"
               role="radio"
-              aria-checked={activeCategory === ''}
-              className={cn(
-                'rounded-full px-4 py-2.5 text-sm font-medium transition-colors duration-200 border min-h-[44px]',
-                activeCategory === ''
-                  ? 'bg-primary text-white border-navy'
-                  : 'bg-white text-text-secondary border-border-soft hover:border-primary/30'
-              )}
+              aria-checked={activeCategory === ""}
+              onClick={() => handleCategory("")}
+              className={chipClass(activeCategory === "")}
             >
               همه
             </button>
             {categories.map((cat) => (
               <button
                 key={cat.id}
-                onClick={() => handleCategory(String(cat.id))}
+                type="button"
                 role="radio"
                 aria-checked={activeCategory === String(cat.id)}
-                className={cn(
-                  'rounded-full px-4 py-2.5 text-sm font-medium transition-colors duration-200 border min-h-[44px]',
-                  activeCategory === String(cat.id)
-                    ? 'bg-primary text-white border-navy'
-                    : 'bg-white text-text-secondary border-border-soft hover:border-primary/30'
-                )}
+                onClick={() => handleCategory(String(cat.id))}
+                className={chipClass(activeCategory === String(cat.id))}
               >
                 {cat.name}
               </button>
@@ -288,107 +350,97 @@ export default function ProductsClient({
           </div>
         )}
 
-        {/* Expandable price filter */}
-        <AnimatePresence>
-          {filtersOpen && (
-            <motion.div
-              id="price-filter-panel"
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: reducedMotion ? 0 : 0.2 }}
-              className="overflow-visible"
-            >
-              <div className="flex items-center gap-3 p-4 rounded-xl bg-white border border-border-soft flex-wrap">
-                <span className="text-sm font-medium text-text-muted whitespace-nowrap">محدوده قیمت:</span>
-                <Input
-                  type="text"
-                  inputMode="numeric"
-                  value={priceMin}
-                  onChange={(e) => { setPriceMin(e.target.value.replace(/[^0-9]/g, '')); setPage(1) }}
-                  placeholder="حداقل…"
-                  aria-label="حداقل قیمت"
-                  name="price-min"
-                  autoComplete="off"
-                  spellCheck={false}
-                  className="bg-bg-muted border-border-soft focus-visible:ring-teal rounded-lg h-11 text-sm max-w-[140px]"
-                />
-                <span className="text-text-muted text-sm">تا</span>
-                <Input
-                  type="text"
-                  inputMode="numeric"
-                  value={priceMax}
-                  onChange={(e) => { setPriceMax(e.target.value.replace(/[^0-9]/g, '')); setPage(1) }}
-                  placeholder="حداکثر…"
-                  aria-label="حداکثر قیمت"
-                  name="price-max"
-                  autoComplete="off"
-                  spellCheck={false}
-                  className="bg-bg-muted border-border-soft focus-visible:ring-teal rounded-lg h-11 text-sm max-w-[140px]"
-                />
-                {priceMin && priceMax && Number(priceMin) > Number(priceMax) && (
-                  <p className="text-xs text-error w-full mt-1">حداقل قیمت نمی‌تواند بیشتر از حداکثر باشد</p>
-                )}
-              </div>
-            </motion.div>
+        {/* Price panel */}
+        <div
+          id="price-filter-panel"
+          hidden={!filtersOpen}
+          className="rounded-2xl border border-border-soft bg-white p-4"
+        >
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="whitespace-nowrap text-sm font-medium text-text-muted">
+              محدوده قیمت (تومان)
+            </span>
+            <Input
+              type="text"
+              inputMode="numeric"
+              value={priceMin}
+              onChange={(e) => {
+                setPriceMin(e.target.value.replace(/[^0-9]/g, ""));
+                setPage(1);
+              }}
+              placeholder="حداقل"
+              aria-label="حداقل قیمت"
+              aria-invalid={invalidRange}
+              name="price-min"
+              autoComplete="off"
+              spellCheck={false}
+              className="h-11 max-w-[130px] flex-1 rounded-lg border-border-soft bg-bg-muted text-sm tabular-nums focus-visible:ring-accent/40"
+            />
+            <span className="text-sm text-text-muted">تا</span>
+            <Input
+              type="text"
+              inputMode="numeric"
+              value={priceMax}
+              onChange={(e) => {
+                setPriceMax(e.target.value.replace(/[^0-9]/g, ""));
+                setPage(1);
+              }}
+              placeholder="حداکثر"
+              aria-label="حداکثر قیمت"
+              aria-invalid={invalidRange}
+              name="price-max"
+              autoComplete="off"
+              spellCheck={false}
+              className="h-11 max-w-[130px] flex-1 rounded-lg border-border-soft bg-bg-muted text-sm tabular-nums focus-visible:ring-accent/40"
+            />
+          </div>
+          {invalidRange && (
+            <p role="alert" className="mt-2 text-xs text-error">
+              حداقل قیمت نمی‌تواند بیشتر از حداکثر باشد
+            </p>
           )}
-        </AnimatePresence>
+        </div>
 
-        {/* Active filter tags */}
+        {/* Active filters */}
         {hasActiveFilters && (
-          <div className="flex items-center gap-2 flex-wrap" role="group" aria-label="فیلترهای فعال">
+          <div
+            role="group"
+            aria-label="فیلترهای فعال"
+            className="flex flex-wrap items-center gap-2"
+          >
             {activeCategory && activeCategoryName && (
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-accent-light text-accent text-sm font-medium min-h-[44px]">
-                {activeCategoryName}
-                <button
-                  onClick={() => handleCategory('')}
-                  aria-label={`حذف فیلتر دسته‌بندی: ${activeCategoryName}`}
-                  className="hover:text-accent-dark p-1.5 min-w-[44px] min-h-[44px] flex items-center justify-center"
-                >
-                  <X className="w-3.5 h-3.5" />
-                </button>
-              </span>
+              <FilterTag
+                label={activeCategoryName}
+                onRemove={() => handleCategory("")}
+                removeLabel={`حذف فیلتر دسته‌بندی: ${activeCategoryName}`}
+              />
             )}
             {search && (
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-accent-light text-accent text-sm font-medium min-h-[44px]">
-                &ldquo;{search}&rdquo;
-                <button
-                  onClick={() => setSearch('')}
-                  aria-label={`حذف فیلتر جستجو: ${search}`}
-                  className="hover:text-accent-dark p-1.5 min-w-[44px] min-h-[44px] flex items-center justify-center"
-                >
-                  <X className="w-3.5 h-3.5" />
-                </button>
-              </span>
+              <FilterTag
+                label={`«${search}»`}
+                onRemove={() => setSearch("")}
+                removeLabel={`حذف فیلتر جستجو: ${search}`}
+              />
             )}
             {priceMin && (
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-accent-light text-accent text-sm font-medium min-h-[44px]">
-                حداقل: {Number(priceMin).toLocaleString('fa-IR')} تومان
-                <button
-                  onClick={() => setPriceMin('')}
-                  aria-label="حذف فیلتر حداقل قیمت"
-                  className="hover:text-accent-dark p-1.5 min-w-[44px] min-h-[44px] flex items-center justify-center"
-                >
-                  <X className="w-3.5 h-3.5" />
-                </button>
-              </span>
+              <FilterTag
+                label={`از ${Number(priceMin).toLocaleString("fa-IR")} تومان`}
+                onRemove={() => setPriceMin("")}
+                removeLabel="حذف فیلتر حداقل قیمت"
+              />
             )}
             {priceMax && (
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-accent-light text-accent text-sm font-medium min-h-[44px]">
-                حداکثر: {Number(priceMax).toLocaleString('fa-IR')} تومان
-                <button
-                  onClick={() => setPriceMax('')}
-                  aria-label="حذف فیلتر حداکثر قیمت"
-                  className="hover:text-accent-dark p-1.5 min-w-[44px] min-h-[44px] flex items-center justify-center"
-                >
-                  <X className="w-3.5 h-3.5" />
-                </button>
-              </span>
+              <FilterTag
+                label={`تا ${Number(priceMax).toLocaleString("fa-IR")} تومان`}
+                onRemove={() => setPriceMax("")}
+                removeLabel="حذف فیلتر حداکثر قیمت"
+              />
             )}
             <button
+              type="button"
               onClick={clearFilters}
               aria-label="حذف همه فیلترها"
-              className="text-sm text-error hover:text-error-text font-medium transition-colors px-3 min-h-[44px] flex items-center"
+              className="flex min-h-11 cursor-pointer items-center px-2 text-sm font-medium text-error transition-colors hover:text-error-text"
             >
               حذف همه
             </button>
@@ -396,51 +448,53 @@ export default function ProductsClient({
         )}
       </div>
 
-      {/* Results count */}
-      <div className="flex items-center justify-between mb-4">
-        <p className="text-sm text-text-muted">
-          <span className="font-semibold text-text-heading">{toFa(resultCount)}</span> محصول
-        </p>
-      </div>
+      {/* Result count */}
+      <p
+        aria-live="polite"
+        className="mb-4 text-sm text-text-muted"
+        data-loading={loading ? "true" : undefined}
+      >
+        {loading ? (
+          "در حال به‌روزرسانی نتایج…"
+        ) : (
+          <>
+            <span className="font-semibold tabular-nums text-text-heading">
+              {toFa(resultCount)}
+            </span>{" "}
+            محصول
+            {hasActiveFilters ? " با فیلترهای فعلی" : ""}
+          </>
+        )}
+      </p>
 
-      {/* Products Grid */}
+      {/* Grid */}
       {loading ? (
-        <ProductSkeletonGrid count={PAGE_SIZE} />
+        <ProductSkeletonGrid count={Math.min(PAGE_SIZE, 8)} />
       ) : products.length === 0 ? (
         <EmptyState
-          icon={<PackageX className="w-10 h-10 text-text-muted" />}
-          title="محصولی یافت نشد"
-          description="فیلترها را تغییر دهید یا عبارت دیگری جستجو کنید"
+          icon={<PackageX className="h-6 w-6" aria-hidden="true" />}
+          title="محصولی با این فیلترها پیدا نشد"
+          description="عبارت جستجو را کوتاه‌تر کنید یا دسته‌بندی دیگری را انتخاب کنید."
           action={
             hasActiveFilters ? (
-              <Button
-                onClick={clearFilters}
-                variant="outline"
-                className="rounded-xl min-h-[44px]"
-              >
-                حذف فیلترها و نمایش همه محصولات
+              <Button onClick={clearFilters} className="pill min-h-11 px-6">
+                نمایش همه محصولات
               </Button>
             ) : undefined
           }
         />
       ) : (
         <>
-          <motion.div
-            initial={reducedMotion ? false : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: reducedMotion ? 0 : 0.25 }}
-          >
-            <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-4">
-              {products.map((product, i) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  imageUrl={imageMap[String(product.id)]}
-                  priority={i < 4}
-                />
-              ))}
-            </div>
-          </motion.div>
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4">
+            {products.map((product, i) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                imageUrl={imageMap[String(product.id)]}
+                priority={i < 4}
+              />
+            ))}
+          </div>
 
           {totalPages > 1 && (
             <div className="mt-8 flex justify-center">
@@ -454,5 +508,29 @@ export default function ProductsClient({
         </>
       )}
     </div>
-  )
+  );
+}
+
+function FilterTag({
+  label,
+  onRemove,
+  removeLabel,
+}: {
+  label: string;
+  onRemove: () => void;
+  removeLabel: string;
+}) {
+  return (
+    <span className="inline-flex items-center gap-1 rounded-full border border-accent/20 bg-accent-light py-1 pr-3 text-sm font-medium text-accent">
+      {label}
+      <button
+        type="button"
+        onClick={onRemove}
+        aria-label={removeLabel}
+        className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full transition-colors hover:bg-accent/10"
+      >
+        <X className="h-3.5 w-3.5" aria-hidden="true" />
+      </button>
+    </span>
+  );
 }
