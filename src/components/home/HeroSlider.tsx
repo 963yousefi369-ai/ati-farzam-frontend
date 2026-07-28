@@ -17,10 +17,6 @@ interface Banner {
   mobileImageUrl?: string;
   foregroundImageUrl?: string;
   foregroundImageUrlMobile?: string;
-  image_url?: string;
-  mobile_image_url?: string;
-  foreground_image_url?: string;
-  foreground_image_url_mobile?: string;
   cta_text?: string;
   cta_link?: string;
   cta2_text?: string;
@@ -50,24 +46,11 @@ const BENEFITS = [
 
 export default function HeroSlider({ banners }: HeroSliderProps) {
   const banner = banners?.find((item) => item.title?.trim()) ?? FALLBACK_BANNER;
-  const declaredDesktopBackground = banner.imageUrl || banner.image_url;
-  const declaredMobileBackground =
-    banner.mobileImageUrl || banner.mobile_image_url;
-  const desktopForeground =
-    banner.foregroundImageUrl || banner.foreground_image_url;
+  const desktopBackground = banner.imageUrl;
+  const mobileBackground = banner.mobileImageUrl || banner.imageUrl;
+  const desktopForeground = banner.foregroundImageUrl;
   const mobileForeground =
-    banner.foregroundImageUrlMobile ||
-    banner.foreground_image_url_mobile ||
-    desktopForeground;
-  const desktopBackground = declaredDesktopBackground || desktopForeground;
-  const mobileBackground =
-    declaredMobileBackground ||
-    declaredDesktopBackground ||
-    mobileForeground ||
-    desktopForeground;
-  const showDesktopForeground = Boolean(
-    desktopForeground && declaredDesktopBackground,
-  );
+    banner.foregroundImageUrlMobile || banner.foregroundImageUrl;
 
   return (
     <section
@@ -75,7 +58,7 @@ export default function HeroSlider({ banners }: HeroSliderProps) {
       aria-labelledby="hero-title"
     >
       {desktopBackground && (
-        <div className="absolute inset-0 z-0" aria-hidden="true">
+        <div className="absolute inset-0 -z-20" aria-hidden="true">
           <Image
             src={desktopBackground}
             alt=""
@@ -96,15 +79,15 @@ export default function HeroSlider({ banners }: HeroSliderProps) {
       )}
 
       <div
-        className="absolute inset-0 z-10 bg-gradient-to-t from-dark via-dark/75 to-dark/20 md:bg-gradient-to-l md:from-dark/95 md:via-dark/75 md:to-dark/25"
+        className="absolute inset-0 -z-10 bg-gradient-to-t from-dark via-dark/75 to-dark/20 md:bg-gradient-to-l md:from-dark/95 md:via-dark/75 md:to-dark/25"
         aria-hidden="true"
       />
       <div
-        className="absolute inset-x-0 bottom-0 z-10 h-72 bg-gradient-to-t from-dark to-transparent md:h-40 md:from-dark/50"
+        className="absolute inset-x-0 bottom-0 -z-10 h-72 bg-gradient-to-t from-dark to-transparent md:h-40 md:from-dark/50"
         aria-hidden="true"
       />
 
-      <div className="relative z-20 mx-auto grid min-h-[560px] max-w-7xl grid-cols-1 items-end px-4 pb-7 pt-24 sm:min-h-[620px] sm:px-6 sm:py-14 md:items-center lg:grid-cols-[minmax(0,1fr)_minmax(360px,.8fr)] lg:gap-14 lg:px-8 lg:py-20">
+      <div className="mx-auto grid min-h-[560px] max-w-7xl grid-cols-1 items-end px-4 pb-7 pt-24 sm:min-h-[620px] sm:px-6 sm:py-14 md:items-center lg:grid-cols-[minmax(0,1fr)_minmax(360px,.8fr)] lg:gap-14 lg:px-8 lg:py-20">
         <div className="min-w-0 max-w-xl md:max-w-2xl">
           <div className="mb-3 inline-flex min-h-8 items-center gap-2 rounded-full border border-white/20 bg-dark/35 px-3 text-xs font-medium text-white/90 backdrop-blur-sm sm:mb-5 sm:min-h-9 sm:px-3.5 sm:text-sm">
             <Signal className="h-4 w-4 text-accent" aria-hidden="true" />
@@ -159,10 +142,10 @@ export default function HeroSlider({ banners }: HeroSliderProps) {
         </div>
 
         <div className="hidden items-center justify-center md:flex lg:justify-end">
-          {showDesktopForeground ? (
+          {desktopForeground ? (
             <div className="relative w-full max-w-[520px]">
               <Image
-                src={desktopForeground!}
+                src={desktopForeground}
                 alt={banner.title}
                 width={760}
                 height={620}

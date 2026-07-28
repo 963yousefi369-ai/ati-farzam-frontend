@@ -1,69 +1,93 @@
-interface RouteArtworkProps {
+type RouteArtworkProps = {
   className?: string;
   label?: string;
-}
+};
 
-export default function RouteArtwork({
-  className = "",
-  label = "مسیر ردیابی هوشمند",
-}: RouteArtworkProps) {
+/**
+ * Signal Route artwork — the visual identity motif of ATI Farzam.
+ * Pure SVG, no dependencies, inherits color via `currentColor`.
+ */
+export default function RouteArtwork({ className, label }: RouteArtworkProps) {
   return (
     <svg
-      viewBox="0 0 900 420"
+      viewBox="0 0 720 320"
+      fill="none"
       className={className}
-      role="img"
+      role={label ? "img" : "presentation"}
       aria-label={label}
+      aria-hidden={label ? undefined : true}
       preserveAspectRatio="xMidYMid slice"
     >
       <defs>
         <pattern
           id="route-grid"
-          width="42"
-          height="42"
+          width="40"
+          height="40"
           patternUnits="userSpaceOnUse"
         >
           <path
-            d="M42 0H0V42"
-            fill="none"
+            d="M40 0H0V40"
             stroke="currentColor"
-            strokeOpacity=".13"
+            strokeWidth="0.6"
+            opacity="0.28"
           />
         </pattern>
-        <filter id="route-glow" x="-30%" y="-30%" width="160%" height="160%">
-          <feGaussianBlur stdDeviation="5" result="blur" />
-          <feMerge>
-            <feMergeNode in="blur" />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
+        <radialGradient id="route-glow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="currentColor" stopOpacity="0.55" />
+          <stop offset="100%" stopColor="currentColor" stopOpacity="0" />
+        </radialGradient>
       </defs>
-      <rect width="900" height="420" fill="url(#route-grid)" />
+
+      <rect width="720" height="320" fill="url(#route-grid)" />
+
       <path
-        d="M-35 350C105 285 150 390 275 282S468 120 585 188 760 238 940 45"
-        fill="none"
+        d="M-10 250C90 250 120 150 220 150C320 150 350 70 470 70C590 70 640 120 730 120"
         stroke="currentColor"
-        strokeOpacity=".28"
-        strokeWidth="3"
-        strokeDasharray="10 12"
+        strokeWidth="1.6"
+        opacity="0.55"
+        strokeLinecap="round"
       />
       <path
-        d="M-30 70C115 145 210 42 338 115S515 330 700 260 820 185 940 230"
-        fill="none"
+        d="M-10 300C120 300 170 210 300 210C430 210 480 260 730 200"
         stroke="currentColor"
-        strokeOpacity=".12"
-        strokeWidth="2"
+        strokeWidth="1.2"
+        strokeDasharray="6 10"
+        opacity="0.35"
+        strokeLinecap="round"
       />
-      <g fill="currentColor" filter="url(#route-glow)">
-        <circle cx="274" cy="282" r="6" />
-        <circle cx="585" cy="188" r="6" />
-        <circle cx="790" cy="205" r="6" />
-      </g>
-      <g fill="none" stroke="currentColor" strokeOpacity=".24">
-        <circle cx="274" cy="282" r="18" />
-        <circle cx="274" cy="282" r="32" />
-        <circle cx="585" cy="188" r="18" />
-        <circle cx="790" cy="205" r="18" />
-      </g>
+
+      {[
+        { x: 220, y: 150 },
+        { x: 470, y: 70 },
+        { x: 300, y: 210 },
+      ].map((node) => (
+        <g key={`${node.x}-${node.y}`}>
+          <circle
+            cx={node.x}
+            cy={node.y}
+            r="46"
+            fill="url(#route-glow)"
+            opacity="0.5"
+          />
+          <circle
+            cx={node.x}
+            cy={node.y}
+            r="20"
+            stroke="currentColor"
+            strokeWidth="1"
+            opacity="0.35"
+          />
+          <circle
+            cx={node.x}
+            cy={node.y}
+            r="11"
+            stroke="currentColor"
+            strokeWidth="1.2"
+            opacity="0.6"
+          />
+          <circle cx={node.x} cy={node.y} r="4" fill="currentColor" />
+        </g>
+      ))}
     </svg>
   );
 }
