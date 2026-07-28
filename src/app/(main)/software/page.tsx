@@ -10,6 +10,7 @@ import SoftwareFAQ from "@/components/software/SoftwareFAQ";
 import { Button } from "@/components/ui/button";
 import DashboardMockup from "@/components/svg/DashboardMockup";
 import {
+import { canonical } from "@/lib/seo";
   Monitor,
   Smartphone,
   Bell,
@@ -51,6 +52,7 @@ const ICON_MAP: Record<string, typeof MapPin> = {
 };
 
 export const metadata: Metadata = {
+  alternates: canonical("/software"),
   title: "نرم‌افزار مای فرزام | مدیریت ناوگان",
   description:
     "سامانه آنلاین مدیریت ناوگان و ردیابی خودرو — مشاهده موقعیت لحظه‌ای، گزارش‌گیری و هشدار",

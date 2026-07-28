@@ -1,99 +1,163 @@
-import type { Metadata } from 'next'
-import { getProducts, getCategories, djangoImageUrl } from '@/lib/api/django'
-import ProductsClient from './ProductsClient'
-import { MOCK_CATEGORIES, MOCK_IMAGE_MAP } from '@/__mocks__/products'
+import type { Metadata } from "next";
+import { getProducts, getCategories, djangoImageUrl } from "@/lib/api/django";
+import ProductsClient from "./ProductsClient";
+import { MOCK_CATEGORIES, MOCK_IMAGE_MAP } from "@/__mocks__/products";
+import {
+  SITE_NAME,
+  breadcrumbJsonLd,
+  canonical,
+  cleanJsonLd,
+  listingRobots,
+} from "@/lib/seo";
 
-export const revalidate = 120  // MOD-03: ISR — revalidate every 2 minutes instead of force-dynamic
+export const revalidate = 120;
+
+const PAGE_SIZE = 12;
+
+type SearchParams = Promise<{
+  page?: string;
+  category?: string;
+  search?: string;
+}>;
+
+interface ApiCategory {
+  id: number | string;
+  name: string;
+}
+
+interface ApiProduct {
+  id: string | number;
+  name: string;
+  price: number;
+  effective_price?: number;
+  discount_price?: number;
+  is_on_sale?: boolean;
+  stock?: number;
+  image?: string;
+}
 
 export async function generateMetadata({
   searchParams,
 }: {
-  searchParams: Promise<{ page?: string; category?: string; search?: string }>
+  searchParams: SearchParams;
 }): Promise<Metadata> {
-  const sp = await searchParams
-  const search = sp.search ?? ''
-  const category = sp.category ?? ''
+  const sp = await searchParams;
+  const search = sp.search ?? "";
+  const category = sp.category ?? "";
+  const page = Math.max(1, Number(sp.page ?? 1));
 
-  let title = 'محصولات | آتی فرزام ایرانیان'
-  let description = 'ردیاب GPS حرفه‌ای برای خودرو، موتورسیکلت و ناوگان'
+  let title = `\u0645\u062d\u0635\u0648\u0644\u0627\u062a | ${SITE_NAME}`;
+  let description =
+    "\u0631\u062f\u06cc\u0627\u0628 GPS \u062d\u0631\u0641\u0647\u200c\u0627\u06cc \u0628\u0631\u0627\u06cc \u062e\u0648\u062f\u0631\u0648\u060c \u0645\u0648\u062a\u0648\u0631\u0633\u06cc\u06a9\u0644\u062a \u0648 \u0646\u0627\u0648\u06af\u0627\u0646";
 
   if (search) {
-    title = `جستجو: ${search} | محصولات آتی فرزام`
-    description = `نتایج جستجوی "${search}" در محصولات ردیاب GPS آتی فرزام ایرانیان`
+    title = `\u062c\u0633\u062a\u062c\u0648: ${search} | \u0645\u062d\u0635\u0648\u0644\u0627\u062a`;
+    description = `\u0646\u062a\u0627\u06cc\u062c \u062c\u0633\u062a\u062c\u0648\u06cc \u00ab${search}\u00bb \u062f\u0631 \u0645\u062d\u0635\u0648\u0644\u0627\u062a \u0631\u062f\u06cc\u0627\u0628 GPS`;
   } else if (category) {
     try {
-      const categories = await getCategories()
-      const cat = categories.find((c: any) => String(c.id) === category)
-      if (cat) {
-        title = `${cat.name} | محصولات آتی فرزام ایرانیان`
-        description = `خرید ${cat.name} با ضمانت اصالت و پشتیبانی ۲۴ ساعته`
+      const categories: ApiCategory[] = await getCategories();
+      const match = categories.find((c) => String(c.id) === category);
+      if (match) {
+        title = `${match.name} | ${SITE_NAME}`;
+        description = `\u062e\u0631\u06cc\u062f ${match.name} \u0628\u0627 \u0636\u0645\u0627\u0646\u062a \u0627\u0635\u0627\u0644\u062a \u0648 \u067e\u0634\u062a\u06cc\u0628\u0627\u0646\u06cc \u06f2\u06f4 \u0633\u0627\u0639\u062a\u0647`;
       }
-    } catch {}
+    } catch {
+      // Metadata must never fail the page render.
+    }
   }
+
+  // Faceted and paginated URLs are near-duplicates. Keep them crawlable but
+  // point the canonical at the clean /products URL.
+  const isFiltered = Boolean(search) || Boolean(category) || page > 1;
 
   return {
     title,
     description,
-    openGraph: { title, description, locale: 'fa_IR', type: 'website' },
-  }
+    alternates: canonical("/products"),
+    robots: listingRobots(isFiltered),
+    openGraph: {
+      title,
+      description,
+      url: "/products",
+      locale: "fa_IR",
+      type: "website",
+    },
+  };
 }
 
 export default async function ProductsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ page?: string; category?: string; search?: string }>
+  searchParams: SearchParams;
 }) {
-  const sp = await searchParams
-  const page = Math.max(1, Number(sp.page ?? 1))
-  const category = sp.category ?? ''
-  const search = sp.search ?? ''
+  const sp = await searchParams;
+  const page = Math.max(1, Number(sp.page ?? 1));
+  const category = sp.category ?? "";
+  const search = sp.search ?? "";
 
-  const params: Record<string, string | number> = { page, page_size: 12 }
-  if (category) params.category_id = category
-  if (search) params.search = search
+  const params: Record<string, string | number> = {
+    page,
+    page_size: PAGE_SIZE,
+  };
+  if (category) params.category_id = category;
+  if (search) params.search = search;
 
-  let products: any[] = []
-  let totalCount = 0
-  let categories: any[] = []
+  let products: ApiProduct[] = [];
+  let totalCount = 0;
+  let categories: ApiCategory[] = [];
 
   try {
     const [productsData, categoriesData] = await Promise.all([
       getProducts(params),
       getCategories(),
-    ])
-    const rawList = Array.isArray(productsData) ? productsData : (productsData.results ?? [])
-    totalCount = productsData.count ?? rawList.length
-    products = rawList.map((p: any) => ({
+    ]);
+    const rawList: ApiProduct[] = Array.isArray(productsData)
+      ? productsData
+      : (productsData.results ?? []);
+    totalCount = productsData.count ?? rawList.length;
+    products = rawList.map((p) => ({
       ...p,
       price: p.effective_price ?? p.discount_price ?? p.price,
       compare_price: p.is_on_sale ? p.price : undefined,
-      in_stock: p.stock > 0,
-    }))
-    categories = categoriesData ?? []
-  } catch (err) {
-    console.error('Products fetch error:', err)
-    categories = MOCK_CATEGORIES
+      in_stock: (p.stock ?? 0) > 0,
+    }));
+    categories = categoriesData ?? [];
+  } catch (error) {
+    console.error("Products fetch error:", error);
+    categories = MOCK_CATEGORIES;
   }
 
-  const imageMap: Record<string, string> = products.length > 0 ? {} : MOCK_IMAGE_MAP
+  const imageMap: Record<string, string> =
+    products.length > 0 ? {} : MOCK_IMAGE_MAP;
   for (const p of products) {
-    if (p.image) {
-      imageMap[String(p.id)] = djangoImageUrl(p.image)
-    }
+    if (p.image) imageMap[String(p.id)] = djangoImageUrl(p.image);
   }
 
-  const totalPages = Math.max(1, Math.ceil(totalCount / 12))
+  const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE));
+
+  const jsonLd = cleanJsonLd(
+    breadcrumbJsonLd([
+      { name: "\u062e\u0627\u0646\u0647", path: "/" },
+      { name: "\u0645\u062d\u0635\u0648\u0644\u0627\u062a", path: "/products" },
+    ]),
+  );
 
   return (
-    <ProductsClient
-      initialProducts={products}
-      initialTotal={totalCount}
-      initialTotalPages={totalPages}
-      categories={categories}
-      imageMap={imageMap}
-      initialPage={page}
-      initialCategory={category}
-      initialSearch={search}
-    />
-  )
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <ProductsClient
+        initialProducts={products}
+        initialTotal={totalCount}
+        initialTotalPages={totalPages}
+        categories={categories}
+        imageMap={imageMap}
+        initialPage={page}
+        initialCategory={category}
+        initialSearch={search}
+      />
+    </>
+  );
 }

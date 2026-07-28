@@ -1,19 +1,35 @@
-import type { MetadataRoute } from 'next'
-
-// Always use the canonical domain — ignore NEXT_PUBLIC_SITE_URL which may
-// point to an internal hosting URL (e.g. runflare.run) during deployment.
-const BASE_URL = 'https://farzamgps.ir'
+import type { MetadataRoute } from "next";
+import { SITE_URL } from "@/lib/seo";
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
       {
-        userAgent: '*',
-        allow: '/',
-        disallow: ['/admin', '/editor', '/api', '/cart', '/checkout', '/profile'],
+        userAgent: "*",
+        allow: "/",
+        disallow: [
+          "/api/",
+          "/admin",
+          "/admin/",
+          "/editor",
+          "/editor/",
+          // Internal component gallery — was fully crawlable and indexable.
+          "/design-system",
+          "/design-system/",
+          // Transactional / personal routes: no SEO value, waste crawl budget.
+          "/cart",
+          "/checkout",
+          "/profile",
+          "/payment",
+          "/payment-result",
+          // Faceted listing URLs produce near-duplicate pages.
+          "/*?*search=",
+          "/*?*price_min=",
+          "/*?*price_max=",
+        ],
       },
     ],
-    sitemap: `${BASE_URL}/sitemap.xml`,
-    host: BASE_URL,
-  }
+    sitemap: `${SITE_URL}/sitemap.xml`,
+    host: SITE_URL,
+  };
 }
