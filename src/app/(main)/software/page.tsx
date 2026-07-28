@@ -273,7 +273,7 @@ export default async function SoftwarePage() {
                 size="lg"
                 variant="outline"
                 asChild
-                className="pill min-h-12 border-white/20 px-7 text-white transition-colors hover:border-white/30 hover:bg-white/[0.08]"
+                className="pill min-h-12 border border-white/25 bg-transparent px-7 text-white transition-colors hover:border-white/40 hover:bg-white/[0.08] hover:text-white"
               >
                 <Link href="/contact">
                   <Smartphone className="ml-2 h-5 w-5" /> درخواست دمو رایگان
@@ -340,17 +340,11 @@ export default async function SoftwarePage() {
           />
           <div className="mx-auto grid max-w-5xl grid-cols-1 gap-4 md:grid-cols-2">
             {features.map(
-              ({ icon: Icon, title, desc, accent, span, image }, i) => (
+              ({ icon: Icon, title, desc, accent, span, image }) => (
                 <div
                   key={title}
                   className={`group relative h-full overflow-hidden rounded-3xl border border-border-soft bg-white p-5 transition-transform duration-200 hover:-translate-y-1 md:p-6 ${span}`}
                 >
-                  <span
-                    aria-hidden="true"
-                    className="absolute left-5 top-5 font-mono text-xs tabular-nums text-text-muted/40"
-                  >
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
                   <div className="flex items-start gap-4">
                     <div
                       className={`flex h-12 w-12 flex-shrink-0 items-center justify-center overflow-hidden rounded-2xl ${accent}`}
@@ -663,18 +657,12 @@ export default async function SoftwarePage() {
             centered
           />
           <div className="mx-auto max-w-3xl space-y-3">
-            {BENEFITS.map(({ icon: Icon, title, desc, accent }, i) => (
+            {BENEFITS.map(({ icon: Icon, title, desc, accent }) => (
               <div
                 key={title}
                 className="group relative overflow-hidden rounded-3xl border border-border-soft bg-white p-5 md:p-6"
               >
                 <div className="flex items-start gap-4">
-                  <span
-                    aria-hidden="true"
-                    className="mt-1 font-mono text-xs tabular-nums text-text-muted/50"
-                  >
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
                   <span
                     className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl ${accent}`}
                   >
@@ -817,7 +805,7 @@ export default async function SoftwarePage() {
                   size="lg"
                   variant="outline"
                   asChild
-                  className="pill min-h-12 border-white/20 px-8 text-white hover:bg-white/[0.08]"
+                  className="pill min-h-12 border border-white/25 bg-transparent px-8 text-white transition-colors hover:border-white/40 hover:bg-white/[0.08] hover:text-white"
                 >
                   <Link href="/contact">درخواست دمو</Link>
                 </Button>

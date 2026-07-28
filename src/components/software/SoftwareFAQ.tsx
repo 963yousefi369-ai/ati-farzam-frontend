@@ -70,24 +70,13 @@ export default function SoftwareFAQ() {
                 onClick={() => setOpenIndex(isOpen ? null : i)}
                 className="flex min-h-14 w-full cursor-pointer items-center justify-between gap-4 px-4 py-4 text-right outline-none focus-visible:ring-2 focus-visible:ring-accent/40 sm:px-5"
               >
-                <span className="flex items-center gap-3">
-                  <span
-                    aria-hidden="true"
-                    className={cn(
-                      "font-mono text-xs tabular-nums transition-colors",
-                      isOpen ? "text-accent" : "text-text-muted/60",
-                    )}
-                  >
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <span
-                    className={cn(
-                      "text-sm font-semibold leading-6 transition-colors duration-150 sm:text-base",
-                      isOpen ? "text-accent" : "text-text-heading",
-                    )}
-                  >
-                    {item.question}
-                  </span>
+                <span
+                  className={cn(
+                    "text-sm font-semibold leading-6 transition-colors duration-150 sm:text-base",
+                    isOpen ? "text-accent" : "text-text-heading",
+                  )}
+                >
+                  {item.question}
                 </span>
                 <span
                   aria-hidden="true"
