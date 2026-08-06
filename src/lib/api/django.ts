@@ -150,9 +150,6 @@ export interface Product {
   features?: Array<{ text: string }>
   specifications?: Array<{ key: string; value: string }>
   faqs?: Array<{ question: string; answer: string }>
-  reviews?: Array<{ name: string; rating: number; text: string; date: string }>
-  rating?: number
-  review_count?: number
 }
 
 export interface ProductImage {
@@ -294,7 +291,7 @@ export const submitContact = (data: { name: string; phone: string; message: stri
 // ─── Auth ───────────────────────────────────────────────────
 // بک‌اند فیلد phone_number می‌خواد (نه phone)
 export const sendOtp = (phone: string) =>
-  request<{ detail: string; otp_code?: string; test_mode?: boolean }>('/api/auth/send-otp', {
+  request<{ detail: string }>('/api/auth/send-otp', {
     method: 'POST',
     body: JSON.stringify({ phone_number: phone }),
   })

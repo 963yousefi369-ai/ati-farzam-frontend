@@ -1,0 +1,116 @@
+{
+  "$schema": "https://design-tokens.org/schema.json",
+  "_comment": "Single source of truth for the ATI Farzam design system. tokens.css and tailwind.config.ts both derive from these values. Palette is the EXISTING brand navy/teal (kept deliberately, not the #2B4FE8/#1FA89C from the original brief).",
+
+  "color": {
+    "primary": { "base": "#3B5A80", "dark": "#2D4766", "light": "#EEF3F9" },
+    "accent":  { "base": "#14B8A6", "dark": "#0F766E", "light": "#CCFBF1" },
+    "dark":    { "base": "#0F172A", "deeper": "#0A1019" },
+    "discount": { "base": "#D9457A", "light": "#FDE8EF" },
+    "ink": {
+      "heading": "#0F172A",
+      "body": "#374151",
+      "muted": "#6B7280"
+    },
+    "surface": {
+      "base": "#FFFFFF",
+      "soft": "#F8FAFC",
+      "muted": "#E8EEF5",
+      "tint": "#EEF3F9"
+    },
+    "border": {
+      "hairline": "rgba(59,90,128,0.14)",
+      "soft": "rgba(59,90,128,0.12)",
+      "base": "rgba(59,90,128,0.20)",
+      "strong": "rgba(59,90,128,0.34)"
+    },
+    "semantic": {
+      "success": "#14B8A6",
+      "successLight": "#CCFBF1",
+      "warning": "#B45309",
+      "warningLight": "#FEF3C7",
+      "error": "#E0455A",
+      "errorText": "#DC2626",
+      "errorLight": "#FEE2E2",
+      "info": "#3B5A80",
+      "infoLight": "#EEF3F9"
+    }
+  },
+
+  "gradient": {
+    "_comment": "Used as an ACCENT only (~5% of surface area): eyebrow pills, CTA sheen, active nav indicator, stat accents, thin top rules. Never as a section background.",
+    "brand": "linear-gradient(135deg, #3B5A80 0%, #14B8A6 100%)",
+    "brandSubtle": "linear-gradient(135deg, rgba(59,90,128,0.10) 0%, rgba(20,184,166,0.10) 100%)",
+    "brandSheen": "linear-gradient(120deg, transparent 20%, rgba(255,255,255,0.22) 50%, transparent 80%)"
+  },
+
+  "shadow": {
+    "_comment": "Brand-tinted (navy rgba) instead of neutral slate, with paired ambient + key layers so elevation reads as depth rather than grey fog.",
+    "soft": "0 1px 3px rgba(59,90,128,0.07)",
+    "card": "0 1px 2px rgba(59,90,128,0.06), 0 4px 12px rgba(59,90,128,0.06)",
+    "hover": "0 2px 4px rgba(59,90,128,0.06), 0 12px 28px rgba(59,90,128,0.12)",
+    "elevated": "0 4px 8px rgba(59,90,128,0.08), 0 24px 48px rgba(59,90,128,0.16)",
+    "navy": "0 8px 24px rgba(59,90,128,0.20)",
+    "accent": "0 8px 24px rgba(20,184,166,0.22)"
+  },
+
+  "typography": {
+    "_comment": "Vazirmatn first, sourced from the next/font variable that layout.tsx already defines. Persian body copy uses 1.75 leading.",
+    "fontFamily": "var(--font-vazirmatn), 'Vazirmatn', 'IRANSansX', system-ui, sans-serif",
+    "scale": {
+      "display": "clamp(2.25rem, 1.60rem + 3.2vw, 3.75rem)",
+      "h1": "clamp(1.875rem, 1.40rem + 2.4vw, 3rem)",
+      "h2": "clamp(1.5rem, 1.20rem + 1.5vw, 2.25rem)",
+      "h3": "clamp(1.25rem, 1.10rem + 0.75vw, 1.5rem)",
+      "bodyLg": "1.125rem",
+      "body": "1rem",
+      "sm": "0.875rem",
+      "xs": "0.75rem"
+    },
+    "leading": {
+      "display": "1.2",
+      "heading": "1.35",
+      "body": "1.75",
+      "tight": "1.5"
+    }
+  },
+
+  "space": {
+    "_comment": "4px base scale. Section rhythm is tokenized so vertical spacing is owned by <Section>, not hand-tuned per page.",
+    "1": "0.25rem", "2": "0.5rem", "3": "0.75rem", "4": "1rem",
+    "5": "1.25rem", "6": "1.5rem", "8": "2rem", "10": "2.5rem",
+    "12": "3rem", "16": "4rem", "20": "5rem", "24": "6rem",
+    "sectionMobile": "3.5rem",
+    "sectionDesktop": "6rem"
+  },
+
+  "radius": {
+    "xs": "6px", "sm": "8px", "md": "12px", "lg": "16px",
+    "xl": "20px", "2xl": "24px", "3xl": "28px", "full": "9999px"
+  },
+
+  "motion": {
+    "_comment": "cubic-bezier(0.16, 1, 0.3, 1) is the default settle curve for anything the user initiates. Durations rebalanced upward from the old 160ms default, which was too fast to read as physical.",
+    "ease": {
+      "settle": "cubic-bezier(0.16, 1, 0.3, 1)",
+      "standard": "cubic-bezier(0.4, 0, 0.2, 1)",
+      "exit": "cubic-bezier(0.4, 0, 1, 1)"
+    },
+    "duration": {
+      "instant": "80ms",
+      "fast": "140ms",
+      "base": "200ms",
+      "moderate": "280ms",
+      "slow": "400ms",
+      "ceiling": "600ms"
+    }
+  },
+
+  "a11y": {
+    "_comment": "Focus ring moved from accent teal (2.3:1 on white, fails WCAG 2.2 SC 1.4.11) to primary navy (7.09:1).",
+    "focusRingColor": "#3B5A80",
+    "focusRingWidth": "2px",
+    "focusRingOffset": "2px",
+    "touchTargetMin": "44px"
+  }
+}

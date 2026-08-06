@@ -78,7 +78,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   let blogPages: MetadataRoute.Sitemap = [];
   try {
-    const posts: SitemapPost[] = await getDjangoBlogs();
+    const posts = (await getDjangoBlogs()) as SitemapPost[] | null;
     blogPages = (posts ?? [])
       .filter((post) => Boolean(post.slug))
       .map((post) => ({

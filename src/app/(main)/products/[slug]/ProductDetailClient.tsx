@@ -12,7 +12,6 @@ import ImageSlider from '@/components/product/ImageSlider'
 import QuantitySelector from '@/components/product/QuantitySelector'
 import AddToCartButton from '@/components/product/AddToCartButton'
 import GuaranteeStrip from '@/components/ui/GuaranteeStrip'
-import ReviewSummary from '@/components/ui/ReviewSummary'
 import TrustBadge from '@/components/ui/TrustBadge'
 import ProductDetailTabs from './ProductDetailTabs'
 import SimilarProducts from './SimilarProducts'
@@ -36,13 +35,10 @@ interface ProductDetailClientProps {
     in_stock?: boolean
     stock?: number
     weight?: number
-    rating?: number
-    review_count?: number
     category_id?: number
     features?: string[]
     specifications?: Record<string, string>
     faqs?: Array<{ q: string; a: string }>
-    reviews?: any[]
   }
   images: string[]
   similarProducts: any[]
@@ -154,9 +150,6 @@ export default function ProductDetailClient({
             <h1 className="text-xl lg:text-2xl font-semibold text-text-heading leading-tight mb-1">
               {product.name}
             </h1>
-
-            {/* Review summary — near title per DESIGN.md trust layer */}
-            <ReviewSummary rating={product.rating} reviewCount={product.review_count} />
 
             {product.sku && (
               <p className="text-xs text-text-muted mt-1 mb-4">کد: {product.sku}</p>

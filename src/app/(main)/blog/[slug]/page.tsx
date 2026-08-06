@@ -59,7 +59,7 @@ export default async function BlogDetailPage({ params }: Props) {
     relatedPosts = allPosts.filter((p: any) => p.slug !== slug).slice(0, 3)
   } catch {}
 
-  const coverSrc = post.featured_image ? publicImageUrl(post.featured_image) : null
+  const coverSrc = publicImageUrl(post.featured_image) || '/placeholder-product.svg'
 
   return (
     <div className="bg-white min-h-screen">

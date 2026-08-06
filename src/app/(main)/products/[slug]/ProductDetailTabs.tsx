@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { CheckCircle, Star, ChevronDown, ChevronUp, Info, Settings, MessageSquare, HelpCircle } from 'lucide-react'
+import { CheckCircle, ChevronDown, ChevronUp, Info, Settings, HelpCircle } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -31,7 +31,6 @@ export default function ProductDetailTabs({ product, features, specs, faqs }: Pr
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const reducedMotion = usePrefersReducedMotion()
 
-  const reviews = product.reviews ?? []
   const productFeatures: string[] = product.features
     ? product.features.map((f: any) => typeof f === 'string' ? f : f.text)
     : features
@@ -52,7 +51,6 @@ export default function ProductDetailTabs({ product, features, specs, faqs }: Pr
 
   const tabItems = [
     { value: 'faq', label: 'سوالات متداول', icon: HelpCircle },
-    { value: 'reviews', label: 'نظرات', icon: MessageSquare },
     { value: 'specs', label: 'مشخصات فنی', icon: Settings },
     { value: 'features', label: 'ویژگی‌ها', icon: Info },
   ]
@@ -166,59 +164,6 @@ export default function ProductDetailTabs({ product, features, specs, faqs }: Pr
                     </div>
                   ))}
                 </div>
-              )}
-            </div>
-          </div>
-        </TabsContent>
-
-        {/* Reviews */}
-        <TabsContent value="reviews" className="mt-6">
-          <div className="bg-white rounded-xl border border-border-soft p-4 md:p-5" dir="rtl">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-base font-semibold text-text-heading">نظرات کاربران</h3>
-              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-warning-light border border-warning/20">
-                <Star className="w-3.5 h-3.5 text-warning fill-warning" aria-hidden="true" />
-                <span className="font-semibold text-warning text-sm">{product.rating ?? 0}</span>
-                <span className="text-warning/60 text-xs">از ۵</span>
-              </div>
-            </div>
-
-            <div className="space-y-3">
-              {reviews.length === 0 ? (
-                <div className="text-center py-8 text-text-muted">
-                  <MessageSquare className="w-8 h-8 mx-auto mb-2 opacity-30" aria-hidden="true" />
-                  <p className="text-sm">هنوز نظری ثبت نشده است</p>
-                </div>
-              ) : (
-                reviews.map((review: any, i: number) => (
-                  <div key={i} className="p-4 rounded-xl border border-border-soft hover:border-accent/20 transition-colors">
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-2.5">
-                        <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white font-semibold text-xs">
-                          {review.name.charAt(0)}
-                        </div>
-                        <div>
-                          <p className="font-semibold text-text-heading text-sm">{review.name}</p>
-                          <p className="text-xs text-text-muted">{review.date}</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-0.5" aria-label={`امتیاز: ${review.rating} از ۵`}>
-                        {[1, 2, 3, 4, 5].map((star) => (
-                          <Star
-                            key={star}
-                            className={cn(
-                              'w-3 h-3',
-                              star <= review.rating
-                                ? 'text-warning fill-warning'
-                                : 'text-border-soft fill-bg-muted'
-                            )}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                    <p className="text-sm text-text-body leading-relaxed">{review.text}</p>
-                  </div>
-                ))
               )}
             </div>
           </div>

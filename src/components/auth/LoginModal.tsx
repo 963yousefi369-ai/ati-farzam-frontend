@@ -36,7 +36,6 @@ export default function LoginModal() {
   const [sendError, setSendError] = useState('')
   const [timerKey, setTimerKey] = useState(0)
   const [remaining, setRemaining] = useState(120)
-  const [testOtpCode, setTestOtpCode] = useState<string | null>(null)
 
   useEffect(() => {
     if (!open) {
@@ -47,7 +46,6 @@ export default function LoginModal() {
         setName('')
         setPhoneError('')
         setSendError('')
-        setTestOtpCode(null)
       }, 300)
     }
   }, [open])
@@ -81,10 +79,8 @@ export default function LoginModal() {
     setSendError('')
     setPhone(normalizedPhone)
     setSendLoading(true)
-    setTestOtpCode(null)
     try {
-      const res = await sendOtp(normalizedPhone)
-      if (res.otp_code) setTestOtpCode(res.otp_code)
+      await sendOtp(normalizedPhone)
       setOtp('')
       setStep('otp')
       toast.success('کد تأیید ارسال شد')
@@ -98,10 +94,8 @@ export default function LoginModal() {
 
   const handleResend = async () => {
     setSendLoading(true)
-    setTestOtpCode(null)
     try {
-      const res = await sendOtp(phone)
-      if (res.otp_code) setTestOtpCode(res.otp_code)
+      await sendOtp(phone)
       setOtp('')
       setRemaining(120)
       setTimerKey((k) => k + 1)
@@ -377,20 +371,6 @@ export default function LoginModal() {
                         </button>
                       </div>
                     </div>
-
-                    {testOtpCode && (
-                      <div className="rounded-lg bg-warning-light border border-warning/20 p-3 text-center">
-                        <p className="text-xs text-warning mb-1 font-medium">حالت آزمایشی</p>
-                        <button
-                          type="button"
-                          onClick={() => { setOtp(testOtpCode); navigator.clipboard?.writeText(testOtpCode) }}
-                          className="font-mono text-xl font-extrabold text-warning-dark tracking-widest"
-                          dir="ltr"
-                        >
-                          {testOtpCode}
-                        </button>
-                      </div>
-                    )}
 
                     <OtpInput value={otp} onChange={setOtp} disabled={verifyLoading} />
 

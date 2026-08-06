@@ -89,14 +89,6 @@ export default function AboutCompact({
             sizes="(max-width: 1024px) 100vw, 50vw"
             className="object-cover"
           />
-          <div className="absolute inset-x-4 bottom-4 rounded-2xl border border-white/20 bg-dark/100 p-4 text-white">
-            <p className="text-sm font-semibold text-white">
-              راهکار کامل فروش، نصب و پشتیبانی
-            </p>
-            <p className="mt-1 text-xs leading-5 text-white/70">
-              از انتخاب دستگاه تا فعال‌سازی و آموزش پنل
-            </p>
-          </div>
         </div>
       )}
     </div>

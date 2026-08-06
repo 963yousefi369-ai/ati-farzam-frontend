@@ -42,7 +42,7 @@ export function useProductSearch({ limit = 6, delay = 300 }: Options = {}) {
       try {
         const data = await getProducts({ q: query.trim(), page_size: limit })
         if (cancelled) return
-        const rows = (data?.results ?? data ?? []) as Array<Record<string, unknown>>
+        const rows = (data?.results ?? data ?? []) as any[]
         setResults(
           rows.map((p) => ({
             id: String(p.id),

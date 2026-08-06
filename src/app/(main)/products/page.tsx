@@ -111,9 +111,9 @@ export default async function ProductsPage({
       getProducts(params),
       getCategories(),
     ]);
-    const rawList: ApiProduct[] = Array.isArray(productsData)
+    const rawList = (Array.isArray(productsData)
       ? productsData
-      : (productsData.results ?? []);
+      : (productsData.results ?? [])) as unknown as ApiProduct[];
     totalCount = productsData.count ?? rawList.length;
     products = rawList.map((p) => ({
       ...p,

@@ -12,7 +12,6 @@ import SoftwareCTA from "@/components/home/SoftwareCTA";
 import Newsletter from "@/components/home/Newsletter";
 import PartnersMarquee from "@/components/home/PartnersMarquee";
 import StatsCounter from "@/components/home/StatsCounter";
-import TestimonialsCarousel from "@/components/home/TestimonialsCarousel";
 
 interface SectionRendererProps {
   sections: CmsPageSection[];
@@ -33,7 +32,6 @@ const SECTION_STYLES: Record<string, string> = {
   product_grid: "bg-white py-10 sm:py-14 lg:py-16",
   about: "bg-white py-10 sm:py-14 lg:py-16",
   software_cta: "bg-bg-soft py-10 sm:py-14 lg:py-16",
-  testimonials: "bg-white py-10 sm:py-14 lg:py-16",
   blog_grid: "bg-bg-soft py-10 sm:py-14 lg:py-16",
   newsletter: "bg-white py-10 sm:py-14 lg:py-16",
   custom_html: "bg-white py-10 sm:py-14 lg:py-16",
@@ -202,20 +200,6 @@ export default function SectionRenderer({
                     (content as any).image_url ??
                     fallbackData.settings?.software_image
                   }
-                />
-              </SectionShell>
-            );
-          case "testimonials":
-            return (
-              <SectionShell key={key} type="testimonials">
-                <SectionTitle
-                  title={(content as any).title ?? "نظرات مشتریان"}
-                  subtitle={
-                    (content as any).subtitle ?? "تجربه مشتریان آتی فرزام"
-                  }
-                />
-                <TestimonialsCarousel
-                  testimonials={(content as any).testimonials}
                 />
               </SectionShell>
             );

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Heart, ImageOff, Phone, ShoppingCart, Star } from "lucide-react";
+import { Heart, ImageOff, Phone, ShoppingCart } from "lucide-react";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -20,8 +20,6 @@ interface ProductCardProps {
     in_stock?: boolean;
     stock?: number;
     slug?: string;
-    rating?: number;
-    review_count?: number;
   };
   imageUrl?: string;
   variant?: "grid" | "featured";
@@ -47,8 +45,6 @@ export default function ProductCard({
   const discountPercent = hasDiscount
     ? Math.round((1 - product.price / product.compare_price!) * 100)
     : 0;
-  const rating = product.rating || 0;
-  const reviewCount = product.review_count || 0;
   const hasLowStock =
     !isOutOfStock &&
     typeof product.stock === "number" &&
@@ -188,21 +184,6 @@ export default function ProductCard({
         </div>
 
         <CardContent className="flex flex-1 flex-col p-5">
-          {rating > 0 && (
-            <div className="mb-2.5 flex items-center gap-1.5 text-xs text-text-muted">
-              <Star
-                className="h-4 w-4 fill-warning text-warning"
-                aria-hidden="true"
-              />
-              <span className="font-medium text-text-secondary">
-                {rating.toLocaleString("fa-IR")}
-              </span>
-              {reviewCount > 0 && (
-                <span>از {reviewCount.toLocaleString("fa-IR")} نظر</span>
-              )}
-            </div>
-          )}
-
           <Link href={productHref} className="rounded-md">
             <h3 className="text-[15px] font-semibold leading-7 text-dark transition-colors duration-200 group-hover:text-primary">
               {product.name}

@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, Calendar, Newspaper } from "lucide-react";
+import Image from "next/image";
+import { ArrowLeft, Calendar } from "lucide-react";
 import { cn, formatDate } from "@/lib/utils";
 import { publicImageUrl } from "@/lib/api/django";
 
@@ -22,11 +22,9 @@ interface BlogCardProps {
 }
 
 export default function BlogCard({ post, className }: BlogCardProps) {
-  const coverSrc = post.featured_image
-    ? publicImageUrl(post.featured_image)
-    : post.cover
-      ? publicImageUrl(post.cover)
-      : null;
+  // publicImageUrl URL مطلق برمی‌گرداند که با remotePatterns در next.config.ts
+  // سازگار است. اگر تصویری نبود، placeholder نمایش داده می‌شود.
+  const coverSrc = publicImageUrl(post.featured_image ?? post.cover) || "/placeholder-product.svg";
   const date = post.published_at ?? post.created_at ?? post.created ?? "";
   const href = `/blog/${post.slug}`;
 
@@ -40,24 +38,15 @@ export default function BlogCard({ post, className }: BlogCardProps) {
       <Link
         href={href}
         aria-label={`مطالعه ${post.title}`}
-        className="relative block aspect-[16/9] overflow-hidden border-b border-border-soft bg-bg-muted"
+        className="relative block aspect-[16/9] overflow-hidden border-b border-border-soft bg-bg-soft"
       >
-        {coverSrc ? (
-          <Image
-            src={coverSrc}
-            alt={post.title}
-            fill
-            sizes="(max-width: 768px) 85vw, (max-width: 1200px) 50vw, 33vw"
-            className="object-cover transition-transform duration-200 group-hover:scale-[1.025]"
-          />
-        ) : (
-          <span className="flex h-full items-center justify-center">
-            <Newspaper
-              className="h-10 w-10 text-primary/30"
-              aria-hidden="true"
-            />
-          </span>
-        )}
+        <Image
+          src={coverSrc}
+          alt={post.title}
+          fill
+          sizes="(max-width: 768px) 85vw, (max-width: 1200px) 50vw, 33vw"
+          className="object-cover transition-transform duration-200 group-hover:scale-[1.025]"
+        />
       </Link>
       <div className="flex flex-1 flex-col p-5">
         <div className="flex items-center gap-2 text-xs text-text-muted">

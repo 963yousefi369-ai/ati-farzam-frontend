@@ -149,9 +149,9 @@ export default function ProductsClient({
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
         const data = await res.json();
-        const rawList: ApiProduct[] = Array.isArray(data)
+        const rawList = (Array.isArray(data)
           ? data
-          : (data.results ?? []);
+          : (data.results ?? [])) as unknown as ApiProduct[];
         const count: number = data.count ?? rawList.length;
 
         // An empty result is a valid answer to a filter — show the empty

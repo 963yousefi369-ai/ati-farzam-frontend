@@ -27,10 +27,9 @@ export const defaultHomeSections: CmsPageSection[] = [
   },
   { section_type: 'about', order: 6, is_active: true, content: {} },
   { section_type: 'software_cta', order: 7, is_active: true, content: {} },
-  { section_type: 'testimonials', order: 8, is_active: true, content: {} },
   {
     section_type: 'blog_grid',
-    order: 9,
+    order: 8,
     is_active: true,
     content: {
       title: 'آخرین مقالات',

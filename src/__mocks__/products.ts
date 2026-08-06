@@ -14,8 +14,6 @@ export const MOCK_PRODUCT_LIST = [
     in_stock: true,
     stock: 15,
     slug: 'gps-tracker-gt06n',
-    rating: 4.5,
-    review_count: 23,
   },
   {
     id: 'mock-2',
@@ -25,8 +23,6 @@ export const MOCK_PRODUCT_LIST = [
     in_stock: true,
     stock: 8,
     slug: 'magnetic-tracker-a9',
-    rating: 4.2,
-    review_count: 14,
   },
   {
     id: 'mock-3',
@@ -36,8 +32,6 @@ export const MOCK_PRODUCT_LIST = [
     in_stock: true,
     stock: 5,
     slug: 'car-tracker-tk103b',
-    rating: 4.8,
-    review_count: 41,
   },
   {
     id: 'mock-4',
@@ -47,8 +41,6 @@ export const MOCK_PRODUCT_LIST = [
     in_stock: false,
     stock: 0,
     slug: 'personal-mini-gps',
-    rating: 3.9,
-    review_count: 7,
   },
   {
     id: 'mock-5',
@@ -58,8 +50,6 @@ export const MOCK_PRODUCT_LIST = [
     in_stock: true,
     stock: 12,
     slug: 'motorcycle-tracker-gt02d',
-    rating: 4.1,
-    review_count: 9,
   },
   {
     id: 'mock-6',
@@ -69,8 +59,6 @@ export const MOCK_PRODUCT_LIST = [
     in_stock: true,
     stock: 3,
     slug: 'pet-tracker',
-    rating: 4.6,
-    review_count: 18,
   },
   {
     id: 'mock-7',
@@ -80,8 +68,6 @@ export const MOCK_PRODUCT_LIST = [
     in_stock: true,
     stock: 7,
     slug: 'dual-sim-tk905',
-    rating: 4.4,
-    review_count: 32,
   },
   {
     id: 'mock-8',
@@ -91,8 +77,6 @@ export const MOCK_PRODUCT_LIST = [
     in_stock: false,
     stock: 0,
     slug: 'waterproof-wg01',
-    rating: 4.0,
-    review_count: 5,
   },
 ]
 
@@ -109,8 +93,6 @@ export const MOCK_PRODUCT_DETAIL = {
   in_stock: true,
   stock: 15,
   weight: 0.45,
-  rating: 4.5,
-  review_count: 23,
   category_id: 1,
   image: PLACEHOLDER,
   images: [PLACEHOLDER],
@@ -154,26 +136,6 @@ export const MOCK_PRODUCT_DETAIL = {
       a: 'این محصول دارای ۱۲ ماه گارانتی تعویض و ۲۴ ماه خدمات پس از فروش است.',
     },
   ],
-  reviews: [
-    {
-      name: 'محمد رضایی',
-      date: '۱۴۰۴/۰۲/۱۵',
-      rating: 5,
-      text: 'عالیه! دقتش خیلی بالاست و اپلیکیشنش هم خیلی خوب کار می‌کنه. نصبشم خیلی راحت بود.',
-    },
-    {
-      name: 'سارا احمدی',
-      date: '۱۴۰۴/۰۱/۲۰',
-      rating: 4,
-      text: 'کیفیت ساخت خوبی داره. فقط کاش باتریش بیشتر دووم میاورد. در کل راضی‌ام.',
-    },
-    {
-      name: 'علی محمدی',
-      date: '۱۴۰۳/۱۲/۱۰',
-      rating: 5,
-      text: 'برای ناوگان شرکتمون خریدم. همه چیز عالی کار می‌کنه. پشتیبانی فنی هم خیلی خوب پاسخ میده.',
-    },
-  ],
 }
 
 export const MOCK_SIMILAR_PRODUCTS = [
@@ -185,8 +147,6 @@ export const MOCK_SIMILAR_PRODUCTS = [
     in_stock: true,
     stock: 8,
     slug: 'magnetic-tracker-a9',
-    rating: 4.2,
-    review_count: 14,
     _imageUrl: PLACEHOLDER,
   },
   {
@@ -197,8 +157,6 @@ export const MOCK_SIMILAR_PRODUCTS = [
     in_stock: true,
     stock: 5,
     slug: 'car-tracker-tk103b',
-    rating: 4.8,
-    review_count: 41,
     _imageUrl: PLACEHOLDER,
   },
   {
@@ -209,8 +167,6 @@ export const MOCK_SIMILAR_PRODUCTS = [
     in_stock: true,
     stock: 12,
     slug: 'motorcycle-tracker-gt02d',
-    rating: 4.1,
-    review_count: 9,
     _imageUrl: PLACEHOLDER,
   },
   {
@@ -221,8 +177,6 @@ export const MOCK_SIMILAR_PRODUCTS = [
     in_stock: true,
     stock: 7,
     slug: 'dual-sim-tk905',
-    rating: 4.4,
-    review_count: 32,
     _imageUrl: PLACEHOLDER,
   },
 ]

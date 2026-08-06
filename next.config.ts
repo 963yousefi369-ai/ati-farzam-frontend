@@ -10,55 +10,37 @@ const nextConfig: NextConfig = {
   compress: true,
   poweredByHeader: false,
   generateEtags: true,
-
-  // Strip console noise from the production bundle (keep errors/warnings).
-  compiler: {
-    removeConsole:
-      process.env.NODE_ENV === "production"
-        ? { exclude: ["error", "warn"] }
-        : false,
-  },
-
-  experimental: {
-    /**
-     * Barrel-file optimization. `lucide-react` alone re-exports ~1500 icons;
-     * without this every import pulls the whole barrel into the client graph.
-     * This is the single biggest JS bundle win in the project.
-     */
-    optimizePackageImports: [
-      "lucide-react",
-      "framer-motion",
-      "date-fns",
-      "@radix-ui/react-dialog",
-      "@radix-ui/react-dropdown-menu",
-      "@radix-ui/react-select",
-      "@radix-ui/react-tabs",
-      "@radix-ui/react-toast",
-      "@radix-ui/react-alert-dialog",
-      "@radix-ui/react-avatar",
-    ],
-  },
-
   images: {
     formats: ["image/avif", "image/webp"],
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    // Optimized images were re-encoded on every cache miss; hold them for 30 days.
-    minimumCacheTTL: 2_592_000,
-    dangerouslyAllowSVG: false,
-    contentDispositionType: "attachment",
+    deviceSizes: [640, 750, 828, 1080, 1200],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256],
+    // NOTE: after the src/lib/media.ts fix, media URLs are RELATIVE
+    // ("/media/...") and get proxied by the rewrite below, so they no longer
+    // need to match remotePatterns at all. These entries only matter if the
+    // backend starts returning absolute URLs (S3 / CDN / object storage).
+    //
+    // Widened vs. the previous config, because the old list silently 400'd:
+    //   - added www. variant of the production domain
+    //   - added https for the bare IPs (was http-only)
+    //   - '**.runflare.run' instead of '*.runflare.run': a single '*' matches
+    //     exactly one label, so it did NOT match e.g. 'a.b.runflare.run'
+    //   - removed the port constraint on the IPs, since a port mismatch is
+    //     itself a silent 400
     remotePatterns: [
       { protocol: "https", hostname: "farzamgps.ir" },
-      { protocol: "https", hostname: "*.runflare.run" },
-      { protocol: "http", hostname: "localhost", port: "8000" },
-      { protocol: "http", hostname: "127.0.0.1", port: "8000" },
-      { protocol: "http", hostname: "backend", port: "8000" },
+      { protocol: "https", hostname: "www.farzamgps.ir" },
+      { protocol: "https", hostname: "**.farzamgps.ir" },
+      { protocol: "https", hostname: "**.runflare.run" },
+      { protocol: "http", hostname: "localhost" },
+      { protocol: "http", hostname: "127.0.0.1" },
+      { protocol: "http", hostname: "backend" },
       { protocol: "http", hostname: "0.0.0.0" },
       { protocol: "http", hostname: "95.38.161.104" },
+      { protocol: "https", hostname: "95.38.161.104" },
       { protocol: "http", hostname: "95.38.161.205" },
+      { protocol: "https", hostname: "95.38.161.205" },
     ],
   },
-
   async headers() {
     return [
       {
@@ -67,15 +49,6 @@ const nextConfig: NextConfig = {
           {
             key: "Cache-Control",
             value: "public, max-age=31536000, immutable",
-          },
-        ],
-      },
-      {
-        source: "/_next/image/:path*",
-        headers: [
-          {
-            key: "Cache-Control",
-            value: "public, max-age=2592000, stale-while-revalidate=86400",
           },
         ],
       },
@@ -89,18 +62,6 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        // Never let a search engine or CDN cache a personal/transactional page.
-        source: "/:path(cart|checkout|profile|payment|payment-result)",
-        headers: [
-          { key: "Cache-Control", value: "private, no-store" },
-          { key: "X-Robots-Tag", value: "noindex, nofollow" },
-        ],
-      },
-      {
-        source: "/:path(admin|editor|design-system)/:rest*",
-        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
-      },
-      {
         source: "/(.*)",
         headers: [
           { key: "X-Content-Type-Options", value: "nosniff" },
@@ -109,28 +70,30 @@ const nextConfig: NextConfig = {
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
           {
             key: "Permissions-Policy",
-            value:
-              "camera=(), microphone=(), geolocation=(), interest-cohort=()",
+            value: "camera=(), microphone=(), geolocation=()",
           },
         ],
       },
     ];
   },
-
   async rewrites() {
     return [
-      { source: "/api/:path*", destination: `${API_URL}/api/:path*` },
-      { source: "/media/:path*", destination: `${API_URL}/media/:path*` },
+      {
+        source: "/api/:path*",
+        destination: `${API_URL}/api/:path*`,
+      },
+      // This is what makes relative /media/... URLs work. Do not remove.
+      {
+        source: "/media/:path*",
+        destination: `${API_URL}/media/:path*`,
+      },
     ];
   },
-
   async redirects() {
     return process.env.NODE_ENV === "production"
       ? [
-          { source: "/editor", destination: "/404", permanent: false },
-          { source: "/editor/:path*", destination: "/404", permanent: false },
           {
-            source: "/design-system",
+            source: "/editor",
             destination: "/404",
             permanent: false,
           },
@@ -138,5 +101,4 @@ const nextConfig: NextConfig = {
       : [];
   },
 };
-
 export default nextConfig;

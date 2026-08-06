@@ -23,16 +23,14 @@ interface ApiProduct {
   name: string;
   description?: string;
   meta_description?: string;
-  price: number;
-  compare_price?: number;
-  effective_price?: number;
-  discount_price?: number;
+  price: number | string | null;
+  compare_price?: number | string | null;
+  effective_price?: number | string | null;
+  discount_price?: number | string | null;
   is_on_sale?: boolean;
   in_stock?: boolean;
   stock?: number;
   sku?: string;
-  rating?: number;
-  review_count?: number;
   category_id?: string | number;
   category_name?: string;
   image?: string;
@@ -44,9 +42,9 @@ interface ApiProduct {
 export async function generateStaticParams() {
   try {
     const data = await getProducts({ page_size: 100 });
-    const products: ApiProduct[] = Array.isArray(data)
+    const products = (Array.isArray(data)
       ? data
-      : (data.results ?? []);
+      : (data.results ?? [])) as ApiProduct[];
     return products
       .filter((product) => Boolean(product.slug))
       .map((product) => ({ slug: String(product.slug) }));
@@ -62,7 +60,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   try {
-    const product: ApiProduct = await getProduct(slug);
+    const product = await getProduct(slug) as unknown as ApiProduct;
     const description =
       metaDescription(product.meta_description) ||
       metaDescription(product.description) ||
@@ -101,7 +99,7 @@ export default async function ProductDetailPage({
 
   let product: ApiProduct;
   try {
-    product = await getProduct(slug);
+    product = await getProduct(slug) as unknown as ApiProduct;
   } catch {
     // Backend offline — render the mock so the route still resolves.
     return (
@@ -137,9 +135,9 @@ export default async function ProductDetailPage({
     const similarParams: Record<string, string | number> = { page_size: 5 };
     if (product.category_id) similarParams.category_id = product.category_id;
     const similarData = await getProducts(similarParams);
-    const similarList: ApiProduct[] = Array.isArray(similarData)
+    const similarList = (Array.isArray(similarData)
       ? similarData
-      : (similarData.results ?? []);
+      : (similarData.results ?? [])) as unknown as ApiProduct[];
     similarProducts = similarList
       .filter((p) => p.slug !== slug)
       .slice(0, 4)
@@ -189,14 +187,6 @@ export default async function ProductDetailPage({
         : "https://schema.org/InStock",
       seller: { "@type": "Organization", name: SITE_NAME },
     },
-    aggregateRating:
-      product.review_count && product.review_count > 0
-        ? {
-            "@type": "AggregateRating",
-            ratingValue: product.rating ?? 4.5,
-            reviewCount: product.review_count,
-          }
-        : undefined,
   });
 
   const breadcrumbs = cleanJsonLd(
@@ -216,9 +206,9 @@ export default async function ProductDetailPage({
         }}
       />
       <ProductDetailClient
-        product={product}
+        product={product as any}
         images={images}
-        similarProducts={similarProducts}
+        similarProducts={similarProducts as any}
       />
     </>
   );

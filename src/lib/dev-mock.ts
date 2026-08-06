@@ -63,7 +63,7 @@ if (IS_DEV) {
 
       // ── Auth endpoints ──────────────────────────────────────
       if (url.includes('/api/auth/send-otp')) {
-        return mockJson({ detail: 'کد تأیید ارسال شد', otp_code: '12345', test_mode: true })
+        return mockJson({ detail: 'کد تأیید ارسال شد' })
       }
       if (url.includes('/api/auth/verify-otp')) {
         return mockJson({ access: MOCK_TOKEN, refresh: 'mock-refresh-token' })

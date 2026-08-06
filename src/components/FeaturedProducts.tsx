@@ -17,8 +17,6 @@ interface ApiProduct {
   effective_price?: number | string
   image?: string | null
   stock?: number
-  rating?: number
-  review_count?: number
 }
 
 interface FeaturedProductsProps {
@@ -60,8 +58,6 @@ export default function FeaturedProducts({ apiProducts, loading }: FeaturedProdu
         id: String(p.id),
         slug: p.slug,
         name: p.name,
-        rating: p.rating ?? 0,
-        reviewsCount: p.review_count ?? 0,
         price: Number(p.effective_price ?? p.discount_price ?? p.price),
         badge: null as string | null,
         featured: false,
@@ -119,26 +115,6 @@ export default function FeaturedProducts({ apiProducts, loading }: FeaturedProdu
 
             {/* Content */}
             <div className="p-4 flex flex-col flex-1">
-              {/* Rating */}
-              {product.rating > 0 && (
-                <div className="flex items-center gap-1.5 mb-2">
-                  <div className="flex items-center gap-0.5">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <IconStar
-                        key={star}
-                        className={cn(
-                          'w-3.5 h-3.5',
-                          star <= product.rating ? 'text-warning' : 'text-border-base'
-                        )}
-                      />
-                    ))}
-                  </div>
-                  {product.reviewsCount > 0 && (
-                    <span className="text-xs text-text-muted">({product.reviewsCount.toLocaleString('fa-IR')})</span>
-                  )}
-                </div>
-              )}
-
               {/* Name */}
               <h3 className="font-semibold text-dark text-sm leading-snug line-clamp-2 mb-3 group-hover:text-primary transition-colors">
                 {product.name}

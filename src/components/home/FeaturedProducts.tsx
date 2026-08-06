@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ShoppingCart, Star } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import { toast } from "sonner";
 import { landingData } from "@/data/landing";
 import { ProductPlaceholder } from "@/components/svg";
@@ -18,8 +18,6 @@ interface ApiProduct {
   effective_price?: number | string;
   image?: string | null;
   stock?: number;
-  rating?: number;
-  review_count?: number;
 }
 
 interface FeaturedProductsProps {
@@ -34,8 +32,6 @@ interface DisplayProduct {
   name: string;
   price: number;
   imageUrl?: string;
-  rating: number;
-  reviewsCount: number;
   badge?: string | null;
   featured: boolean;
 }
@@ -84,8 +80,6 @@ export default function FeaturedProducts({
           product.effective_price ?? product.discount_price ?? product.price,
         ),
         imageUrl: product.image || undefined,
-        rating: product.rating || 0,
-        reviewsCount: product.review_count || 0,
         badge: null,
         featured: false,
       }))
@@ -96,8 +90,6 @@ export default function FeaturedProducts({
         name: product.name,
         price: Number(product.price),
         imageUrl: undefined,
-        rating: product.rating || 0,
-        reviewsCount: product.reviewsCount || 0,
         badge: product.badge,
         featured: product.featured,
       }));
@@ -170,23 +162,6 @@ export default function FeaturedProducts({
               </Link>
 
               <div className="flex flex-1 flex-col p-5">
-                {product.rating > 0 && (
-                  <div className="mb-2.5 flex items-center gap-1.5 text-xs text-text-muted">
-                    <Star
-                      className="h-4 w-4 fill-warning text-warning"
-                      aria-hidden="true"
-                    />
-                    <span className="font-medium text-text-secondary">
-                      {product.rating.toLocaleString("fa-IR")}
-                    </span>
-                    {product.reviewsCount > 0 && (
-                      <span>
-                        از {product.reviewsCount.toLocaleString("fa-IR")} نظر
-                      </span>
-                    )}
-                  </div>
-                )}
-
                 <Link href={href} className="rounded-md">
                   <h3 className="text-[15px] font-semibold leading-7 text-dark transition-colors duration-200 group-hover:text-primary">
                     {product.name}

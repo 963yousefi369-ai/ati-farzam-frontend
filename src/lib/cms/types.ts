@@ -8,7 +8,6 @@ export type CmsSectionType =
   | 'about'
   | 'software_cta'
   | 'blog_grid'
-  | 'testimonials'
   | 'newsletter'
   | 'custom_html'
 

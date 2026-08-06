@@ -13,7 +13,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import OtpInput from './OtpInput'
 import CountdownTimer from './CountdownTimer'
-import { ArrowLeft, Phone, Shield, AlertTriangle } from 'lucide-react'
+import { ArrowLeft, Phone, Shield } from 'lucide-react'
 
 const phoneSchema = z.object({
   phone: z
@@ -39,7 +39,6 @@ export default function OtpForm({ redirectTo }: OtpFormProps) {
   const [verifyLoading, setVerifyLoading] = useState(false)
   const [sendError, setSendError] = useState('')
   const [timerKey, setTimerKey] = useState(0)
-  const [testOtpCode, setTestOtpCode] = useState<string | null>(null)
 
   const phoneForm = useForm<z.infer<typeof phoneSchema>>({
     resolver: zodResolver(phoneSchema),
@@ -49,10 +48,8 @@ export default function OtpForm({ redirectTo }: OtpFormProps) {
   async function handleSendOtp(values: z.infer<typeof phoneSchema>) {
     setSendLoading(true)
     setSendError('')
-    setTestOtpCode(null)
     try {
-      const res = await sendOtp(values.phone)
-      if (res.otp_code) setTestOtpCode(res.otp_code)
+      await sendOtp(values.phone)
       setPhone(values.phone)
       setOtp('')
       setStep('otp')
@@ -69,10 +66,8 @@ export default function OtpForm({ redirectTo }: OtpFormProps) {
   async function handleResend() {
     setSendLoading(true)
     setSendError('')
-    setTestOtpCode(null)
     try {
-      const res = await sendOtp(phone)
-      if (res.otp_code) setTestOtpCode(res.otp_code)
+      await sendOtp(phone)
       setOtp('')
       setTimerKey((k) => k + 1)
       toast.success('کد جدید ارسال شد')
@@ -132,24 +127,6 @@ export default function OtpForm({ redirectTo }: OtpFormProps) {
             ویرایش
           </button>
         </div>
-
-        {testOtpCode && (
-          <div className="rounded-xl bg-amber-50 border border-amber-200 p-3 text-center">
-            <p className="text-xs text-amber-600 mb-1 font-medium">
-              <AlertTriangle className="w-3.5 h-3.5 inline ml-1" />
-              حالت آزمایشی — کد تأیید نمایش داده میشود
-            </p>
-            <button
-              type="button"
-              onClick={() => { setOtp(testOtpCode); navigator.clipboard?.writeText(testOtpCode) }}
-              className="font-mono text-2xl font-extrabold text-amber-700 tracking-widest hover:text-amber-800 transition-colors"
-              dir="ltr"
-            >
-              {testOtpCode}
-            </button>
-            <p className="text-[10px] text-amber-500 mt-1">برای کپی کلیک کنید</p>
-          </div>
-        )}
 
         {/* OTP Input */}
         <div className="space-y-3">
