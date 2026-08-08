@@ -6,6 +6,15 @@ import { notFound } from 'next/navigation'
 import { getDjangoBlog, getDjangoBlogs, publicImageUrl } from '@/lib/api/django'
 import BlogCard from '@/components/blog/BlogCard'
 import BreadcrumbTrail from '@/components/trail/BreadcrumbTrail'
+import SectionTitle from '@/components/shared/SectionTitle'
+import {
+  SECTION_Y,
+  HERO_Y,
+  SECTION_HEAD,
+  SHELL,
+  PAGE_X,
+  COL_GAP,
+} from '@/lib/rhythm'
 import { Calendar, User, Clock } from 'lucide-react'
 import { formatDate } from '@/lib/utils'
 
@@ -62,25 +71,31 @@ export default async function BlogDetailPage({ params }: Props) {
   const coverSrc = publicImageUrl(post.featured_image) || '/placeholder-product.svg'
 
   return (
-    <div className="bg-white min-h-screen">
+    <div className="min-h-screen bg-white">
+      {/* ── Article hero ───────────────────────────────────────────────
+          The h1 was `text-4xl md:text-5xl lg:text-6xl`. At 6xl a normal-length
+          Persian article title wraps to three or four lines and swamps the
+          screen, so the scale now tops out at 5xl. Inline `style` colours are
+          replaced with tokens. */}
       <section
-        className="py-section-mobile md:py-section-desktop relative overflow-hidden"
-        style={{ background: 'linear-gradient(to bottom left, #0a1019, #0f172a, #1e3a5f)' }}
+        className={`${HERO_Y} relative overflow-hidden bg-[linear-gradient(to_bottom_left,#0a1019,#0f172a,#1e3a5f)]`}
       >
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 right-1/4 w-72 h-72 bg-white/5 rounded-full blur-3xl" />
+        <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+          <div className="absolute right-1/4 top-0 h-72 w-72 rounded-full bg-white/5 blur-3xl" />
         </div>
-        <div className="max-w-[1440px] mx-auto px-6 lg:px-10 relative z-10">
+        <div className={`relative z-10 ${SHELL} ${PAGE_X}`}>
           <BreadcrumbTrail />
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mt-4 leading-[1.15]" style={{ color: 'white' }}>{post.title}</h1>
-          <div className="flex items-center gap-4 mt-3 text-sm" style={{ color: 'rgba(255,255,255,0.7)' }}>
+          <h1 className="mt-6 max-w-4xl text-2xl font-extrabold leading-[1.25] text-white sm:text-3xl md:text-4xl lg:text-5xl lg:leading-[1.2]">
+            {post.title}
+          </h1>
+          <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-white/70">
             <span className="flex items-center gap-1.5">
-              <Calendar className="w-4 h-4" />
+              <Calendar className="h-4 w-4 shrink-0" aria-hidden="true" />
               {formatDate(post.published_at ?? post.created_at)}
             </span>
             {post.author && (
               <span className="flex items-center gap-1.5">
-                <User className="w-4 h-4" />
+                <User className="h-4 w-4 shrink-0" aria-hidden="true" />
                 {post.author}
               </span>
             )}
@@ -88,12 +103,13 @@ export default async function BlogDetailPage({ params }: Props) {
         </div>
       </section>
 
-      <section className="py-section-mobile md:py-section-desktop">
-        <div className="max-w-[1440px] mx-auto px-6 lg:px-10">
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-5">
+      {/* ── Article body + sidebar ─────────────────────────────────────── */}
+      <section className={SECTION_Y}>
+        <div className={`${SHELL} ${PAGE_X}`}>
+          <div className={`grid grid-cols-1 ${COL_GAP} lg:grid-cols-4`}>
             <article className="lg:col-span-3">
               {coverSrc && (
-                <div className="relative aspect-[16/9] rounded-2xl overflow-hidden mb-5 border border-border-soft">
+                <div className="relative mb-8 aspect-[16/9] overflow-hidden rounded-2xl border border-border-soft">
                   <Image
                     src={coverSrc}
                     alt={post.title}
@@ -105,30 +121,35 @@ export default async function BlogDetailPage({ params }: Props) {
                 </div>
               )}
 
+              {/* Reading measure is capped. Body copy running the full width of
+                  a 3/4 column on a 1440px shell is ~140 characters per line,
+                  roughly double a comfortable Persian reading measure. */}
               <div
-                className="blog-content"
+                className="blog-content max-w-[68ch]"
                 dangerouslySetInnerHTML={{ __html: post.content ?? '' }}
               />
             </article>
 
-            <aside className="space-y-4">
-              <div className="rounded-2xl border border-border-soft bg-white p-4 sticky top-24 hover-glow">
-                <div className="flex items-center gap-2 mb-3">
-                  <Clock className="w-4 h-4 text-accent" />
-                  <h3 className="font-semibold text-text-heading text-sm">مقالات اخیر</h3>
+            <aside>
+              {/* `sticky top-24` was a magic number that assumed a 96px navbar.
+                  Derived from the real navbar height token instead. */}
+              <div className="sticky top-[calc(var(--navbar-height)+1.5rem)] rounded-2xl border border-border-soft bg-white p-5">
+                <div className="mb-4 flex items-center gap-2">
+                  <Clock className="h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
+                  <h3 className="text-sm font-semibold text-text-heading">مقالات اخیر</h3>
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-1">
                   {relatedPosts.length > 0 ? (
                     relatedPosts.map((p: any) => (
                       <Link
                         key={p.id}
                         href={`/blog/${p.slug}`}
-                        className="block p-3 rounded-xl hover:bg-bg-muted transition-colors group"
+                        className="group block rounded-xl p-3 transition-colors hover:bg-bg-muted"
                       >
-                        <h4 className="text-sm font-semibold text-text-heading line-clamp-2 group-hover:text-primary transition-colors">
+                        <h4 className="line-clamp-2 text-sm font-semibold leading-6 text-text-heading transition-colors group-hover:text-primary">
                           {p.title}
                         </h4>
-                        <span className="text-xs text-text-muted mt-1 block">
+                        <span className="mt-1.5 block text-xs text-text-muted">
                           {formatDate(p.published_at ?? p.created_at)}
                         </span>
                       </Link>
@@ -141,13 +162,17 @@ export default async function BlogDetailPage({ params }: Props) {
             </aside>
           </div>
 
+          {/* Related posts were separated by `mt-10 pt-6`, which is less air
+              than the gap between two cards inside the grid above it — so a
+              new section looked like a continuation of the article. */}
           {relatedPosts.length > 0 && (
-            <div className="mt-10 pt-6 border-t border-border-soft">
-              <div className="flex items-center gap-3 mb-5">
-                <h2 className="text-2xl md:text-3xl font-bold text-text-heading">مقالات مرتبط</h2>
-                <div className="section-underline !mx-0 mt-1" />
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="mt-16 border-t border-border-soft pt-12 md:mt-20 md:pt-16">
+              <SectionTitle
+                title="مقالات مرتبط"
+                align="right"
+                className={SECTION_HEAD}
+              />
+              <div className="grid grid-cols-1 gap-5 md:grid-cols-3 lg:gap-6">
                 {relatedPosts.map((p: any) => (
                   <BlogCard key={p.id} post={p} />
                 ))}

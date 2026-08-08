@@ -19,10 +19,27 @@ const buttonVariants = cva(
           "border border-primary bg-primary text-white shadow-soft hover:bg-primary-dark hover:shadow-navy hover:-translate-y-px",
         secondary:
           "border border-primary/20 bg-primary/10 text-primary hover:border-primary/30 hover:bg-primary/20",
+        // FIX: this was `bg-white`, so every outline button sitting on a dark
+        // surface rendered as an opaque white slab. Callers tried to adapt it
+        // with `text-white border-white/20`, but nothing overrode the
+        // background, so the label went white-on-white and vanished — exactly
+        // what happened to "درخواست دمو رایگان" in the /software hero.
+        // `bg-transparent` is visually identical on the light surfaces where
+        // this variant normally lives, and inherits correctly everywhere else.
         outline:
-          "border border-border-default bg-white text-text-primary shadow-soft hover:border-primary/30 hover:bg-bg-secondary hover:shadow-card",
+          "border border-border-default bg-transparent text-text-primary shadow-soft hover:border-primary/30 hover:bg-bg-secondary hover:shadow-card",
+        // Purpose-built secondary action for dark bands (hero sections, navy
+        // CTA panels). Use this instead of patching `outline` with utilities.
+        outlineOnDark:
+          "border border-white/25 bg-white/[0.06] text-white shadow-none backdrop-blur-sm " +
+          "hover:border-white/40 hover:bg-white/[0.14] hover:-translate-y-px " +
+          "focus-visible:ring-white focus-visible:ring-offset-transparent",
         ghost:
           "border border-transparent text-text-secondary hover:bg-bg-secondary hover:text-text-primary",
+        // Ghost's sibling for dark surfaces — no border, no fill until hover.
+        ghostOnDark:
+          "border border-transparent text-white/80 hover:bg-white/10 hover:text-white " +
+          "focus-visible:ring-white focus-visible:ring-offset-transparent",
         destructive:
           "border border-error bg-error text-white shadow-soft hover:bg-red-700 hover:-translate-y-px",
         link: "min-h-0 rounded-none border-0 px-1 text-primary underline-offset-4 hover:underline",

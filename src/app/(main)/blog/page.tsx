@@ -2,6 +2,15 @@ import type { Metadata } from 'next'
 import { getDjangoBlogs, type DjangoBlogPost } from '@/lib/api/django'
 import BlogCard from '@/components/blog/BlogCard'
 import BreadcrumbTrail from '@/components/trail/BreadcrumbTrail'
+import SectionTitle from '@/components/shared/SectionTitle'
+import {
+  SECTION_Y,
+  HERO_Y,
+  SECTION_HEAD,
+  SHELL,
+  PAGE_X,
+  COL_GAP,
+} from '@/lib/rhythm'
 import { Search, Tag } from 'lucide-react'
 
 export const metadata: Metadata = {
@@ -22,7 +31,7 @@ export default async function BlogPage() {
   }
 
   return (
-    <div className="bg-white min-h-screen">
+    <div className="min-h-screen bg-white">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -36,46 +45,69 @@ export default async function BlogPage() {
           }),
         }}
       />
+
+      {/* ── Hero ──────────────────────────────────────────────────────────
+          Was using the full section-padding utilities, so a hero holding only
+          a breadcrumb, one h1 and one line of copy got the same ~104px of air
+          as a content section. That is why it read as an empty navy slab.
+          Inline `style` for the gradient and for every text colour is also
+          gone — those bypassed the design tokens entirely and could not
+          respond to any state or breakpoint. */}
       <section
-        className="py-section-mobile md:py-section-desktop relative overflow-hidden"
-        style={{ background: 'linear-gradient(to bottom left, #0a1019, #0f172a, #1e3a5f)' }}
+        className={`${HERO_Y} relative overflow-hidden bg-[linear-gradient(to_bottom_left,#0a1019,#0f172a,#1e3a5f)]`}
       >
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 right-1/4 w-72 h-72 bg-white/5 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-1/4 w-48 h-48 bg-accent/10 rounded-full blur-2xl" />
+        <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+          <div className="absolute right-1/4 top-0 h-72 w-72 rounded-full bg-white/5 blur-3xl" />
+          <div className="absolute bottom-0 left-1/4 h-48 w-48 rounded-full bg-accent/10 blur-2xl" />
         </div>
-        <div className="max-w-[1440px] mx-auto px-6 lg:px-10 text-center relative z-10">
-          <BreadcrumbTrail />
-          <h1 className="text-4xl md:text-5xl font-extrabold mt-4 mb-3" style={{ color: 'white' }}>وبلاگ</h1>
-          <p className="text-lg max-w-xl mx-auto" style={{ color: 'rgba(255,255,255,0.8)' }}>
+        <div className={`relative z-10 ${SHELL} ${PAGE_X} text-center`}>
+          <div className="text-right">
+            <BreadcrumbTrail />
+          </div>
+          <h1 className="mb-3 mt-6 text-3xl font-extrabold text-white sm:text-4xl md:text-5xl">
+            وبلاگ
+          </h1>
+          <p className="mx-auto max-w-xl text-base leading-8 text-white/75 sm:text-lg">
             آخرین مقالات، اخبار و راهنماهای تخصصی ردیابی خودرو
           </p>
         </div>
       </section>
 
-      <section className="py-section-mobile md:py-section-desktop bg-mesh">
-        <div className="max-w-[1440px] mx-auto px-6 lg:px-10">
-          <div className="flex items-center gap-3 mb-5">
-            <h2 className="text-2xl md:text-3xl font-bold text-text-heading">جدیدترین مطالب</h2>
-            <div className="section-underline !mx-0 mt-1" />
-          </div>
+      {/* ── Posts + sidebar ─────────────────────────────────────────────── */}
+      <section className={`${SECTION_Y} bg-mesh`}>
+        <div className={`${SHELL} ${PAGE_X}`}>
+          {/* Was a hand-rolled h2 plus a `section-underline !mx-0` override.
+              SectionTitle already renders that accent bar, so the whole site
+              now uses one heading component instead of two lookalikes. */}
+          <SectionTitle
+            title="جدیدترین مطالب"
+            subtitle="راهنماها و تحلیل‌های تیم فنی آتی فرزام"
+            align="right"
+            className={SECTION_HEAD}
+          />
 
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-5">
+          {/* Main/sidebar gap was `gap-5` (20px), which reads as a layout bug
+              rather than a decision. */}
+          <div className={`grid grid-cols-1 ${COL_GAP} lg:grid-cols-4`}>
             <div className="lg:col-span-3">
               {error && (
-                <div className="text-center py-12 text-text-muted">
-                  <p className="text-lg">خطا در دریافت مقالات. لطفاً مطمئن شوید بک‌اند روشن است.</p>
+                <div className="rounded-2xl border border-border-soft bg-white px-6 py-16 text-center">
+                  <p className="text-base text-text-muted">
+                    خطا در دریافت مقالات. لطفاً مطمئن شوید بک‌اند روشن است.
+                  </p>
                 </div>
               )}
 
               {!error && posts.length === 0 && (
-                <div className="text-center py-12 text-text-muted">
-                  <p className="text-lg">هنوز مقاله‌ای منتشر نشده است.</p>
+                <div className="rounded-2xl border border-border-soft bg-white px-6 py-16 text-center">
+                  <p className="text-base text-text-muted">
+                    هنوز مقاله‌ای منتشر نشده است.
+                  </p>
                 </div>
               )}
 
               {!error && posts.length > 0 && (
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:gap-6 xl:grid-cols-3">
                   {posts.map((post) => (
                     <BlogCard key={post.id} post={post} />
                   ))}
@@ -83,43 +115,52 @@ export default async function BlogPage() {
               )}
             </div>
 
-            <aside className="hidden lg:block space-y-4">
-              <div className="rounded-xl bg-white p-4 border border-border-soft hover-glow">
-                <div className="flex items-center gap-2 mb-3">
-                  <Search className="w-4 h-4 text-primary" />
-                  <h3 className="font-semibold text-text-heading text-sm">جستجو</h3>
-                </div>
-                <div className="relative">
-                  <input
-                    type="text"
-                    placeholder="جستجو در مقالات..."
-                    className="w-full h-10 pr-4 pl-10 rounded-xl border border-border-soft text-sm bg-bg-muted text-text-muted cursor-not-allowed"
-                    disabled
-                    aria-disabled="true"
-                  />
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted/50" />
-                </div>
-                <p className="text-xs text-text-muted mt-2">جستجو به‌زودی فعال می‌شود</p>
-              </div>
-
-              <div className="rounded-xl bg-white p-4 border border-border-soft hover-glow">
-                <div className="flex items-center gap-2 mb-3">
-                  <Tag className="w-4 h-4 text-accent" />
-                  <h3 className="font-semibold text-text-heading text-sm">دسته‌بندی‌ها</h3>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {['ردیاب GPS', 'مدیریت ناوگان', 'آموزش', 'اخبار', 'فنی'].map((cat) => (
-                    <span
-                      key={cat}
-                      className="px-3 py-1.5 text-xs rounded-lg bg-bg-muted text-text-muted cursor-not-allowed"
+            {/* Sidebar is now sticky. It was a short static column next to a
+                long article list, so it left a tall empty gutter on desktop. */}
+            <aside className="hidden lg:block">
+              <div className="sticky top-[calc(var(--navbar-height)+1.5rem)] space-y-5">
+                <div className="rounded-2xl border border-border-soft bg-white p-5">
+                  <div className="mb-4 flex items-center gap-2">
+                    <Search className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+                    <h3 className="text-sm font-semibold text-text-heading">جستجو</h3>
+                  </div>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      placeholder="جستجو در مقالات..."
+                      className="h-11 w-full cursor-not-allowed rounded-xl border border-border-soft bg-bg-muted pl-10 pr-4 text-sm text-text-muted"
+                      disabled
                       aria-disabled="true"
-                      title="فیلتر به‌زودی فعال می‌شود"
-                    >
-                      {cat}
-                    </span>
-                  ))}
+                    />
+                    <Search
+                      className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted/50"
+                      aria-hidden="true"
+                    />
+                  </div>
+                  <p className="mt-3 text-xs text-text-muted">جستجو به‌زودی فعال می‌شود</p>
                 </div>
-                <p className="text-xs text-text-muted mt-3">فیلتر دسته‌بندی به‌زودی فعال می‌شود</p>
+
+                <div className="rounded-2xl border border-border-soft bg-white p-5">
+                  <div className="mb-4 flex items-center gap-2">
+                    <Tag className="h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
+                    <h3 className="text-sm font-semibold text-text-heading">دسته‌بندی‌ها</h3>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {['ردیاب GPS', 'مدیریت ناوگان', 'آموزش', 'اخبار', 'فنی'].map((cat) => (
+                      <span
+                        key={cat}
+                        className="cursor-not-allowed rounded-lg bg-bg-muted px-3 py-1.5 text-xs text-text-muted"
+                        aria-disabled="true"
+                        title="فیلتر به‌زودی فعال می‌شود"
+                      >
+                        {cat}
+                      </span>
+                    ))}
+                  </div>
+                  <p className="mt-3 text-xs text-text-muted">
+                    فیلتر دسته‌بندی به‌زودی فعال می‌شود
+                  </p>
+                </div>
               </div>
             </aside>
           </div>

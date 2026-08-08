@@ -123,62 +123,67 @@ export default function ProductDetailClient({
             transition={{ duration: reducedMotion ? 0 : 0.15 }}
             onClick={() => window.history.back()}
             aria-label="بازگشت"
-            className="fixed top-4 left-4 z-[200] lg:hidden w-11 h-11 rounded-full bg-white/90 backdrop-blur-sm border border-border-soft shadow-md flex items-center justify-center text-text-secondary hover:text-primary transition-colors"
+            className="fixed left-4 top-[calc(var(--navbar-height)+0.75rem)] z-[200] flex h-11 w-11 items-center justify-center rounded-full border border-border-soft bg-white/90 text-text-secondary shadow-md backdrop-blur-sm transition-colors hover:text-primary lg:hidden"
           >
-            <ArrowRight className="w-5 h-5" />
+            <ArrowRight className="h-5 w-5" aria-hidden="true" />
           </motion.button>
         )}
       </AnimatePresence>
 
-      <div className="max-w-7xl mx-auto px-4 py-6 lg:py-8">
+      {/* Shell padding was `px-4 py-6 lg:py-8` — no horizontal step at all, so
+          content hugged the screen edge on tablets. */}
+      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 lg:py-10">
         {/* Breadcrumb */}
-        <div className="mb-5 flex items-center gap-3">
+        <div className="mb-6 flex items-center gap-3">
           <BreadcrumbTrail dark={false} />
         </div>
 
-        {/* Main grid: image + purchase info */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 lg:gap-8">
-
+        {/* Main grid: image + purchase info
+            Gap was `gap-6 lg:gap-8`. The gallery and the buy box are two
+            distinct regions; 24px let them read as one crowded block. */}
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-12 lg:gap-12">
           {/* Image — 7 cols on md+ */}
           <div className="md:col-span-7">
             <ImageSlider images={images} productName={product.name} />
           </div>
 
           {/* Purchase card — 5 cols on md+ */}
-          <div className="md:col-span-5 flex flex-col">
-            {/* Title */}
-            <h1 className="text-xl lg:text-2xl font-semibold text-text-heading leading-tight mb-1">
+          <div className="flex flex-col md:col-span-5">
+            {/* Title had `mb-1` and the SKU under it had `mt-1 mb-4`, so the
+                effective title-to-SKU gap was 8px of stacked margins. One
+                owner per gap now. */}
+            <h1 className="text-xl font-semibold leading-snug text-text-heading lg:text-2xl">
               {product.name}
             </h1>
 
             {product.sku && (
-              <p className="text-xs text-text-muted mt-1 mb-4">کد: {product.sku}</p>
+              <p className="mt-2 text-xs text-text-muted">کد: {product.sku}</p>
             )}
 
             {/* Price card */}
-            <div className="rounded-xl bg-bg-soft border border-border-soft p-4 mb-4">
-              <div className="flex items-center gap-3 flex-wrap mb-2">
-                <span className="text-2xl lg:text-3xl font-semibold text-primary">
+            <div className="mt-5 rounded-xl border border-border-soft bg-bg-soft p-5">
+              <div className="mb-2 flex flex-wrap items-center gap-3">
+                <span className="text-2xl font-semibold text-primary lg:text-3xl">
                   {formatPrice(product.price)}
                 </span>
                 {hasDiscount && (
                   <>
-                    <Badge variant="destructive" className="font-semibold text-xs px-2.5 py-0.5 bg-discount border-discount/20 text-white">
+                    <Badge variant="destructive" className="border-discount/20 bg-discount px-2.5 py-0.5 text-xs font-semibold text-white">
                       {discountPercent}٪ تخفیف
                     </Badge>
-                    <span className="text-text-muted text-sm line-through">
+                    <span className="text-sm text-text-muted line-through">
                       {formatPrice(product.compare_price!)}
                     </span>
                   </>
                 )}
               </div>
               {hasDiscount && (
-                <p className="text-accent text-xs font-medium flex items-center gap-1">
-                  <Zap className="w-3.5 h-3.5" aria-hidden="true" />
+                <p className="flex items-center gap-1 text-xs font-medium text-accent">
+                  <Zap className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
                   {formatPrice(product.compare_price! - product.price)} صرفه‌جویی
                 </p>
               )}
-              <div className="flex items-center gap-2 mt-3">
+              <div className="mt-4 flex items-center gap-2">
                 <PulsingDot color={isOutOfStock ? 'red' : 'green'} size={6} />
                 <span className={cn('text-xs font-medium', isOutOfStock ? 'text-error' : 'text-accent')}>
                   {isOutOfStock ? 'ناموجود' : 'موجود در انبار'}
@@ -188,22 +193,24 @@ export default function ProductDetailClient({
 
             {/* Description — short */}
             {product.description && (
-              <p className="text-sm text-text-body leading-relaxed mb-4 line-clamp-3">
+              <p className="mt-5 line-clamp-3 text-sm leading-7 text-text-body">
                 {product.description}
               </p>
             )}
 
-            {/* Guarantee strip — ABOVE the add-to-cart button per DESIGN.md */}
+            {/* Guarantee strip — ABOVE the add-to-cart button per DESIGN.md.
+                Left without a wrapper margin on purpose: this component owns
+                its own spacing and adding one here would compound it. */}
             {!isOutOfStock && <GuaranteeStrip />}
 
             {/* Quantity + Add to cart */}
             {isOutOfStock ? (
-              <div className="rounded-xl bg-error-light/40 border border-error/20 p-4 mb-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <Bell className="w-4 h-4 text-error" aria-hidden="true" />
-                  <h4 className="font-semibold text-error text-sm">فعلاً موجود نیست</h4>
+              <div className="mt-5 rounded-xl border border-error/20 bg-error-light/40 p-5">
+                <div className="mb-2 flex items-center gap-2">
+                  <Bell className="h-4 w-4 shrink-0 text-error" aria-hidden="true" />
+                  <h4 className="text-sm font-semibold text-error">فعلاً موجود نیست</h4>
                 </div>
-                <p className="text-xs text-error/80 mb-3">
+                <p className="mb-4 text-xs leading-6 text-error/80">
                   شماره موبایل خود را وارد کنید تا به محض موجود شدن اطلاع‌رسانی شوید.
                 </p>
                 <AnimatePresence mode="wait">
@@ -212,30 +219,33 @@ export default function ProductDetailClient({
                       key="sent"
                       initial={reducedMotion ? false : { opacity: 0, scale: 0.9 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      className="flex items-center gap-2 p-3 rounded-lg bg-success-light border border-accent/20"
+                      className="flex items-center gap-2 rounded-lg border border-accent/20 bg-success-light p-3"
                     >
-                      <CheckCircle className="w-4 h-4 text-accent" aria-hidden="true" />
-                      <span className="text-accent font-medium text-xs">ثبت شد!</span>
+                      <CheckCircle className="h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
+                      <span className="text-xs font-medium text-accent">ثبت شد!</span>
                     </motion.div>
                   ) : (
                     <motion.div key="form" className="flex gap-2" dir="ltr">
                       <div className="relative flex-1">
-                        <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" aria-hidden="true" />
+                        <Phone className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted" aria-hidden="true" />
                         <Input
                           type="tel"
                           value={notifyPhone}
                           onChange={(e) => setNotifyPhone(e.target.value.replace(/[^0-9]/g, '').slice(0, 11))}
                           placeholder="09123456789"
                           aria-label="شماره موبایل برای اطلاع‌رسانی"
-                          className="h-11 rounded-lg text-left pl-10 text-sm"
+                          className="h-11 rounded-lg pl-10 text-left text-sm"
                           dir="ltr"
                         />
                       </div>
+                      {/* `ml-1` on the icon is gone — Button's base style already
+                          applies `gap-2`, so the two stacked and pushed the
+                          label off-centre. */}
                       <Button
                         onClick={handleNotify}
-                        className="h-11 px-4 rounded-lg bg-primary text-white text-sm font-semibold min-w-[44px]"
+                        className="h-11 min-w-[44px] rounded-lg bg-primary px-4 text-sm font-semibold text-white"
                       >
-                        <Bell className="w-4 h-4 ml-1" aria-hidden="true" />
+                        <Bell className="h-4 w-4" aria-hidden="true" />
                         اطلاع‌رسانی
                       </Button>
                     </motion.div>
@@ -244,8 +254,8 @@ export default function ProductDetailClient({
               </div>
             ) : (
               <>
-                <div className="flex items-center gap-3 my-4">
-                  <span className="text-sm text-text-muted font-medium">تعداد:</span>
+                <div className="my-5 flex items-center gap-3">
+                  <span className="text-sm font-medium text-text-muted">تعداد:</span>
                   <QuantitySelector
                     value={quantity}
                     onChange={setQuantity}
@@ -262,22 +272,30 @@ export default function ProductDetailClient({
               </>
             )}
 
-            {/* Trust badges — payment trust marks */}
-            <TrustBadge />
+            {/* Trust badges — payment trust marks. Previously sat flush against
+                the add-to-cart button with zero separation. */}
+            <div className="mt-6">
+              <TrustBadge />
+            </div>
           </div>
         </div>
 
-        {/* Tabs */}
-        <ProductDetailTabs
-          product={product}
-          features={features}
-          specs={specs}
-          faqs={faqs}
-        />
+        {/* Tabs and similar products had no separation from the block above —
+            they inherited only whatever margin their own root happened to
+            carry, which is why the page ran together below the buy box. */}
+        <div className="mt-14 md:mt-20">
+          <ProductDetailTabs
+            product={product}
+            features={features}
+            specs={specs}
+            faqs={faqs}
+          />
+        </div>
 
-        {/* Similar products */}
         {similarProducts.length > 0 && (
-          <SimilarProducts products={similarProducts} />
+          <div className="mt-14 md:mt-20">
+            <SimilarProducts products={similarProducts} />
+          </div>
         )}
       </div>
 
@@ -285,7 +303,7 @@ export default function ProductDetailClient({
       {!isOutOfStock && (
         <div
           ref={stickyBarRef}
-          className="fixed bottom-0 right-0 left-0 z-[200] lg:hidden bg-white/95 backdrop-blur-sm border-t border-border-soft p-3"
+          className="fixed bottom-0 left-0 right-0 z-[200] border-t border-border-soft bg-white/95 p-3 backdrop-blur-sm lg:hidden"
           style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom))' }}
           role="complementary"
           aria-label="افزودن به سبد خرید"

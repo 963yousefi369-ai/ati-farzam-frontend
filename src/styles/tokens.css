@@ -5,11 +5,14 @@
   --dark-deeper: #0a1019;
   --accent: #14b8a6;
   --accent-dark: #0f766e;
+  /* متن teal روی سفید باید این باشد — #14b8a6 کنتراست 2.4:1 دارد و WCAG رد می‌کند */
+  --accent-text: #0d7c72;
   --discount: #d9457a;
+  --discount-light: #fde8ef;
 
   --bg-base: #ffffff;
   --bg-soft: #f8fafc;
-  --bg-muted: #e8eef5;
+  --bg-muted: #eef2f7;
   --bg-dark: #0f172a;
   --bg-dark-deep: #0a1019;
   --light-tint: #eef3f9;
@@ -26,59 +29,13 @@
   --border-strong: rgba(59, 90, 128, 0.34);
   --border-hairline: rgba(59, 90, 128, 0.14);
 
-  /* ─────────────────────────────────────────────────────────────
-     BRAND GRADIENT — now a real token instead of a dead alias.
-     Use as ACCENT only (~5% of surface): eyebrow pills, CTA sheen,
-     active nav indicator, stat accents, thin top rules.
-     Never as a section background.
-     ───────────────────────────────────────────────────────────── */
-  --gradient-brand: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-  --gradient-brand-subtle: linear-gradient(135deg, rgba(59, 90, 128, 0.1) 0%, rgba(20, 184, 166, 0.1) 100%);
-  --gradient-brand-sheen: linear-gradient(120deg, transparent 20%, rgba(255, 255, 255, 0.22) 50%, transparent 80%);
-
-  /* ─────────────────────────────────────────────────────────────
-     ELEVATION — brand-tinted navy rgba (was neutral slate),
-     paired ambient + key layers so depth reads as light, not fog.
-     ───────────────────────────────────────────────────────────── */
-  --shadow-soft: 0 1px 3px rgba(59, 90, 128, 0.07);
-  --shadow-card: 0 1px 2px rgba(59, 90, 128, 0.06), 0 4px 12px rgba(59, 90, 128, 0.06);
-  --shadow-hover: 0 2px 4px rgba(59, 90, 128, 0.06), 0 12px 28px rgba(59, 90, 128, 0.12);
-  --shadow-elevated: 0 4px 8px rgba(59, 90, 128, 0.08), 0 24px 48px rgba(59, 90, 128, 0.16);
-  --shadow-navy: 0 8px 24px rgba(59, 90, 128, 0.2);
-  --shadow-accent: 0 8px 24px rgba(20, 184, 166, 0.22);
-
-  /* ─────────────────────────────────────────────────────────────
-     TYPE SCALE — fluid clamp()-based, Persian-tuned leading.
-     ───────────────────────────────────────────────────────────── */
-  --text-display: clamp(2.25rem, 1.6rem + 3.2vw, 3.75rem);
-  --text-h1: clamp(1.875rem, 1.4rem + 2.4vw, 3rem);
-  --text-h2: clamp(1.5rem, 1.2rem + 1.5vw, 2.25rem);
-  --text-h3: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);
-  --text-body-lg: 1.125rem;
-  --text-body-base: 1rem;
-
-  --leading-display: 1.2;
-  --leading-heading: 1.35;
-  --leading-body: 1.75;
-  --leading-tight: 1.5;
-
-  /* ─────────────────────────────────────────────────────────────
-     SPACE SCALE — 4px base + tokenized section rhythm.
-     ───────────────────────────────────────────────────────────── */
-  --space-1: 0.25rem;
-  --space-2: 0.5rem;
-  --space-3: 0.75rem;
-  --space-4: 1rem;
-  --space-5: 1.25rem;
-  --space-6: 1.5rem;
-  --space-8: 2rem;
-  --space-10: 2.5rem;
-  --space-12: 3rem;
-  --space-16: 4rem;
-  --space-20: 5rem;
-  --space-24: 6rem;
-  --section-y-mobile: 3.5rem;
-  --section-y-desktop: 6rem;
+  /* ── elevation: فقط سه پله، بیشتر = بی‌نظمی ── */
+  --shadow-soft: 0 1px 3px rgba(15, 23, 42, 0.06);
+  --shadow-card: 0 1px 2px rgba(15, 23, 42, 0.04), 0 4px 12px rgba(15, 23, 42, 0.05);
+  --shadow-hover: 0 10px 30px -12px rgba(15, 23, 42, 0.18);
+  --shadow-elevated: 0 24px 60px -24px rgba(15, 23, 42, 0.34);
+  --shadow-glow-accent: 0 12px 30px -14px rgba(20, 184, 166, 0.9);
+  --shadow-glow-primary: 0 12px 30px -14px rgba(59, 90, 128, 0.8);
 
   --radius-xs: 6px;
   --radius-sm: 8px;
@@ -89,35 +46,44 @@
   --radius-3xl: 28px;
   --radius-full: 9999px;
 
-  /* ─────────────────────────────────────────────────────────────
-     MOTION — settle curve is the default for user-initiated moves.
-     Durations rebalanced up from the old 160ms base, which was too
-     fast to read as physical.
-     ───────────────────────────────────────────────────────────── */
   --ease-settle: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-exit: cubic-bezier(0.4, 0, 1, 1);
   --duration-instant: 80ms;
-  --duration-fast: 140ms;
-  --duration-base: 200ms;
-  --duration-moderate: 280ms;
-  --duration-slow: 400ms;
+  --duration-fast: 120ms;
+  --duration-base: 160ms;
+  --duration-moderate: 200ms;
   --duration-ceiling: 600ms;
 
-  /* FIX: layout.tsx loads Vazirmatn via next/font and exposes
-     --font-vazirmatn, but the old stack never referenced it — the
-     optimized, preloaded font was being loaded and then discarded. */
-  --font-sans: var(--font-vazirmatn), 'Vazirmatn', 'IRANSansX', system-ui, sans-serif;
+  /* ── تایپوگرافی ───────────────────────────────────────────── */
+  --font-sans: var(--font-vazirmatn), 'Vazirmatn', system-ui, sans-serif;
+  /* برای ارتقا به استعداد/مربّا فقط این خط را عوض کن: var(--font-estedad) */
+  --font-display: var(--font-vazirmatn), 'Vazirmatn', system-ui, sans-serif;
+  --font-num: var(--font-num-inter, 'Inter'), var(--font-sans);
 
-  /* FIX (WCAG 2.2 SC 1.4.11): the accent teal ring measured ~2.3:1
-     against white and failed non-text contrast. Primary navy is 7.09:1. */
-  --focus-ring-color: var(--primary);
+  /* line-height فارسی باید بلندتر از لاتین باشد */
+  --lh-display: 1.35;
+  --lh-heading: 1.45;
+  --lh-body: 1.85;
+  --lh-tight: 1.6;
+
+  /* fluid type scale — موبایل تا دسکتاپ بدون breakpoint */
+  --fs-hero: clamp(1.95rem, 1.35rem + 3vw, 3.5rem);
+  --fs-h2: clamp(1.5rem, 1.2rem + 1.4vw, 2.125rem);
+  --fs-h3: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
+  --fs-body: 0.9375rem;
+  --fs-body-lg: 1.0625rem;
+  --fs-small: 0.8125rem;
+
+  --focus-ring-color: var(--accent);
   --focus-ring-width: 2px;
   --focus-ring-offset: 2px;
   --touch-target-min: 44px;
   --navbar-height: 72px;
+  --mobile-tabbar-height: 64px;
 
   --z-navbar: 300;
+  --z-mobile-tabbar: 320;
   --z-mobile-menu-overlay: 400;
   --z-mobile-menu-drawer: 500;
   --z-dropdown: 550;
@@ -129,7 +95,6 @@
   --z-login-modal: 730;
   --z-cmd-search-overlay: 800;
   --z-cmd-search-content: 810;
-  --z-sticky-action-bar: 290;
 
   --success: #14b8a6;
   --success-light: #ccfbf1;
@@ -160,8 +125,7 @@
   --accent-foreground: 222 47% 11%;
   --input: 214 32% 91%;
   --border: 214 20% 88%;
-  /* FIX: shadcn ring aligned with the accessible focus colour above. */
-  --ring: 213 37% 37%;
+  --ring: 174 83% 40%;
   --radius: 0.75rem;
 
   /* Compatibility aliases: keep legacy components visually coherent. */
@@ -183,12 +147,7 @@
   --shadow-sm: var(--shadow-soft);
   --shadow-md: var(--shadow-card);
   --shadow-lg: var(--shadow-hover);
-  --transition-fast: var(--duration-fast) var(--ease-settle);
-  --transition-base: var(--duration-base) var(--ease-settle);
+  --transition-fast: var(--duration-fast) var(--ease-standard);
+  --transition-base: var(--duration-base) var(--ease-standard);
   --transition-smooth: var(--duration-moderate) var(--ease-settle);
 }
-
-/* Direction multiplier: lets a single keyframe animate from the correct
-   edge in both RTL and LTR without duplicating slide-in-left/right. */
-html[dir='rtl'] { --dir: -1; }
-html[dir='ltr'] { --dir: 1; }

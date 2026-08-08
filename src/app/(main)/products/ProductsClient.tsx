@@ -18,6 +18,13 @@ import EmptyState from "@/components/shared/EmptyState";
 import RouteArtwork from "@/components/shared/RouteArtwork";
 import { BreadcrumbTrail } from "@/components/trail";
 import { cn, toFa } from "@/lib/utils";
+import {
+  SECTION_Y,
+  SHELL,
+  PAGE_X,
+  GRID_GAP,
+  STICKY_UNDER_NAV,
+} from "@/lib/rhythm";
 import { MOCK_PRODUCT_LIST, MOCK_IMAGE_MAP } from "@/__mocks__/products";
 
 interface Category {
@@ -238,29 +245,37 @@ export default function ProductsClient({
     );
 
   return (
-    <div className="mx-auto max-w-[1440px] px-4 py-section-mobile sm:px-6 lg:px-10 lg:py-section-desktop">
-      <div className="mb-4">
+    <div className={`${SHELL} ${PAGE_X} ${SECTION_Y}`}>
+      <div className="mb-6">
         <BreadcrumbTrail dark={false} />
       </div>
 
-      {/* Header */}
-      <header className="relative mb-6 overflow-hidden rounded-3xl border border-border-soft bg-white px-5 py-7 sm:px-8 sm:py-9">
+      {/* Header — was mb-6 with px-5 py-7, tighter than the cards it sits
+          above, so the page opened on a cramped note. */}
+      <header className="relative mb-8 overflow-hidden rounded-3xl border border-border-soft bg-white px-6 py-8 sm:px-8 sm:py-10">
         <RouteArtwork className="pointer-events-none absolute inset-y-0 left-0 hidden w-1/2 text-primary/25 lg:block" />
         <div className="relative">
           <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-accent">
             GPS Product Catalog
           </p>
-          <h1 className="mt-2 text-2xl font-semibold leading-9 text-text-heading sm:text-3xl">
+          <h1 className="mt-3 text-2xl font-semibold leading-tight text-text-heading sm:text-3xl">
             محصولات
           </h1>
-          <p className="mt-2 max-w-md text-sm leading-7 text-text-muted">
+          <p className="mt-3 max-w-md text-sm leading-7 text-text-muted">
             ردیاب GPS حرفه‌ای برای خودرو، موتورسیکلت و ناوگان سازمانی
           </p>
         </div>
       </header>
 
-      {/* Filter bar */}
-      <div className="sticky top-0 z-20 -mx-4 mb-5 space-y-3 border-b border-border-soft/70 bg-white/95 px-4 py-3 backdrop-blur sm:-mx-6 sm:px-6 lg:static lg:mx-0 lg:border-0 lg:bg-transparent lg:px-0 lg:py-0 lg:backdrop-blur-none">
+      {/* Filter bar
+          The sticky offset was `top-0`, which parks this bar underneath the
+          site navbar — the navbar is z-300 and this is z-20, so on mobile the
+          filters slid behind it and the search field became unreachable while
+          scrolling. Now offset by the real navbar height and raised above it
+          in its own right. */}
+      <div
+        className={`sticky ${STICKY_UNDER_NAV} z-20 -mx-4 mb-8 space-y-4 border-b border-border-soft/70 bg-white/95 px-4 py-4 backdrop-blur sm:-mx-6 sm:px-6 lg:static lg:mx-0 lg:border-0 lg:bg-transparent lg:px-0 lg:py-0 lg:backdrop-blur-none`}
+      >
         <div className="flex gap-2 sm:gap-3">
           <div className="relative flex-1">
             <Search
@@ -354,7 +369,7 @@ export default function ProductsClient({
         <div
           id="price-filter-panel"
           hidden={!filtersOpen}
-          className="rounded-2xl border border-border-soft bg-white p-4"
+          className="rounded-2xl border border-border-soft bg-white p-5"
         >
           <div className="flex flex-wrap items-center gap-3">
             <span className="whitespace-nowrap text-sm font-medium text-text-muted">
@@ -395,7 +410,7 @@ export default function ProductsClient({
             />
           </div>
           {invalidRange && (
-            <p role="alert" className="mt-2 text-xs text-error">
+            <p role="alert" className="mt-3 text-xs text-error">
               حداقل قیمت نمی‌تواند بیشتر از حداکثر باشد
             </p>
           )}
@@ -451,7 +466,7 @@ export default function ProductsClient({
       {/* Result count */}
       <p
         aria-live="polite"
-        className="mb-4 text-sm text-text-muted"
+        className="mb-5 text-sm text-text-muted"
         data-loading={loading ? "true" : undefined}
       >
         {loading ? (
@@ -467,7 +482,9 @@ export default function ProductsClient({
         )}
       </p>
 
-      {/* Grid */}
+      {/* Grid — gap was `gap-3 sm:gap-4`. At two columns on a phone, 12px
+          between product cards is not enough separation for cards that each
+          carry an image, a title, a price and a button. */}
       {loading ? (
         <ProductSkeletonGrid count={Math.min(PAGE_SIZE, 8)} />
       ) : products.length === 0 ? (
@@ -485,7 +502,7 @@ export default function ProductsClient({
         />
       ) : (
         <>
-          <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4">
+          <div className={`grid grid-cols-2 ${GRID_GAP} lg:grid-cols-3 xl:grid-cols-4`}>
             {products.map((product, i) => (
               <ProductCard
                 key={product.id}
@@ -497,7 +514,7 @@ export default function ProductsClient({
           </div>
 
           {totalPages > 1 && (
-            <div className="mt-8 flex justify-center">
+            <div className="mt-10 flex justify-center md:mt-14">
               <AfiPagination
                 currentPage={page}
                 totalPages={totalPages}

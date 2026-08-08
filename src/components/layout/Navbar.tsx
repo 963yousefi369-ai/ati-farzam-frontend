@@ -12,16 +12,15 @@ import {
   Headphones,
   MapPin,
   Menu,
-  Phone,
   Search,
   ShieldCheck,
   ShoppingCart,
-  Sparkles,
   Truck,
   X,
 } from "lucide-react";
 import AccountMenu from "@/components/layout/AccountMenu";
 import MobileMenu from "@/components/layout/MobileMenu";
+import MobileBottomNav from "@/components/layout/MobileBottomNav";
 import ProductSearch from "@/components/search/ProductSearch";
 import { landingData } from "@/data/landing";
 import { useCartStore } from "@/lib/store/cart";
@@ -126,48 +125,6 @@ export default function Navbar() {
   return (
     <>
       <header className="sticky top-0 z-[var(--z-navbar)]">
-        {/* ── utility strip ───────────────────────────────────────── */}
-        <div className="hidden bg-gradient-to-l from-dark via-[#132038] to-dark text-white lg:block">
-          <div className="mx-auto flex h-9 max-w-7xl items-center justify-between px-4 text-[12.5px] sm:px-6 lg:px-8">
-            <div className="flex items-center gap-5">
-              <a
-                href={`tel:${landingData.utilityBar.phoneRaw}`}
-                className="group flex items-center gap-1.5 text-white/85 transition-colors hover:text-white"
-              >
-                <Phone className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
-                <span dir="ltr" className="font-medium tracking-wide">
-                  {landingData.utilityBar.phone}
-                </span>
-              </a>
-              <span className="h-3.5 w-px bg-white/15" aria-hidden="true" />
-              <span className="flex items-center gap-1.5 text-white/70">
-                <Headphones className="h-3.5 w-3.5" aria-hidden="true" />
-                {landingData.utilityBar.support}
-              </span>
-            </div>
-
-            <div className="flex items-center gap-5">
-              <span className="flex items-center gap-1.5 text-white/70">
-                <Sparkles className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
-                {landingData.utilityBar.freeShipping}
-              </span>
-              <span className="h-3.5 w-px bg-white/15" aria-hidden="true" />
-              <Link
-                href="/tracking"
-                className="text-white/70 transition-colors hover:text-white"
-              >
-                پیگیری سفارش
-              </Link>
-              <Link
-                href="/warranty"
-                className="text-white/70 transition-colors hover:text-white"
-              >
-                گارانتی
-              </Link>
-            </div>
-          </div>
-        </div>
-
         {/* ── main bar ────────────────────────────────────────────── */}
         <div
           className={cn(
@@ -183,6 +140,17 @@ export default function Navbar() {
               scrolled ? "h-16" : "h-navbar",
             )}
           >
+            {/* همبرگری — موبایل/تبلت، راست‌ترین عنصر کنار لوگو */}
+            <button
+              type="button"
+              aria-label="بازکردن منو"
+              aria-expanded={menuOpen}
+              onClick={() => setMenuOpen(true)}
+              className="-mr-1.5 flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-xl text-dark transition-colors duration-200 hover:bg-bg-soft active:scale-95 xl:hidden"
+            >
+              <Menu className="h-5 w-5" aria-hidden="true" />
+            </button>
+
             {/* logo — unchanged typography lockup */}
             <Link
               href="/"
@@ -279,7 +247,7 @@ export default function Navbar() {
                       aria-current={active ? "page" : undefined}
                       onClick={() => setProductsOpen((value) => !value)}
                       className={cn(
-                        "group relative flex min-h-10 items-center gap-1.5 rounded-xl px-3.5 text-[13.5px] font-semibold transition-all duration-200",
+                        "group relative flex min-h-10 items-center gap-1.5 rounded-xl px-3 text-[13.5px] font-semibold xl:px-3.5 transition-all duration-200",
                         active || productsOpen
                           ? "bg-white text-primary shadow-[0_6px_18px_-10px_rgba(15,23,42,.5)]"
                           : "text-text-secondary hover:bg-white hover:text-primary",
@@ -305,10 +273,10 @@ export default function Navbar() {
                     {productsOpen && (
                       <div
                         id="products-menu"
-                        className="absolute right-1/2 top-full z-[var(--z-dropdown)] w-[660px] translate-x-1/2 pt-4"
+                        className="absolute right-1/2 top-full z-[var(--z-dropdown)] w-[min(640px,calc(100vw-3rem))] translate-x-1/2 pt-3"
                       >
-                        <div className="animate-scale-in overflow-hidden rounded-3xl border border-border-soft bg-white/95 shadow-elevated backdrop-blur-xl">
-                          <div className="grid grid-cols-[1fr_236px]">
+                        <div className="animate-scale-in overflow-hidden rounded-3xl border border-border-soft bg-white shadow-elevated">
+                          <div className="grid grid-cols-1 md:grid-cols-[1fr_220px]">
                             <div className="grid grid-cols-2 gap-1.5 p-3">
                               {PRODUCT_CATEGORIES.map((category) => (
                                 <Link
@@ -392,7 +360,7 @@ export default function Navbar() {
             </nav>
 
             {/* search */}
-            <div className="mx-auto hidden w-full max-w-[420px] lg:block">
+            <div className="mx-auto hidden w-full max-w-[300px] lg:block xl:max-w-[380px] 2xl:max-w-[440px]">
               <div className="relative">
                 <ProductSearch variant="bar" />
                 <kbd
@@ -430,23 +398,7 @@ export default function Navbar() {
 
               <AccountMenu />
 
-              <Link
-                href="/contact"
-                className="hidden min-h-11 items-center gap-1.5 rounded-xl bg-gradient-to-l from-primary to-accent px-4 text-[13.5px] font-bold text-white shadow-[0_12px_26px_-14px_rgba(20,184,166,.95)] transition-transform duration-200 hover:scale-[1.03] xl:inline-flex"
-              >
-                <Sparkles className="h-4 w-4" aria-hidden="true" />
-                مشاوره رایگان
-              </Link>
 
-              <button
-                type="button"
-                aria-label="بازکردن منو"
-                aria-expanded={menuOpen}
-                onClick={() => setMenuOpen(true)}
-                className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-xl text-dark transition-colors hover:bg-bg-soft xl:hidden"
-              >
-                <Menu className="h-5 w-5" />
-              </button>
             </div>
           </div>
 
@@ -463,8 +415,7 @@ export default function Navbar() {
       {productsOpen && (
         <div
           aria-hidden="true"
-          onMouseEnter={() => setProductsOpen(false)}
-          className="fixed inset-0 z-[var(--z-mobile-menu-overlay)] hidden bg-dark/20 backdrop-blur-[2px] xl:block"
+          className="pointer-events-none fixed inset-x-0 bottom-0 top-[var(--navbar-height)] z-[290] hidden bg-dark/25 backdrop-blur-[3px] xl:block"
         />
       )}
 
@@ -515,6 +466,12 @@ export default function Navbar() {
         open={menuOpen}
         onClose={() => setMenuOpen(false)}
         onSearchClick={openMobileSearch}
+      />
+
+      {/* تب‌بار پایین موبایل — بدون نیاز به هیچ wiring اضافه در layout */}
+      <MobileBottomNav
+        onSearchClick={openMobileSearch}
+        hidden={menuOpen || searchOpen}
       />
     </>
   );
